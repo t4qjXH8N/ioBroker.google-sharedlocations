@@ -1,0 +1,26 @@
+{
+  "name": "iobroker.google-sharedlocations",
+  "version": "0.0.1",
+  "description": "Google Shared Locations Adapter",
+  "author": {
+    "name": "Christian Vorholt",
+    "email": "chvorholt@mail.com"
+  },
+  "homepage": "https://github.com/t4qjXH8N/ioBroker.google-sharedlocations",
+  "readme": "https://github.com/t4qjXH8N/ioBroker.google-sharedlocations/master/README.md",
+  "keywords": ["ioBroker", "geofence", "google", "google shared locations"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/t4qjXH8N/ioBroker.google-sharedlocations.git"
+  },
+  "dependencies": {
+    "request": ">=2.83.0"
+  },
+  "devDependencies": {
+  },
+  "bugs": {
+    "url": "https://github.com/t4qjXH8N/ioBroker.google-sharedlocations/issues"
+  },
+  "main": "main.js",
+  "license": "MIT"
+}

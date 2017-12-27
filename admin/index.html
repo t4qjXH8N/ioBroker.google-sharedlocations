@@ -1,0 +1,171 @@
+<html>
+
+<link rel="stylesheet" type="text/css" href="../../lib/css/themes/jquery-ui/redmond/jquery-ui.min.css"/>
+<link rel="stylesheet" type="text/css" href="../../lib/css/jqGrid/ui.jqgrid-4.5.4.css"/>
+<link rel="stylesheet" type="text/css" href="../../lib/css/jquery.multiselect-1.13.css"/>
+
+<!-- use jquery -->
+<script type="text/javascript" src="../../lib/js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../../lib/js/jquery-ui-1.10.3.full.min.js"></script>
+
+<!-- use socketIO -->
+<script type="text/javascript" src="../../socket.io/socket.io.js"></script>
+
+<!-- use jqGrid -->
+<script type="text/javascript" src="../../lib/js/jqGrid/jquery.jqGrid-4.5.4.min.js"></script>
+<script type="text/javascript" src="../../lib/js/jqGrid/grid.locale-all.js"></script>
+
+<link rel="stylesheet" type="text/css" href="../../css/adapter.css"/>
+<script type="text/javascript" src="../../js/translate.js"></script>
+<script type="text/javascript" src="../../js/adapter-settings.js"></script>
+
+<!-- you have to define 2 functions in the global scope: -->
+<style>
+    .table_header {
+        background-color: blue;
+        color: white;
+    }
+</style>
+
+<script type="text/javascript">
+    // Dictionary (systemDictionary is global variable from adapter-settings.js)
+    systemDictionary = {
+        "google sharedlocations settings": {"de": "Google Standortfreigabe Adapter Einstellungen", "en": "Google sharedlocations adapter settings"},
+        "login_data": {"de": "Anmeldedaten", "en": "Authentification"},
+        "google_username": {"de": "Benutzername", "en": "Username"},
+        "google_password": {"de": "Passwort", "en": "Password"},
+        "google_polling_interval": {"de": "Abfrageintervall (s)", "en": "Polling interval (s)"},
+        "search": {"de": "Suche", "en": "search"},
+        "queryusers": {"de": "abfragen", "en": "query"},
+        "geofences": {"de": "Geofences", "en": "Geofences"},
+        "description": {"de": "Beschreibung", "en": "description"},
+        "center_lat": {"de": "Breitengrad (dezimal)", "en": "Latitude (decimal)"},
+        "center_long": {"de": "Längengrad (dezimal)", "en": "Longitude (decimal)"},
+        "radius": {"de": "Radius (m)", "en": "radius (m)"},
+        "userid": {"de": "Person", "en": "user"},
+        "trueonin": {"de": "Bei Eintritt wahr?", "en": "true on entry?"},
+        "on save adapter restarts with new config immediately": {
+          "de": "Beim Speichern von Einstellungen wird der Adapter sofort neu gestartet.",
+          "ru": "Сразу после сохранения настроек драйвер перезапуститься с новыми значениями"
+        }
+    };
+
+    function setValue(id, value, onChange) {
+        // example: select elements with id=key and class=value and insert value
+        if ($('#' + id + '.value').attr('type') === 'checkbox') {
+          $('#' + id + '.value').prop('checked', value).change(function() {
+            onChange();
+          });
+        } else {
+          $('#' + id + '.value').val(value).change(function() {
+            onChange();
+          }).keyup(function() {
+            // Check that only numbers entered
+            if ($(this).hasClass('number')) {
+              var val = $(this).val();
+              if (val) {
+                var newVal = '';
+                for (var i = 0; i < val.length; i++) {
+                  if (val[i] >= '0' && val[i] <= '9') {
+                    newVal += val[i];
+                  }
+                }
+
+                if (val !== newVal) $(this).val(newVal);
+              }
+            }
+
+            onChange();
+          });
+        }
+    }
+
+    // the function loadSettings has to exist ...
+  function load(settings, onChange) {
+    if (!settings) return;
+
+    fences = settings.fences || [];
+
+    for (var key in settings) {
+      if (!settings.hasOwnProperty(key)) continue;
+      setValue(key, settings[key], onChange);
+    }
+
+    $('#table-button-search').button({
+      label: _('search'),
+      icons: {
+        primary: ' ui-icon-refresh'
+      }
+    }).click(function () {
+      alert('Not implemented yet.')
+    });
+
+    values2table('values', fences, onChange);
+
+    onChange(false);
+  }
+
+    // ... and the function save has to exist.
+    // you have to make sure the callback is called with the settings object as first param!
+    function save(callback) {
+        // example: select elements with class=value and build settings object
+        var obj = {};
+        $('.value').each(function () {
+          var $this = $(this);
+          if ($this.attr('type') == 'checkbox') {
+            obj[$this.attr('id')] = $this.prop('checked');
+          } else {
+            obj[$this.attr('id')] = $this.val();
+          }
+        });
+
+        // Get edited table
+        obj.fences = table2values('values');
+
+        callback(obj, {localLink: obj.webserverEnabled ? 'http://%ip%:' + obj.webserverPort : ''});
+    }
+</script>
+
+<!-- you have to put your config page in a div with id adapter-container -->
+<div id="adapter-container">
+
+    <table>
+        <tr>
+            <td><img src="google-sharedlocations.png"></td>
+            <td style="padding-top: 20px;padding-left: 10px"><h3 class="translate">google sharedlocations settings</h3></td>
+        </tr>
+    </table>
+
+    <h4 class="translate">login_data</h4>
+    <table>
+        <tr><td class="translate">google_username</td><td><input class="value" id="google_username"></td></tr>
+        <tr><td class="translate">google_password</td><td><input class="value" type="password" id="google_password"/></td></tr>
+        <tr><td class="translate">google_polling_interval</td><td><input class="value" id="google_polling_interval"/></td></tr>
+    </table>
+    <h4 class="translate">geofences</h4>
+    <div id="values" style="width: 100%; height: calc(100% - 300px)">
+        <button class="table-button-add" style="display: inline-block; margin-left: 10px; height: 2em"></button>
+        <button id="table-button-search" style="display: inline-block; margin-left: 10px;"></button>
+        <div style="width: 100%; height: calc(100% - 30px); overflow: auto;">
+            <table class="table-values" style="width: 100%;">
+                <thead>
+                <tr>
+                    <th data-name="_index" style="width: 40px" class="translate"></th>
+                    <th data-name="description" class="translate">description</th>
+                    <th data-name="center_lat" class="translate">center_lat</th>
+                    <th data-name="center_long" class="translate">center_long</th>
+                    <th data-name="radius" class="translate">radius</th>
+                    <th data-name="userid" class="translate">userid</th>
+
+                    <th data-buttons="delete" style="width: 40px"></th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+
+    <br>
+    <p class="translate">on save adapter restarts with new config immediately</p>
+</div>
+
+</html>
