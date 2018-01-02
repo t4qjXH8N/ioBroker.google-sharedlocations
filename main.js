@@ -8,7 +8,7 @@
  * {
  *  "common": {
  *      "name":                     "google-sharedlocations",
- *       "version":                  "0.0.1",
+ *       "version":                  "0.0.2",
  *    "news": {
  *		"0.0.1": {
  *		  "en": "initial adapter",
@@ -766,7 +766,7 @@ function parseLocationData(locationdata, callback) {
   // shared location data is contained in the first element
   var perlocarr = locationdata[0];
 
-  if(perlocarr.length > 0) {
+  if(perlocarr && perlocarr.length > 0) {
     var userdataobjarr = [];
 
     for(var i=0; i<perlocarr.length;i++) {

@@ -9,11 +9,15 @@ When opening the configuration for the first time enter only the google login da
 
 
 ## Changelog
+#### 0.0.2 (2018-01-02)
+- improved descriptions
+- several bugfixes
+
 #### 0.0.1 (2017-12-31)
 - basic features tested
 
 known issued
-- objects for fences have to be deleted manually
+- objects for fences have to be deleted manually when they are removed in the admin interface
 
 ## Disclaimer
 I am not in any association with Google.

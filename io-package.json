@@ -1,8 +1,12 @@
 {
     "common": {
         "name":                     "google-sharedlocations",
-        "version":                  "0.0.1",
+        "version":                  "0.0.2",
 	    "news": {
+            "0.0.2": {
+              "en": "Bugfixes",
+              "de": "Diverse Fehlerbehebungen"
+            },
 			"0.0.1": {
 			  "en": "initial adapter",
 			  "de": "Initiale Version",
@@ -21,7 +25,7 @@
 		"extIcon":                  "https://raw.githubusercontent.com/t4qjXH8N/ioBroker.google-sharedlocations/master/admin/google-sharedlocations.png",
 		"keywords":                 ["google", "geofence", "sharedlocations"],
         "readme":                   "https://github.com/t4qjXH8N/ioBroker.google-sharedlocations/master/README.md",
-		"loglevel":                 "debug",
+		"loglevel":                 "info",
         "type":                     "geoposition",
         "restartAdapters":          ["vis"]
     },
