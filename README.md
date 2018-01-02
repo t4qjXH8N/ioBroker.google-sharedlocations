@@ -4,6 +4,10 @@
 ## Description
 This is an ioBroker-adapter that can retrieve the location data of users that are sharing their location via google shared locations. It can not retrieve the location of the user that is used to access google.
 
+## Usage
+When opening the configuration for the first time enter only the google login data. After the first run of the instance you can get the user ids from the objects page from the folder of the adapter instance. These ids have to be used in the configuration to identify users.
+
+
 ## Changelog
 #### 0.0.1 (2017-12-31)
 - basic features tested
