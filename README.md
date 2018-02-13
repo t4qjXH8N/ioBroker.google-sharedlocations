@@ -9,6 +9,10 @@ When opening the configuration for the first time enter only the google login da
 
 
 ## Changelog
+#### 0.0.3 (2018-02-13)
+- google had changed something in their authentification routine that made some changes necessary
+- several bugfixes
+
 #### 0.0.2 (2018-01-02)
 - improved descriptions
 - several bugfixes

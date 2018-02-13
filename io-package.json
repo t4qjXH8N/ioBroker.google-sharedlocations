@@ -1,8 +1,12 @@
 {
     "common": {
         "name":                     "google-sharedlocations",
-        "version":                  "0.0.2",
+        "version":                  "0.0.3",
 	    "news": {
+          "0.0.3": {
+            "en": "Bugfixes, improved authentification",
+            "de": "Diverse Fehlerbehebungen, verbesserter Login."
+          },
             "0.0.2": {
               "en": "Bugfixes",
               "de": "Diverse Fehlerbehebungen"

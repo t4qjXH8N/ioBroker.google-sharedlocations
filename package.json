@@ -1,6 +1,6 @@
 {
   "name": "iobroker.google-sharedlocations",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Google Shared Locations Adapter",
   "author": {
     "name": "Christian Vorholt",
@@ -14,7 +14,8 @@
     "url": "https://github.com/t4qjXH8N/ioBroker.google-sharedlocations.git"
   },
   "dependencies": {
-    "request": ">=2.83.0"
+    "request": ">=2.83.0",
+    "cheerio": "^1.0.0-rc.2"
   },
   "devDependencies": {
   },

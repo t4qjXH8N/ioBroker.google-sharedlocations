@@ -53,6 +53,9 @@ var utils =    require(__dirname + '/lib/utils'); // Get common adapter utils
 // for communication
 const request = require('request');
 
+// for parsing forms
+const cheerio = require('cheerio');
+
 // you have to call the adapter function and pass a options object
 // name has to be set and has to be equal to adapters folder name and main file name excluding extension
 // adapter will be restarted automatically every time as the configuration changed, e.g system.adapter.google-sharedlocations.0
@@ -60,38 +63,13 @@ var adapter = utils.adapter('google-sharedlocations');
 
 // google cookies
 var google_cookies = {
-  "google.com": {
-    "GAPS": "",
-    "GALX": "",
-    "SID": "",
-    "LSID": "",
-    "SIDCC": "",
-    "HSID": "",
-    "SSID": "",
-    "APISID": "",
-    "SAPISID": "",
-    "ACCOUNT_CHOOSER": "",
-    "NID": "",
-    "CONSENT": "",
-    "1P_JAR": ""
-  }
+  "google.com": {}
 };
 
-// google form
-var google_form = {
-  "gxf": "",
-  "ProfileInformation": "",
-  "SessionState": ""
-};
-
-// redirector URL
-var google_fourth_location_url = "";
+// google form data
+var google_form = {};
 
 var google_polling_interval_id = null;
-
-// after auth we are redirected to the local google domain. Default is google.com, otherwise google_locator
-// is set to the new google domain
-var google_locator = "google.com";
 
 // triggered when the adapter is installed
 adapter.on('install', function () {
@@ -101,10 +79,16 @@ adapter.on('install', function () {
 // is called when the adapter shuts down - callback has to be called under any circumstances!
 adapter.on('unload', function (callback) {
   try {
+    // logout from google
+    logout(function (err) {
+      if (err) {
+        adapter.log.error('Could not logout from google when unloading the adapter.')
+      }
+    });
+
     adapter.log.info('cleaned everything up...');
-      callback();
   } catch (e) {
-      callback();
+    callback(e);
   }
 });
 
@@ -161,8 +145,15 @@ function main() {
   // adapter.config:
   adapter.log.info('Starting google shared locations adapter');
 
-  // first query
-  querySharedLocations(function (err) {
+  // first connect and query
+  // connect to Google
+  connect(function(err) {
+    if (err) {
+      adapter.log.error('First connection failed.');
+    } else {
+      querySharedLocations(function (err) {
+      });
+    }
   });
 
   // enable polling
@@ -176,43 +167,27 @@ function main() {
 
 // login, get locations and logout
 function querySharedLocations(callback) {
-  // connect to Google
-  connect(function(err) {
+  getSharedLocations(function (err, userobjarr) {
     if (err) {
-      adapter.log.error('First connection failed.');
+      adapter.setState('info.connection', false, true);
     } else {
-      getSharedLocations(function (err, userobjarr) {
+
+      // check fences
+      checkFences(userobjarr, function (err) {
         if (err) {
-          adapter.setState('info.connection', false, true);
+          adapter.log.error('Error during fence check.')
         } else {
-
-          // check fences
-          checkFences(userobjarr, function (err) {
+          updateStates(userobjarr, function (err) {
             if (err) {
-              adapter.log.error('Error during fence check.')
+              if (callback) callback(err)
             } else {
-              updateStates(userobjarr, function (err) {
-                if (err) {
-
-                } else {
-                  logout(function (err) {
-                    if(err) {
-                      adapter.setState('info.connection', false, true);
-                    } else {
-                      // logout done, but everything worked fine, so set connection to true
-                      adapter.setState('info.connection', true, true);
-                    }
-                  });
-                }
-              });
+              if (callback) callback(false)
             }
           });
         }
       });
     }
   });
-
-
 }
 
 // update states
@@ -284,26 +259,17 @@ function connect(callback) {
       // no error
       connectSecondStage(function (err) {
         if (err) {
-          adapter.log.error('Second stage (auth user) error');
+          adapter.log.error('Second stage username send error');
           adapter.setState('info.connection', false, true);
           if (callback) callback(err);
         } else {
           connectThirdStage(function (err) {
-            if(err) {
-              adapter.log.error('Third stage (auth password) error');
+            if (err) {
+              adapter.log.error('Third stage auth rror');
               adapter.setState('info.connection', false, true);
-              if (callback) callback(err);
             } else {
-              connectFourthStage(function(err) {
-                if(err) {
-                  adapter.log.error('Fourth stage (locator) error');
-                  adapter.setState('info.connection', false, true);
-                  if (callback) callback(err);
-                } else {
-                  adapter.setState('info.connection', true, true);
-                  if (callback) callback(false);
-                }
-              });
+              adapter.setState('info.connection', true, true);
+              if (callback) callback(false);
             }
           });
         }
@@ -311,10 +277,12 @@ function connect(callback) {
     }
   });
 }
-
 // connect to Google, call login page
+// what we get here:
+// GAPS cookie
+// glx form identifier
 function connectFirstStage(callback) {
-  adapter.log.info("First stage, connecting to Google ...");
+  adapter.log.info("Send username, connecting to Google ...");
 
   // set connection state to false at the beginning
   adapter.setState('info.connection', false, true);
@@ -322,247 +290,128 @@ function connectFirstStage(callback) {
   // first get GAPS cookie
   var options_connect1 = {
     url: "https://accounts.google.com/ServiceLogin",
-    headers: {},
+    headers: {
+      "Upgrade-Insecure-Requeste": "1",
+      "Connection": "keep-alive"
+    },
     method: "GET",
     qs: {
       "rip": "1",
-      "nojavascript": "1"
+      "nojavascript": "1",
+      "flowName": "GlifWebSignIn",
+      "flowEntry": "ServiceLogin"
       }
     };
 
-  request(options_connect1, function(err, response, body){
+  request(options_connect1, function(err, response, body) {
     if(err || !response) {
       // no connection
       adapter.log.error(err);
-      adapter.log.info('Connection failure.');
       if(callback) callback(true);
     } else {
       // connection successful
       adapter.log.debug('Response: ' + response.statusMessage);
 
-      // connection established but auth failure
+      // connection established but something went wrong
       if(response.statusCode !== 200) {
-        adapter.log.debug('Removed cookies.');
-        adapter.log.error('Connection works, but authorization failure (wrong password?)!');
+        adapter.log.debug('First stage, HTTP status code is not 200.');
+        adapter.log.error('First stage error, could not retrieve cookie or glx!');
+
         if(callback) callback(true);
       } else {
         // save cookies etc.
-        if(response.hasOwnProperty('headers') && response.headers.hasOwnProperty('set-cookie')) {
-          // save gfx value from received form field
-          var gxfdom = response.body.match(/<input\s+type="hidden"\s+name="gxf"\s+value="\S*/g);
-          google_form['gxf'] = gxfdom[0].split('"')[5];
-
+        if (response.hasOwnProperty('headers') && response.headers.hasOwnProperty('set-cookie')) {
           saveConnectionCookies(response.headers['set-cookie'], 'google.com');
-
-          adapter.log.debug('Saved connection cookies.');
-          adapter.log.info('Connection successful.');
-          if(callback) callback(false);
-        } else {
-          adapter.log.debug('No cookie found.');
-          adapter.log.error('No cookie found.');
-          if(callback) callback(true);
         }
+
+        // first simply get all form fields
+        const $ = cheerio.load(response.body);
+        google_form = serialized_array_to_dict($("form").serializeArray());
+        adapter.log.debug('Got gxf value from form.');
+
+        if(callback) callback(false);
       }
     }
   });
 }
 
-// connected to Google, send username (E-Mail address)
+// we have the GAPS cookie and the glx identifier,
+// start username nad password challenge now
 function connectSecondStage(callback) {
-  adapter.log.info("Second stage, sending E-Mail address ...");
+  adapter.log.info("Second stage, sending username ...");
 
-  var username = adapter.config.google_username;
+  google_form['Email'] = adapter.config.google_username;
 
   var options_connect2 = {
     url: "https://accounts.google.com/signin/v1/lookup",
     headers: {
-      "Cookie": "GAPS=" + google_cookies['google.com']['GAPS']
+      "Cookie": getCookieHeader('google.com'),
+      "Referer": "https://accounts.google.com/ServiceLogin?rip=1&nojavascript=1",
+      "Origin": "https://accounts.google.com"
     },
     method: "POST",
-    form: {
-      "Page": "PasswordSeparationSignIn",
-      "gxf": google_form['gxf'],
-      "rip": "1",
-      "ProfileInformation": "",
-      "SessionState": "",
-      "bgresponse": "js_disabled",
-      "pstMsg": "0",
-      "checkConnection": "",
-      "checkedDomains": "youtube",
-      "Email": username,
-      "identifiertoken": "",
-      "identifiertoken_audio": "",
-      "identifier-captcha-input": "",
-      "signIn": "Weiter",
-      "Passwd":"",
-      "PersistentCookie": "yes"
-    }
-
+    form: google_form
   };
 
   request(options_connect2, function(err, response, body){
     if(err || !response) {
       // no connection
-      adapter.log.error(err);
+      adapter.log.debug(err);
       adapter.log.info('Connection failure.');
       if(callback) callback(true);
     } else {
       // connection successful
       adapter.log.debug('Response: ' + response.statusMessage);
 
-      // connection established but auth failure
-
-      if(response.statusCode !== 200) {
-        adapter.log.debug('Removed cookies.');
-        adapter.log.error('Connection works, but authorization failure (wrong password?)!');
-        if(callback) callback(true);
-      } else {
-        // save cookies etc.
-        if(response.hasOwnProperty('headers') && response.headers.hasOwnProperty('set-cookie')) {
-          saveConnectionCookies(response.headers['set-cookie'], 'google.com');
-
-          // extract some information from the form
-          var profileinformationdom = response.body.match(/<input\s+id="profile-information"\s+name="ProfileInformation"\s+type="hidden"\s+value="\S*/g);
-          google_form['ProfileInformation'] = profileinformationdom[0].split('"')[7];
-          var sessionstatedom = response.body.match(/<input\s+id="session-state"\s+name="SessionState"\s+type="hidden"\s+value="\S*/g);
-          google_form['SessionState'] = sessionstatedom[0].split('"')[7];
-
-          adapter.log.debug('Saved connection cookies.');
-          adapter.log.info('Connection successful.');
-          if(callback) callback(false);
-        } else {
-          adapter.log.debug('No cookie found.');
-          adapter.log.error('No cookie found.');
-          if(callback) callback(true);
-        }
+      // save cookies etc.
+      if(response.hasOwnProperty('headers') && response.headers.hasOwnProperty('set-cookie')) {
+        saveConnectionCookies(response.headers['set-cookie'], 'google.com');
       }
+
+      // first simply get all form fields
+      const $ = cheerio.load(response.body);
+      google_form = serialized_array_to_dict($("form").serializeArray());
+
+      if (callback) callback(false);
     }
   });
 }
 
-// connected to Google, send password
+// we have the GAPS cookie and the glx identifier,
+// start username nad password challenge now
 function connectThirdStage(callback) {
-  adapter.log.info("Third stage, sending password ...");
+  adapter.log.info("Third stage, password challenge ...");
 
-  var username = adapter.config.google_username;
-  var password = adapter.config.google_password;
+  google_form['Passwd'] = adapter.config.google_password;
 
   var options_connect3 = {
     url: "https://accounts.google.com/signin/challenge/sl/password",
     headers: {
-      "Cookie": "GAPS=" + google_cookies['google.com']['GAPS'] + "; " + "GALX=" + google_cookies['google.com']['GALX'],
-      "Origin": "https://accounts.google.com",
+      "Cookie": getCookieHeader('google.com'),
       "Referer": "https://accounts.google.com/signin/v1/lookup",
-      "Upgrade-Insecure-Requests": "1"
+      "Origin": "https://accounts.google.com"
     },
     method: "POST",
-    form: {
-      "Page": "PasswordSeparationSignIn",
-      "GALX": google_cookies['google.com']['GALX'],
-      "gxf": google_form['gxf'],
-      "checkedDomains": "youtube",
-      "pstMsg": "0",
-      "rip": "1",
-      "ProfileInformation": google_form['ProfileInformation'],
-      "SessionState": google_form['SessionState'],
-      "_utf8": "☃",
-      "bgresponse": "js_disabled",
-      "checkConnection": "",
-      "Email": username,
-      "signIn": "Weiter",
-      "Passwd": password,
-      "PersistentCookie": "yes",
-      "rmShown": "1"
-    }
+    form: google_form
   };
 
   request(options_connect3, function(err, response, body){
     if(err || !response) {
       // no connection
-
-      adapter.log.error(err);
+      adapter.log.debug(err);
       adapter.log.info('Connection failure.');
       if(callback) callback(true);
     } else {
       // connection successful
       adapter.log.debug('Response: ' + response.statusMessage);
 
-      // connection established but auth failure
-      if(response.statusCode !== 302) {
-        adapter.setState('info.connection', false, true);
-
-        adapter.log.debug('Redirector http code 302 expected, but ' + response.statusCode + ' received.');
-        adapter.log.error('Redirector expected, but not received!!');
-        if(callback) callback(true);
-      } else {
-        // save cookies etc.
-        if(response.hasOwnProperty('headers') && response.headers.hasOwnProperty('set-cookie')) {
-          saveConnectionCookies(response.headers['set-cookie'], 'google.com');
-
-          // get location url
-          google_fourth_location_url = response.headers.location;
-
-          adapter.log.info('Authentication successful, received location URL.');
-          adapter.log.debug('Received new location URL ' + google_fourth_location_url + '.');
-          if(callback) callback(false);
-        } else {
-          adapter.log.debug('No cookie found.');
-          adapter.log.error('No cookie found.');
-          if(callback) callback(true);
-        }
+      // save cookies etc.
+      if(response.hasOwnProperty('headers') && response.headers.hasOwnProperty('set-cookie')) {
+        saveConnectionCookies(response.headers['set-cookie'], 'google.com');
       }
+
+      if (callback) callback(false);
     }
-  });
-}
-
-// connected to Google, follow redirector, retrieve cookies from localized pages
-function connectFourthStage(callback) {
-  adapter.log.info('Fourth stage, redirecting to  ' + google_fourth_location_url);
-
-  getCookieHeader('google.com', function(err, cookieheader) {
-
-    var options_connect4 = {
-      url: google_fourth_location_url,
-      headers: {
-        "Cookie": cookieheader
-      },
-      method: "POST"
-    };
-
-    request(options_connect4, function (err, response, body) {
-      if (err || !response) {
-        // no connection
-
-        adapter.log.error(err);
-        adapter.log.info('Connection failure.');
-        if (callback) callback(true);
-      } else {
-        // connection successful
-        adapter.log.debug('Response: ' + response.statusMessage);
-
-        // connection established but an error occured
-        if (response.statusCode !== 302) {
-          adapter.setState('info.connection', false, true);
-
-          adapter.log.debug('Removed cookies.');
-          adapter.log.error('Connection works, but authorization failure (wrong password?)!');
-          if (callback) callback(true);
-        } else {
-          // save cookies etc.
-          if (response.hasOwnProperty('headers') && response.headers.hasOwnProperty('set-cookie')) {
-            saveConnectionCookies(response.headers['set-cookie'], 'google.com');
-
-            adapter.log.debug('Saved connection cookies.');
-            adapter.log.info('Connection successful.');
-            if (callback) callback(false);
-          } else {
-            adapter.log.debug('No cookie found.');
-            adapter.log.error('No cookie found.');
-            if (callback) callback(true);
-          }
-        }
-      }
-    });
   });
 }
 
@@ -572,10 +421,13 @@ function poll(callback) {
   adapter.log.info('Polling locations.');
 
   querySharedLocations(function (err) {
-
+    if (err) {
+      adapter.log.error('An error occured during polling the locations!')
+      callback(err);
+    } else {
+      callback(false);
+    }
   });
-
-  callback(false);
 }
 
 // check fences
@@ -647,52 +499,50 @@ function setStateEx(id, common, val, ack, callback) {
 // query google shared locations
 function getSharedLocations(callback) {
 
-  getCookieHeader('google.com', function(err, cookieheader) {
+  var options_map = {
+    url: "https://www.google.com/maps/preview/locationsharing/read",
+    headers: {
+      "Cookie": getCookieHeader('google.com')
+    },
+    method: "GET",
+    qs: {
+      "authuser": 0,
+      "pb": ""
+    }
+  };
 
-    var options_map = {
-      url: "https://www.google.com/maps/preview/locationsharing/read",
-      headers: {
-        "Cookie": cookieheader
-      },
-      method: "GET",
-      qs: {
-        "authuser": 0,
-        "pb": ""
-      }
-    };
+  request(options_map, function(err, response, body){
+    if(err || !response) {
+      // no connection
 
-    request(options_map, function(err, response, body){
-      if(err || !response) {
-        // no connection
+      adapter.log.error(err);
+      adapter.log.info('Connection to google maps failure.');
+      if(callback) callback(true);
+    } else {
+      // connection successful
+      adapter.log.debug('Response: ' + response.statusMessage);
 
-        adapter.log.error(err);
-        adapter.log.info('Connection to google maps failure.');
+      // connection established but auth failure
+      if(response.statusCode !== 200) {
+        adapter.setState('info.connection', false, true);
+
+        adapter.log.debug('Removed cookies.');
+        adapter.log.error('Connection works, but authorization failure (cookie not valid?)!');
+
         if(callback) callback(true);
       } else {
-        // connection successful
-        adapter.log.debug('Response: ' + response.statusMessage);
+        // parse and save user locations
+        var locationdata = JSON.parse(body.split('\n').slice(1, -1).join(''));
 
-        // connection established but auth failure
-        if(response.statusCode !== 200) {
-          adapter.setState('info.connection', false, true);
-
-          adapter.log.debug('Removed cookies.');
-          adapter.log.error('Connection works, but authorization failure (wrong password?)!');
-          if(callback) callback(true);
-        } else {
-          // parse and save user locations
-          var locationdata = JSON.parse(body.split('\n').slice(1, -1).join(''));
-
-          parseLocationData(locationdata, function(err, userobjarr) {
-            if(err) {
-              if(callback) callback(err);
-            } else {
-              if(callback) callback(false, userobjarr);
-            }
-          });
-        }
+        parseLocationData(locationdata, function(err, userobjarr) {
+          if(err) {
+            if(callback) callback(err);
+          } else {
+            if(callback) callback(false, userobjarr);
+          }
+        });
       }
-    });
+    }
   });
 }
 
@@ -739,12 +589,13 @@ function logout(callback) {
 }
 
 // compose the header cookie data
-function getCookieHeader(domain, callback) {
+function getCookieHeader(domain) {
   var cookiestr = '';
   for(var curcookie in google_cookies[domain]) {
     cookiestr = cookiestr + curcookie + '=' + google_cookies[domain][curcookie] + ';'
   }
-  callback(false, cookiestr.slice(0, -1));
+
+  return cookiestr.slice(0, -1);
 }
 
 // save cookies from google
@@ -754,9 +605,7 @@ function saveConnectionCookies(setcookies, domain) {
     var key = setcookies[i].split(';')[0].split('=')[0];
     var val = setcookies[i].split(';')[0].split('=')[1];
 
-    if(google_cookies[domain].hasOwnProperty(key)) {
-      google_cookies[domain][key] = val;
-    }
+    google_cookies[domain][key] = val;
   }
 }
 
@@ -812,4 +661,14 @@ function haversine(deg_lat1, deg_lon1, deg_lat2, deg_lon2) {
 
   var a = Math.sin(dLat / 2) * Math.sin(dLat /2) + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) * Math.sin(dLon /2);
   return 2.0 * R * Math.asin(Math.sqrt(a)) * 1000;
+}
+
+function serialized_array_to_dict(arr) {
+  var dict = {};
+
+  for (var i=0;i < arr.length;i++) {
+    dict[arr[i].name] = arr[i].value;
+  }
+
+  return dict
 }
