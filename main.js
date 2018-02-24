@@ -637,13 +637,28 @@ function parseLocationData(locationdata, callback) {
 // get user date and create states form
 function extractUserLocationData(userdata, callback) {
 
-  var userdataobj = {
-    "id": userdata[0][0],
-    "photoURL": userdata[0][1],
-    "name": userdata[0][3],
-    "lat": userdata[1][1][2],
-    "long": userdata[1][1][1]
-  };
+  // location data present?
+  if(!userdata[1]) {
+    // no userdata present
+
+    var userdataobj = {
+      "id": userdata[0][0],
+      "photoURL": userdata[0][1],
+      "name": userdata[0][3],
+      "lat": undefined,
+      "long": undefined
+    }
+  } else {
+    // userdata present
+
+    var userdataobj = {
+      "id": userdata[0][0],
+      "photoURL": userdata[0][1],
+      "name": userdata[0][3],
+      "lat": userdata[1][1][2],
+      "long": userdata[1][1][1]
+    }
+  }
 
   if(callback) callback(false, userdataobj);
 }

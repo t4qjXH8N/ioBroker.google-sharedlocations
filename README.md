@@ -9,6 +9,9 @@ When opening the configuration for the first time enter only the google login da
 
 
 ## Changelog
+#### 0.0.4 (2018-02-24)
+- Adapter does no longer crash if location data of a user has not been updated for a long time
+
 #### 0.0.3 (2018-02-13)
 - google had changed something in their authentification routine that made some changes necessary
 - several bugfixes

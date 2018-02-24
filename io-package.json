@@ -1,8 +1,12 @@
 {
     "common": {
         "name":                     "google-sharedlocations",
-        "version":                  "0.0.3",
+        "version":                  "0.0.4",
 	    "news": {
+          "0.0.4": {
+            "en": "Adapter does no longer crash if location data of a user has not been updated for a long time.",
+            "de": "Adapter stürzt nicht mehr ab wenn länger keine Positionsdaten mehr empfangen werden."
+          },
           "0.0.3": {
             "en": "Bugfixes, improved authentification",
             "de": "Diverse Fehlerbehebungen, verbesserter Login."
