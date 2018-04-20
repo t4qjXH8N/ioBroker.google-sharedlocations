@@ -1,8 +1,12 @@
 {
     "common": {
         "name":                     "google-sharedlocations",
-        "version":                  "0.0.4",
+        "version":                  "0.0.5",
 	    "news": {
+          "0.0.5": {
+            "en": "Fixed errors when no fences exist.",
+            "de": "Fehler behoben der auftritt wenn keine Fences angelegt sind."
+          },
           "0.0.4": {
             "en": "Adapter does no longer crash if location data of a user has not been updated for a long time.",
             "de": "Adapter stürzt nicht mehr ab wenn länger keine Positionsdaten mehr empfangen werden."

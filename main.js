@@ -265,7 +265,7 @@ function connect(callback) {
         } else {
           connectThirdStage(function (err) {
             if (err) {
-              adapter.log.error('Third stage auth rror');
+              adapter.log.error('Third stage auth error');
               adapter.setState('info.connection', false, true);
             } else {
               adapter.setState('info.connection', true, true);
@@ -283,9 +283,6 @@ function connect(callback) {
 // glx form identifier
 function connectFirstStage(callback) {
   adapter.log.info("Send username, connecting to Google ...");
-
-  // set connection state to false at the beginning
-  adapter.setState('info.connection', false, true);
 
   // first get GAPS cookie
   var options_connect1 = {
@@ -614,9 +611,9 @@ function parseLocationData(locationdata, callback) {
 
   // shared location data is contained in the first element
   var perlocarr = locationdata[0];
+  var userdataobjarr = [];
 
   if(perlocarr && perlocarr.length > 0) {
-    var userdataobjarr = [];
 
     for(var i=0; i<perlocarr.length;i++) {
       extractUserLocationData(perlocarr[i], function(err, obj) {
@@ -628,10 +625,9 @@ function parseLocationData(locationdata, callback) {
       });
     }
 
-    if(callback) callback(false, userdataobjarr);
-  } else {
-    if(callback) callback(false);
   }
+
+  if(callback) callback(false, userdataobjarr);
 }
 
 // get user date and create states form
