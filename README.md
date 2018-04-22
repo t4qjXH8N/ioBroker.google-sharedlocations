@@ -1,3 +1,4 @@
+![Logo](admin/google-sharedlocations.png)
 # ioBroker.google-sharedlocations
 =================
 
@@ -7,8 +8,14 @@ This is an ioBroker-adapter that can retrieve the location data of users that ar
 ## Usage
 When opening the configuration for the first time enter only the google login data. After the first run of the instance you can get the user ids from the objects page from the folder of the adapter instance. These ids have to be used in the configuration to identify users. Two factor authentification has to be disabled for the user.
 
+## Troubleshooting
+### instance indicator is green but no location data is received
+In this case check the google account of the user that is used by the google-sharedlocations adapter. Log in with a browser and check if google blocked some logins. Click on a block login and confirm to google that this was you. Additionally check that two factor authentification is turned off.
 
 ## Changelog
+#### 0.0.6 (2018-04-22)
+- Added support for [ioBroker.places adapter](https://github.com/BasGo/ioBroker.places)
+
 #### 0.0.5 (2018-04-20)
 - Fixed error that occurs when no fences exist
 
