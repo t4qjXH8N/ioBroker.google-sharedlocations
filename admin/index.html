@@ -18,6 +18,7 @@
 <link rel="stylesheet" type="text/css" href="../../css/adapter.css"/>
 <script type="text/javascript" src="../../js/translate.js"></script>
 <script type="text/javascript" src="../../js/adapter-settings.js"></script>
+<script type="text/javascript" src="words.js"></script>    
 
 <!-- you have to define 2 functions in the global scope: -->
 <style>
@@ -28,28 +29,7 @@
 </style>
 
 <script type="text/javascript">
-    // Dictionary (systemDictionary is global variable from adapter-settings.js)
-    systemDictionary = {
-        "google sharedlocations settings": {"de": "Google Standortfreigabe Adapter Einstellungen", "en": "Google sharedlocations adapter settings"},
-        "login_data": {"de": "Anmeldedaten", "en": "Authentification"},
-        "google_username": {"de": "Benutzername", "en": "Username"},
-        "google_password": {"de": "Passwort", "en": "Password"},
-        "google_polling_interval": {"de": "Abfrageintervall (s)", "en": "Polling interval (s)"},
-        "places_adapter": {"de": "Places-Instanz", "en": "Places instance"},
-        "search": {"de": "Suche", "en": "search"},
-        "queryusers": {"de": "abfragen", "en": "query"},
-        "geofences": {"de": "Geofences", "en": "Geofences"},
-        "description": {"de": "Beschreibung", "en": "description"},
-        "center_lat": {"de": "Zentrum Breitengrad (dezimal)", "en": "Center Latitude (decimal)"},
-        "center_long": {"de": "Zentrum Längengrad (dezimal)", "en": "Center Longitude (decimal)"},
-        "radius": {"de": "Radius (m)", "en": "radius (m)"},
-        "userid": {"de": "Benutzer ID", "en": "user id"},
-        "on save adapter restarts with new config immediately": {
-          "de": "Beim Speichern von Einstellungen wird der Adapter sofort neu gestartet.",
-          "ru": "Сразу после сохранения настроек драйвер перезапуститься с новыми значениями"
-        }
-    };
-
+    
     function setValue(id, value, onChange) {
         // example: select elements with id=key and class=value and insert value
         if ($('#' + id + '.value').attr('type') === 'checkbox') {
