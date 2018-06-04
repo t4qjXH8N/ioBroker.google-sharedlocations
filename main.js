@@ -186,6 +186,13 @@ function querySharedLocations(callback) {
           });
         }
       });
+
+      // notfiy places
+      notifyPlaces(userobjarr, function(err) {
+        if (err) {
+          adapter.log.error('Error during places notification.')
+        }
+      });
     }
   });
 }
@@ -425,6 +432,29 @@ function poll(callback) {
       callback(false);
     }
   });
+}
+
+// notify places adapter
+function notifyPlaces(userobjarr, callback) {
+  var places = adapter.config.places_adapter;
+
+  if (places != null) {
+    // go through all users
+    for(var j=0;j<userobjarr.length;j++) {
+      var cuser = userobjarr[j];
+
+      // send message to places adapter
+      adapter.sendTo(
+        places, {
+          user: cuser.name,
+          latitude: cuser.lat,
+          longitude: cuser.long,
+          timestamp: Date.now()
+        });
+    }
+  }
+
+  callback(false);
 }
 
 // check fences
