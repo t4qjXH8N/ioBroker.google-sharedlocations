@@ -56,6 +56,8 @@ const request = require('request');
 // for parsing forms
 const cheerio = require('cheerio');
 
+const min_polling_interval = 30; // minimum polling interval in seconds
+
 // you have to call the adapter function and pass a options object
 // name has to be set and has to be equal to adapters folder name and main file name excluding extension
 // adapter will be restarted automatically every time as the configuration changed, e.g system.adapter.google-sharedlocations.0
@@ -82,7 +84,8 @@ adapter.on('unload', function (callback) {
     // logout from google
     logout(function (err) {
       if (err) {
-        adapter.log.error('Could not logout from google when unloading the adapter.')
+        adapter.log.error('Could not logout from google when unloading the adapter.');
+        callback(err);
       }
     });
 
@@ -145,33 +148,40 @@ function main() {
   // adapter.config:
   adapter.log.info('Starting google shared locations adapter');
 
-  // first connect and query
-  // connect to Google
-  connect(function(err) {
-    if (err) {
-      adapter.log.error('First connection failed.');
-    } else {
-      querySharedLocations(function (err) {
-      });
-    }
-  });
+  // check polling interval
+  if (Number(adapter.config.google_polling_interval)*1000 < min_polling_interval) {
+    adapter.log.error('Polling interval should be greater than ' + min_polling_interval);
+  } else {
+    // first connect and query
+    // connect to Google
+    connect(function(err) {
+      if (err) {
+        adapter.log.error('First connection failed.');
+      } else {
+        querySharedLocations(function (err) {
+        });
 
-  // enable polling
-  google_polling_interval_id = setInterval(function () {
-       poll(function() {});
-     }, Number(adapter.config.google_polling_interval)*1000);
+        // enable polling
+        google_polling_interval_id = setInterval(function () {
+          poll(function(err) {
 
-  // google subscribes to all state changes
-  adapter.subscribeStates('*');
+          });
+        }, Number(adapter.config.google_polling_interval)*1000);
+      }
+    });
+
+    // google subscribes to all state changes
+    adapter.subscribeStates('*');
+  }
 }
 
 // login, get locations and logout
 function querySharedLocations(callback) {
   getSharedLocations(function (err, userobjarr) {
     if (err) {
-      adapter.setState('info.connection', false, true);
+      adapter.log.error('An error occurred during getSharedLocation!');
+      if (callback) callback(err)
     } else {
-
       // check fences
       checkFences(userobjarr, function (err) {
         if (err) {
@@ -274,6 +284,7 @@ function connect(callback) {
             if (err) {
               adapter.log.error('Third stage auth error');
               adapter.setState('info.connection', false, true);
+              if (callback) callback(true);
             } else {
               adapter.setState('info.connection', true, true);
               if (callback) callback(false);
@@ -295,8 +306,6 @@ function connectFirstStage(callback) {
   var options_connect1 = {
     url: "https://accounts.google.com/ServiceLogin",
     headers: {
-      "Upgrade-Insecure-Requeste": "1",
-      "Connection": "keep-alive"
     },
     method: "GET",
     qs: {
@@ -330,7 +339,7 @@ function connectFirstStage(callback) {
 
         // first simply get all form fields
         const $ = cheerio.load(response.body);
-        google_form = serialized_array_to_dict($("form").serializeArray());
+        google_form = serialized_array_to_dict($("form").serializeArray())[0];
         adapter.log.debug('Got gxf value from form.');
 
         if(callback) callback(false);
@@ -349,9 +358,7 @@ function connectSecondStage(callback) {
   var options_connect2 = {
     url: "https://accounts.google.com/signin/v1/lookup",
     headers: {
-      "Cookie": getCookieHeader('google.com'),
-      "Referer": "https://accounts.google.com/ServiceLogin?rip=1&nojavascript=1",
-      "Origin": "https://accounts.google.com"
+      "Cookie": getCookieHeader('google.com')
     },
     method: "POST",
     form: google_form
@@ -391,9 +398,7 @@ function connectThirdStage(callback) {
   var options_connect3 = {
     url: "https://accounts.google.com/signin/challenge/sl/password",
     headers: {
-      "Cookie": getCookieHeader('google.com'),
-      "Referer": "https://accounts.google.com/signin/v1/lookup",
-      "Origin": "https://accounts.google.com"
+      "Cookie": getCookieHeader('google.com')
     },
     method: "POST",
     form: google_form
@@ -409,12 +414,189 @@ function connectThirdStage(callback) {
       // connection successful
       adapter.log.debug('Response: ' + response.statusMessage);
 
-      // save cookies etc.
-      if(response.hasOwnProperty('headers') && response.headers.hasOwnProperty('set-cookie')) {
+      // update cookies
+      if (response.hasOwnProperty('headers') && response.headers.hasOwnProperty('set-cookie')) {
         saveConnectionCookies(response.headers['set-cookie'], 'google.com');
       }
 
-      if (callback) callback(false);
+      if (response.headers.hasOwnProperty('set-cookie') && response.headers['set-cookie'].length > 1) {
+        // password challenge fine
+
+        if (callback) callback(false);
+      } else {
+        // password challenge or something similar went wrong
+        // maybe google needs an additional verification?
+
+        connectAdditionalVerification(response, function (err) {
+            callback(err);
+          }
+        )
+      }
+
+    }
+  });
+}
+
+function connectAdditionalVerification(response, callback) {
+  adapter.log.debug('Additional verification needed!');
+
+  // check if google send a location
+  if (!response.headers.hasOwnProperty('location')) {
+    // that is a problem, google checks for a human
+
+    adapter.log.debug('Google checks for a human (captcha), no chance to login automatically!');
+    callback(true);
+    return
+  }
+
+  // open location in the response
+  var options_connect_veri = {
+    url: response.headers.location,
+    headers: {
+      "Cookie": getCookieHeader('google.com')
+    },
+    method: "GET"
+  };
+
+  request(options_connect_veri, function(err, response, body) {
+    if (err || !response) {
+      // no connection
+      adapter.log.debug(err);
+      adapter.log.info('Connection failure.');
+      if (callback) callback(true);
+    } else {
+      // connection successful
+      adapter.log.debug('Response: ' + response.statusMessage);
+
+      // update cookies
+      if (response.hasOwnProperty('headers') && response.headers.hasOwnProperty('set-cookie')) {
+        saveConnectionCookies(response.headers['set-cookie'], 'google.com');
+      }
+
+      // analyze the form
+      const $ = cheerio.load(response.body);
+      var google_veri_form = serialized_array_to_dict($("form").serializeArray());
+
+      // ATTENTION: there a two possibilities:
+      // 1. we can enter the verify email directly or
+      // 2. we first have to select it.
+      // if 2. is true, there is a button with subaction select challenge in the form
+
+      // check if there is a subaction called "selectChallenge"
+      var found = -1;
+      for (var i = 0; i < google_veri_form.length; i++) {
+        if (("subAction" in google_veri_form[i]) && (google_veri_form[i]["subAction"] === "selectChallenge")) {
+          found = i;
+          break;
+        }
+      }
+
+      if (found >= 0) {
+        // select enter email
+        var options_connect_veri_email = {
+          url: "https://accounts.google.com/signin/challenge/kpe/4",
+          headers: {
+            "Cookie": getCookieHeader('google.com')
+          },
+          method: "POST",
+          form: google_veri_form[found]
+        };
+
+        request(options_connect_veri_email, function (err, response, body) {
+          if (err || !response) {
+            // no connection
+            adapter.log.debug(err);
+            adapter.log.info('Connection failure.');
+            if (callback) callback(true);
+          } else {
+            // connection successful
+            adapter.log.debug('Response: ' + response.statusMessage);
+
+            // update cookies
+            if (response.hasOwnProperty('headers') && response.headers.hasOwnProperty('set-cookie')) {
+              saveConnectionCookies(response.headers['set-cookie'], 'google.com');
+            }
+
+            connectEnterVerificationEmail(response.headers.location, function (err) {
+              callback(err);
+            });
+
+          }
+        });
+      } else {
+        // simply enter the verification mail
+        connectEnterVerificationEmail(response.headers.location, function (err) {
+          callback(err);
+        });
+      }
+
+    }
+  });
+}
+
+function connectEnterVerificationEmail(location, callback) {
+  // first switch to the url where the email has to be entered
+  // we received the page where we have to enter the verification email
+  var options_connect_veri_email = {
+    url: location,
+    headers: {
+      "Cookie": getCookieHeader('google.com')
+    },
+    method: "GET"
+  };
+
+  request(options_connect_veri_email, function (err, response, body) {
+    if (err || !response) {
+      // no connection
+      adapter.log.debug(err);
+      adapter.log.info('Connection failure.');
+      if (callback) callback(true);
+    } else {
+      // update cookies
+      if (response.hasOwnProperty('headers') && response.headers.hasOwnProperty('set-cookie')) {
+        saveConnectionCookies(response.headers['set-cookie'], 'google.com');
+      }
+
+      // analyze the form
+      const $ = cheerio.load(response.body);
+      var google_veri_form = serialized_array_to_dict($("form").serializeArray())[0];
+
+      // simply enter the email
+      // enter verify email address
+      google_veri_form["email"] = adapter.config.google_verify_email;
+
+      var options_connect_veri_email = {
+        url: "https://accounts.google.com/signin/challenge/kpe/4",
+        headers: {
+          "Cookie": getCookieHeader('google.com')
+        },
+        method: "POST",
+        form: google_veri_form
+      };
+
+      request(options_connect_veri_email, function (err, response, body) {
+        if (err || !response) {
+          // no connection
+          adapter.log.debug(err);
+          adapter.log.info('Connection failure.');
+          if (callback) callback(true);
+        } else {
+          // successful
+          if (response.headers.hasOwnProperty('set-cookie') && response.headers['set-cookie'].length > 1) {
+            adapter.log.info('Connection established after challenging verify email address.');
+
+            if (response.hasOwnProperty('headers') && response.headers.hasOwnProperty('set-cookie')) {
+              saveConnectionCookies(response.headers['set-cookie'], 'google.com');
+            }
+
+            if (callback) callback(false);
+          } else {
+            adapter.log.error('An error occurred after entering the verify email!');
+            if (callback) callback(true);
+          }
+
+        }
+      });
     }
   });
 }
@@ -426,8 +608,10 @@ function poll(callback) {
 
   querySharedLocations(function (err) {
     if (err) {
-      adapter.log.error('An error occured during polling the locations!')
+      adapter.log.error('An error occurred during polling the locations!');
       callback(err);
+
+      // TODO: should we issue a reconnect here?
     } else {
       callback(false);
     }
@@ -551,8 +735,6 @@ function getSharedLocations(callback) {
 
       // connection established but auth failure
       if(response.statusCode !== 200) {
-        adapter.setState('info.connection', false, true);
-
         adapter.log.debug('Removed cookies.');
         adapter.log.error('Connection works, but authorization failure (cookie not valid?)!');
 
@@ -603,12 +785,12 @@ function logout(callback) {
         if(response.statusCode !== 200) {
           adapter.setState('info.connection', false, true);
 
-          adapter.log.debug('HTTP error (not 200).');
           adapter.log.error('HTTP error (not 200).');
           if(callback) callback(true);
         } else {
           // parse and save user locations
-          adapter.log.info('Logout from google.');
+          adapter.log.info('Logout from google successful.');
+          if(callback) callback(false);
         }
       }
     });
@@ -705,11 +887,29 @@ function haversine(deg_lat1, deg_lon1, deg_lat2, deg_lon2) {
 }
 
 function serialized_array_to_dict(arr) {
-  var dict = {};
+  var dict = [];
+  dict[0] = {};
+  var curind = 0;
 
   for (var i=0;i < arr.length;i++) {
-    dict[arr[i].name] = arr[i].value;
+    // check if key already exists
+
+    while ((typeof dict[curind] !== 'undefined') && (arr[i].name in dict[curind])) {
+      curind += 1;
+    }
+
+    if (curind === dict.length) {
+      dict[curind] = {}
+    }
+
+    dict[curind][arr[i].name] = arr[i].value;
+
+    curind = 0;
   }
 
-  return dict
+  if (dict.length === 1) {
+    return dict[0];
+  } else {
+    return dict
+  }
 }

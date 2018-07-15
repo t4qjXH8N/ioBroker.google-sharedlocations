@@ -1,11 +1,15 @@
 {
     "common": {
         "name":                     "google-sharedlocations",
-        "version":                  "0.0.6",
+        "version":                  "0.0.7",
 	    "news": {
+          "0.0.7": {
+            "en": "Enhanced google compatibility.",
+            "de": "Deutlich verbesserte Google-Kompatibilität."
+          },
           "0.0.6": {
             "en": "Added support for ioBroker.places adapter.",
-            "de": "Unterstützung für ioBroker.places-Adapter hinzugefügt.."
+            "de": "Unterstützung für ioBroker.places-Adapter hinzugefügt."
           },
           "0.0.5": {
             "en": "Fixed errors when no fences exist.",
@@ -50,6 +54,7 @@
       "google_password": "secret",
       "google_polling_interval": "600",
       "places_adapter": "",
+      "google_verify_email": "",
       "fences": [
         {"description": "", "center_lat": "0.0000", "center_long": "0.0000", "radius": "100", "userid": ""}
       ]

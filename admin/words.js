@@ -9,6 +9,7 @@ systemDictionary = {
     "google_password":         {"en": "Password:",                  "de": "Passwort:",                     "ru": "Пароль:"},
     "google_polling_interval": {"en": "Polling interval (s):",      "de": "Abfrageintervall (s):",         "ru": "Интервал опроса (сек):"},
     "places_adapter":          {"en": "Places instance:",           "de": "Places-Instanz:",               "ru": "Places драйвер:"},
+    "google_verify_email":     {"en": "Verify Email",               "de": "Überprüfungs E-Mail",           "ru": ""},
     "search":                  {"en": "search",                     "de": "Suche",                         "ru": "Поиск"},
     "geofences":               {"en": "Geofences",                  "de": "Geofences",                     "ru": "Геозоны"},
     "description":             {"en": "description",                "de": "Beschreibung",                  "ru": "Описание"},

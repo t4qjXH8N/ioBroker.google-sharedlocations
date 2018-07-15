@@ -13,6 +13,10 @@ When opening the configuration for the first time enter only the google login da
 In this case check the google account of the user that is used by the google-sharedlocations adapter. Log in with a browser and check if google blocked some logins. Click on a block login and confirm to google that this was you. Additionally check that two factor authentification is turned off.
 
 ## Changelog
+#### 0.0.7 (2018-07-15)
+- Google makes it hard to mimic a user login. Improved login procedure.
+- Minimum polling interval must be greater than 30s.
+
 #### 0.0.6 (2018-04-22)
 - Added support for [ioBroker.places adapter](https://github.com/BasGo/ioBroker.places)
 
