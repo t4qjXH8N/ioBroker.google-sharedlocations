@@ -1,0 +1,165 @@
+<html>
+<head>
+    <!-- these 4 files always have to be included -->
+    <link rel="stylesheet" type="text/css" href="../../css/adapter.css"/>
+    <link rel="stylesheet" type="text/css" href="../../lib/css/materialize.css">
+
+    <script type="text/javascript" src="../../lib/js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="../../socket.io/socket.io.js"></script>
+
+    <!-- these files always have to be included -->
+    <script type="text/javascript" src="../../js/translate.js"></script>
+    <script type="text/javascript" src="../../lib/js/materialize.js"></script>
+    <script type="text/javascript" src="../../js/adapter-settings.js"></script>
+    <script type="text/javascript" src="words.js"></script>
+    <style>
+        .m .col .select-wrapper+label {
+            top: -26px;
+        }
+        .m span{
+            font-size: 0.9em;
+        }
+    </style>
+    <script type="text/javascript">
+      function setValue(id, value, onChange) {
+        // example: select elements with id=key and class=value and insert value
+        if ($('#' + id + '.value').attr('type') === 'checkbox') {
+          $('#' + id + '.value').prop('checked', value).change(function() {
+            onChange();
+          });
+        } else {
+          $('#' + id + '.value').val(value).change(function() {
+            onChange();
+          }).keyup(function() {
+            // Check that only numbers entered
+            if ($(this).hasClass('number')) {
+              var val = $(this).val();
+              if (val) {
+                var newVal = '';
+                for (var i = 0; i < val.length; i++) {
+                  if (val[i] >= '0' && val[i] <= '9') {
+                    newVal += val[i];
+                  }
+                }
+
+                if (val !== newVal) $(this).val(newVal);
+              }
+            }
+
+            onChange();
+          });
+        }
+      }
+
+      // the function loadSettings has to exist ...
+      function load(settings, onChange) {
+        if (!settings) return;
+
+        fences = settings.fences || [];
+
+        for (let key in settings) {
+          if (!settings.hasOwnProperty(key)) continue;
+          setValue(key, settings[key], onChange);
+        }
+
+        values2table('values', fences, onChange);
+
+        M.updateTextFields();  // function Materialize.updateTextFields(); to reinitialize all the Materialize labels on the page if you are dynamically adding inputs.
+        onChange(false);
+      }
+
+      // ... and the function save has to exist.
+      // you have to make sure the callback is called with the settings object as first param!
+      function save(callback) {
+        var obj = {};
+        $('.value').each(function () {
+          var $this = $(this);
+          if ($this.attr('type') == 'checkbox') {
+            obj[$this.attr('id')] = $this.prop('checked');
+          } else {
+            obj[$this.attr('id')] = $this.val();
+          }
+        });
+
+        // Get edited table
+        obj.fences = table2values('values');
+
+        callback(obj, {localLink: obj.webserverEnabled ? 'http://%ip%:' + obj.webserverPort : ''});
+      }
+    </script>
+</head>
+<body>
+<div class="m adapter-container">
+    <div class="row">
+        <div class="col s12">
+            <ul class="tabs">
+                <li class="tab col s5"><a href="#tab-main"    class="translate active">main settings</a></li>
+                <li class="tab col s5"><a href="#tab-fences" class="translate">geofences</a></li>
+            </ul>
+        </div>
+        <div id="tab-main" class="col s12 page">
+            <div class="row">
+                <div class="input-field col s6">
+                    <img src="google-sharedlocations.png" class="logo">
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12 m8 l4">
+                    <input class="value" id="google_username" type="text">
+                    <label for="google_username" class="translate">google_username</label>
+                </div>
+                <div class="input-field col s12 m8 l4">
+                    <input class="value" id="google_password" type="password">
+                    <label for="google_password" class="translate">google_password</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12 m8 l4">
+                    <input class="value" id="google_verify_email" type="text">
+                    <label for="google_verify_email" class="translate">google_verify_email</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12 m8 l2">
+                    <input class="value" id="google_polling_interval" size="5" maxlength="5" type="number">
+                    <label for="google_polling_interval" class="translate">google_polling_interval</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12 m8 l4">
+                    <input class="value" id="places_adapter" type="text">
+                    <label for="places_adapter" class="translate">places_adapter</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12">
+                    <p class="translate">on save adapter restarts with new config immediately</p>
+                </div>
+            </div>
+        </div>
+        <div id="tab-fences" class="col s12 page">
+            <div class="col s12" id="values">
+                <a class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
+                <a id="table-button-search" class="btn-floating waves-effect waves-light blue disabled"><i class="material-icons">search</i><span class="translate">Search</span></a>
+                <div class="table-values-div">
+                    <table class="table-values" style="width: 100%;">
+                        <thead>
+                        <tr>
+                            <th data-name="_index" style="width: 40px" class="translate"></th>
+                            <th data-name="description" class="translate">description</th>
+                            <th data-name="center_lat" class="translate">center_lat</th>
+                            <th data-name="center_long" class="translate">center_long</th>
+                            <th data-name="radius" class="translate">radius</th>
+                            <th data-name="userid" class="translate">userid</th>
+                            <th data-buttons="delete" style="width: 40px"></th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

@@ -1,8 +1,12 @@
 {
     "common": {
         "name":                     "google-sharedlocations",
-        "version":                  "0.0.7",
-	    "news": {
+        "version":                  "1.0.0",
+        "news": {
+          "1.0.0": {
+            "en": "Added support for Admin3.",
+            "de": "Unterstützung für Admin3 hinzugefügt."
+          },
           "0.0.7": {
             "en": "Enhanced google compatibility.",
             "de": "Deutlich verbesserte Google-Kompatibilität."
@@ -27,27 +31,32 @@
               "en": "Bugfixes",
               "de": "Diverse Fehlerbehebungen"
             },
-			"0.0.1": {
-			  "en": "initial adapter",
-			  "de": "Initiale Version",
-			  "ru": "Первоначальный адаптер"
-			}
-		},
+            "0.0.1": {
+              "en": "initial adapter",
+              "de": "Initiale Version",
+              "ru": "Первоначальный адаптер"
+            }
+        },
         "title": "Google shared locations adapter",
+        "titleLang": {
+          "en": "Google shared locations adapter",
+          "de": "Google Standortverlauf Adapter"
+        },        
         "desc": {
-				 "en": "ioBroker Google Shared Locations Adapter",
-				 "de": "ioBroker Google Shared Locations Adapter"
-		},
+           "en": "ioBroker Google Shared Locations Adapter",
+           "de": "ioBroker Google Shared Locations Adapter"
+        },
         "platform":                 "Javascript/Node.js",
         "mode":                     "daemon",
         "icon":                     "google-sharedlocations.png",
         "enabled":                  true,
-		"extIcon":                  "https://raw.githubusercontent.com/t4qjXH8N/ioBroker.google-sharedlocations/master/admin/google-sharedlocations.png",
-		"keywords":                 ["google", "geofence", "sharedlocations"],
+        "extIcon":                  "https://raw.githubusercontent.com/t4qjXH8N/ioBroker.google-sharedlocations/master/admin/google-sharedlocations.png",
+        "keywords":                 ["google", "geofence", "sharedlocations"],
         "readme":                   "https://github.com/t4qjXH8N/ioBroker.google-sharedlocations/master/README.md",
-		"loglevel":                 "info",
+        "loglevel":                 "info",
         "type":                     "geoposition",
-        "restartAdapters":          ["vis"]
+        "materialize":              true,
+        "restartAdapters":          []
     },
     "native": {
       "google_username": "me@me.com",
