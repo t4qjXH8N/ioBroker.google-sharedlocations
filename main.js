@@ -48,7 +48,7 @@
 "use strict";
 
 // you have to require the utils module and call adapter function
-var utils =    require(__dirname + '/lib/utils'); // Get common adapter utils
+const utils =    require(__dirname + '/lib/utils'); // Get common adapter utils
 
 // for communication
 const request = require('request');
@@ -61,17 +61,17 @@ const min_polling_interval = 30; // minimum polling interval in seconds
 // you have to call the adapter function and pass a options object
 // name has to be set and has to be equal to adapters folder name and main file name excluding extension
 // adapter will be restarted automatically every time as the configuration changed, e.g system.adapter.google-sharedlocations.0
-var adapter = utils.adapter('google-sharedlocations');
+const adapter = utils.adapter('google-sharedlocations');
 
 // google cookies
-var google_cookies = {
+let google_cookies = {
   "google.com": {}
 };
 
 // google form data
-var google_form = {};
+let google_form = {};
 
-var google_polling_interval_id = null;
+let google_polling_interval_id = null;
 
 // triggered when the adapter is installed
 adapter.on('install', function () {
@@ -211,12 +211,12 @@ function querySharedLocations(callback) {
 function updateStates(userobjarr, callback) {
 
   if(userobjarr) {
-    for(var i=0;i<userobjarr.length;i++) {
+    for(let i=0;i<userobjarr.length;i++) {
       // go through users
-      for(var cprop in userobjarr[i]) {
+      for(let cprop in userobjarr[i]) {
         if(userobjarr[i].hasOwnProperty(cprop)) {
           // cur properties
-          var cid = 'user.' + userobjarr[i].id + '.' + cprop;
+          let cid = 'user.' + userobjarr[i].id + '.' + cprop;
 
           switch(typeof userobjarr[i][cprop]) {
             case 'number':
@@ -303,7 +303,7 @@ function connectFirstStage(callback) {
   adapter.log.info("Send username, connecting to Google ...");
 
   // first get GAPS cookie
-  var options_connect1 = {
+  let options_connect1 = {
     url: "https://accounts.google.com/ServiceLogin",
     headers: {
     },
@@ -355,7 +355,7 @@ function connectSecondStage(callback) {
 
   google_form['Email'] = adapter.config.google_username;
 
-  var options_connect2 = {
+  let options_connect2 = {
     url: "https://accounts.google.com/signin/v1/lookup",
     headers: {
       "Cookie": getCookieHeader('google.com')
@@ -395,7 +395,7 @@ function connectThirdStage(callback) {
 
   google_form['Passwd'] = adapter.config.google_password;
 
-  var options_connect3 = {
+  let options_connect3 = {
     url: "https://accounts.google.com/signin/challenge/sl/password",
     headers: {
       "Cookie": getCookieHeader('google.com')
@@ -442,7 +442,7 @@ function connectAdditionalVerification(response, callback) {
 
   // check if google send a location
   if (!response.headers.hasOwnProperty('location')) {
-    // that is a problem, google checks for a human
+    // that is a problem, google checks for a human, or an additional verification
 
     adapter.log.debug('Google checks for a human (captcha), no chance to login automatically!');
     callback(true);
@@ -450,7 +450,7 @@ function connectAdditionalVerification(response, callback) {
   }
 
   // open location in the response
-  var options_connect_veri = {
+  let options_connect_veri = {
     url: response.headers.location,
     headers: {
       "Cookie": getCookieHeader('google.com')
@@ -475,7 +475,7 @@ function connectAdditionalVerification(response, callback) {
 
       // analyze the form
       const $ = cheerio.load(response.body);
-      var google_veri_form = serialized_array_to_dict($("form").serializeArray());
+      let google_veri_form = serialized_array_to_dict($("form").serializeArray());
 
       // ATTENTION: there a two possibilities:
       // 1. we can enter the verify email directly or
@@ -483,8 +483,8 @@ function connectAdditionalVerification(response, callback) {
       // if 2. is true, there is a button with subaction select challenge in the form
 
       // check if there is a subaction called "selectChallenge"
-      var found = -1;
-      for (var i = 0; i < google_veri_form.length; i++) {
+      let found = -1;
+      for (let i = 0; i < google_veri_form.length; i++) {
         if (("subAction" in google_veri_form[i]) && (google_veri_form[i]["subAction"] === "selectChallenge")) {
           found = i;
           break;
@@ -493,7 +493,7 @@ function connectAdditionalVerification(response, callback) {
 
       if (found >= 0) {
         // select enter email
-        var options_connect_veri_email = {
+        let options_connect_veri_email = {
           url: "https://accounts.google.com/signin/challenge/kpe/4",
           headers: {
             "Cookie": getCookieHeader('google.com')
@@ -524,6 +524,7 @@ function connectAdditionalVerification(response, callback) {
           }
         });
       } else {
+
         // simply enter the verification mail
         connectEnterVerificationEmail(response.headers.location, function (err) {
           callback(err);
@@ -537,7 +538,7 @@ function connectAdditionalVerification(response, callback) {
 function connectEnterVerificationEmail(location, callback) {
   // first switch to the url where the email has to be entered
   // we received the page where we have to enter the verification email
-  var options_connect_veri_email = {
+  let options_connect_veri_email = {
     url: location,
     headers: {
       "Cookie": getCookieHeader('google.com')
@@ -559,13 +560,13 @@ function connectEnterVerificationEmail(location, callback) {
 
       // analyze the form
       const $ = cheerio.load(response.body);
-      var google_veri_form = serialized_array_to_dict($("form").serializeArray())[0];
+      let google_veri_form = serialized_array_to_dict($("form").serializeArray())[0];
 
       // simply enter the email
       // enter verify email address
       google_veri_form["email"] = adapter.config.google_verify_email;
 
-      var options_connect_veri_email = {
+      let options_connect_veri_email = {
         url: "https://accounts.google.com/signin/challenge/kpe/4",
         headers: {
           "Cookie": getCookieHeader('google.com')
@@ -620,12 +621,12 @@ function poll(callback) {
 
 // notify places adapter
 function notifyPlaces(userobjarr, callback) {
-  var places = adapter.config.places_adapter;
+  let places = adapter.config.places_adapter;
 
   if (places != null) {
     // go through all users
-    for(var j=0;j<userobjarr.length;j++) {
-      var cuser = userobjarr[j];
+    for(let j=0;j<userobjarr.length;j++) {
+      let cuser = userobjarr[j];
 
       // send message to places adapter
       adapter.sendTo(
@@ -645,23 +646,23 @@ function notifyPlaces(userobjarr, callback) {
 function checkFences(userobjarr, callback) {
 
   adapter.log.info('Checking fences.');
-  var fences = adapter.config.fences;
+  let fences = adapter.config.fences;
 
   // check fences
-  for(var i=0;i<fences.length;i++) {
-    var cfence = fences[i];
+  for(let i=0;i<fences.length;i++) {
+    let cfence = fences[i];
 
     // go through all users
-    for(var j=0;j<userobjarr.length;j++) {
-      var cuser = userobjarr[j];
+    for(let j=0;j<userobjarr.length;j++) {
+      let cuser = userobjarr[j];
 
       // check user
       if(cuser.id === cfence.userid) {
         // calc distance
-        var curdist = haversine(cuser.lat, cuser.long, Number(cfence.center_lat), Number(cfence.center_long));
-        var fenceid = 'fence.' + i;
+        let curdist = haversine(cuser.lat, cuser.long, Number(cfence.center_lat), Number(cfence.center_long));
+        let fenceid = 'fence.' + i;
 
-        var cstate = curdist <= cfence.radius;
+        let cstate = curdist <= cfence.radius;
 
         setStateEx(fenceid, {
           common: {
@@ -689,14 +690,14 @@ function syncConfig() {
 
 // setStateEx
 function setStateEx(id, common, val, ack, callback) {
-  var a = {
+  let a = {
     type: 'state',
     native: {}
   };
 
-  var common_full = Object.assign({}, a, common);
+  let common_full = Object.assign({}, a, common);
 
-  var cfunc = function (err) {
+  let cfunc = function (err) {
     adapter.setState(id, val, ack, function(err) {
       if(err) adapter.log.error('Could not create extended state id:' + id + ', val:' + val);
     });
@@ -710,7 +711,7 @@ function setStateEx(id, common, val, ack, callback) {
 // query google shared locations
 function getSharedLocations(callback) {
 
-  var options_map = {
+  let options_map = {
     url: "https://www.google.com/maps/preview/locationsharing/read",
     headers: {
       "Cookie": getCookieHeader('google.com')
@@ -741,7 +742,7 @@ function getSharedLocations(callback) {
         if(callback) callback(true);
       } else {
         // parse and save user locations
-        var locationdata = JSON.parse(body.split('\n').slice(1, -1).join(''));
+        let locationdata = JSON.parse(body.split('\n').slice(1, -1).join(''));
 
         parseLocationData(locationdata, function(err, userobjarr) {
           if(err) {
@@ -762,7 +763,7 @@ function logout(callback) {
 
     adapter.log.debug('Logout attempt.');
     adapter.log.debug('Current cookie : ' + cookieheader);
-    var options_map = {
+    let options_map = {
       url: "https://accounts.google.com/logout",
       headers: {
         "Cookie": cookieheader
@@ -799,8 +800,8 @@ function logout(callback) {
 
 // compose the header cookie data
 function getCookieHeader(domain) {
-  var cookiestr = '';
-  for(var curcookie in google_cookies[domain]) {
+  let cookiestr = '';
+  for(let curcookie in google_cookies[domain]) {
     cookiestr = cookiestr + curcookie + '=' + google_cookies[domain][curcookie] + ';'
   }
 
@@ -810,9 +811,9 @@ function getCookieHeader(domain) {
 // save cookies from google
 function saveConnectionCookies(setcookies, domain) {
 
-  for(var i=0; i<setcookies.length;i++) {
-    var key = setcookies[i].split(';')[0].split('=')[0];
-    var val = setcookies[i].split(';')[0].split('=')[1];
+  for(let i=0; i<setcookies.length;i++) {
+    let key = setcookies[i].split(';')[0].split('=')[0];
+    let val = setcookies[i].split(';')[0].split('=')[1];
 
     google_cookies[domain][key] = val;
   }
@@ -822,12 +823,12 @@ function saveConnectionCookies(setcookies, domain) {
 function parseLocationData(locationdata, callback) {
 
   // shared location data is contained in the first element
-  var perlocarr = locationdata[0];
-  var userdataobjarr = [];
+  let perlocarr = locationdata[0];
+  let userdataobjarr = [];
 
   if(perlocarr && perlocarr.length > 0) {
 
-    for(var i=0; i<perlocarr.length;i++) {
+    for(let i=0; i<perlocarr.length;i++) {
       extractUserLocationData(perlocarr[i], function(err, obj) {
         if(err) {
           if(callback) callback(err);
@@ -845,11 +846,12 @@ function parseLocationData(locationdata, callback) {
 // get user date and create states form
 function extractUserLocationData(userdata, callback) {
 
+  let userdataobj = {};
   // location data present?
   if(!userdata[1]) {
     // no userdata present
 
-    var userdataobj = {
+    userdataobj = {
       "id": userdata[0][0],
       "photoURL": userdata[0][1],
       "name": userdata[0][3],
@@ -859,7 +861,7 @@ function extractUserLocationData(userdata, callback) {
   } else {
     // userdata present
 
-    var userdataobj = {
+    userdataobj = {
       "id": userdata[0][0],
       "photoURL": userdata[0][1],
       "name": userdata[0][3],
@@ -873,25 +875,25 @@ function extractUserLocationData(userdata, callback) {
 
 // latitude and longitude in degree decimal notation
 function haversine(deg_lat1, deg_lon1, deg_lat2, deg_lon2) {
-  var lat1 = deg_lat1/180*Math.PI;
-  var lon1 = deg_lon1/180*Math.PI;
-  var lat2 = deg_lat2/180*Math.PI;
-  var lon2 = deg_lon2/180*Math.PI;
+  let lat1 = deg_lat1/180*Math.PI;
+  let lon1 = deg_lon1/180*Math.PI;
+  let lat2 = deg_lat2/180*Math.PI;
+  let lon2 = deg_lon2/180*Math.PI;
 
-  var R = 6372.8;
-  var dLat = lat2 - lat1;
-  var dLon = lon2 - lon1;
+  const R = 6372.8;
+  let dLat = lat2 - lat1;
+  let dLon = lon2 - lon1;
 
-  var a = Math.sin(dLat / 2) * Math.sin(dLat /2) + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) * Math.sin(dLon /2);
+  let a = Math.sin(dLat / 2) * Math.sin(dLat /2) + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) * Math.sin(dLon /2);
   return 2.0 * R * Math.asin(Math.sqrt(a)) * 1000;
 }
 
 function serialized_array_to_dict(arr) {
-  var dict = [];
+  let dict = [];
   dict[0] = {};
-  var curind = 0;
+  let curind = 0;
 
-  for (var i=0;i < arr.length;i++) {
+  for (let i=0;i < arr.length;i++) {
     // check if key already exists
 
     while ((typeof dict[curind] !== 'undefined') && (arr[i].name in dict[curind])) {

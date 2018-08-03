@@ -10,7 +10,7 @@ When opening the configuration for the first time enter only the google login da
 
 ## Troubleshooting
 ### instance indicator is green but no location data is received
-In this case check the google account of the user that is used by the google-sharedlocations adapter. Log in with a browser and check if google blocked some logins. Click on a block login and confirm to google that this was you. Additionally check that two factor authentification is turned off.
+In this case check the google account of the user that is used by the google-sharedlocations adapter. Log in with a browser and check if google blocked some logins. Click on a blocked login and confirm to google that this was you. Additionally check that two factor authentification is turned off.
 
 ## Changelog
 #### 1.0.0 (17-Jul-2018)
