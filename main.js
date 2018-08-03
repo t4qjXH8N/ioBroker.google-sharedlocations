@@ -182,10 +182,19 @@ function querySharedLocations(callback) {
       adapter.log.error('An error occurred during getSharedLocation!');
       if (callback) callback(err)
     } else {
+      // notify places adapter
+      notifyPlaces(userobjarr, function(err) {
+        if (err) {
+          adapter.log.error('Error during places notification.')
+          if (callback) callback(err)
+        }
+      });
+
       // check fences
       checkFences(userobjarr, function (err) {
         if (err) {
           adapter.log.error('Error during fence check.')
+          if (callback) callback(err)
         } else {
           updateStates(userobjarr, function (err) {
             if (err) {
@@ -194,13 +203,6 @@ function querySharedLocations(callback) {
               if (callback) callback(false)
             }
           });
-        }
-      });
-
-      // notfiy places
-      notifyPlaces(userobjarr, function(err) {
-        if (err) {
-          adapter.log.error('Error during places notification.')
         }
       });
     }
