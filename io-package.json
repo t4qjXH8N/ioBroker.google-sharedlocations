@@ -1,8 +1,12 @@
 {
     "common": {
         "name":                     "google-sharedlocations",
-        "version":                  "1.0.0",
+        "version":                  "1.0.1",
         "news": {
+          "1.0.1": {
+            "en": "Code cleanup. Moved authentification to its own module.",
+            "de": "Code aufgeräumt und Authentifizierungsroutinen in eigenes Modul ausgelagert."
+          },
           "1.0.0": {
             "en": "Added support for Admin3.",
             "de": "Unterstützung für Admin3 hinzugefügt."
