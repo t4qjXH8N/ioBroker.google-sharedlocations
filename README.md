@@ -1,5 +1,5 @@
 ![Logo](admin/google-sharedlocations.png)
-# ioBroker.google-sharedlocations
+ioBroker adapter for google-sharedlocations
 =================
 [![NPM version](http://img.shields.io/npm/v/iobroker.google-sharedlocations.svg)](https://www.npmjs.com/package/iobroker.google-sharedlocations)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.google-sharedlocations.svg)](https://www.npmjs.com/package/iobroker.google-sharedlocations)
