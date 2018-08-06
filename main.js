@@ -47,7 +47,7 @@
 /*jslint node: true */
 "use strict";
 
-const auth = require(__dirname + '/google_auth');
+const auth = require(__dirname + '/lib/google_auth');
 
 // you have to require the utils module and call adapter function
 const utils =    require(__dirname + '/lib/utils'); // Get common adapter utils
@@ -428,6 +428,7 @@ function parseLocationData(locationdata, callback) {
       extractUserLocationData(perlocarr[i], function(err, obj) {
         if(err) {
           if(callback) callback(err);
+          return
         } else {
           userdataobjarr[i] = obj;
         }
@@ -452,7 +453,8 @@ function extractUserLocationData(userdata, callback) {
       "photoURL": userdata[0][1],
       "name": userdata[0][3],
       "lat": undefined,
-      "long": undefined
+      "long": undefined,
+      "address": undefined
     }
   } else {
     // userdata present
@@ -462,7 +464,8 @@ function extractUserLocationData(userdata, callback) {
       "photoURL": userdata[0][1],
       "name": userdata[0][3],
       "lat": userdata[1][1][2],
-      "long": userdata[1][1][1]
+      "long": userdata[1][1][1],
+      "address": userdata[1][4]
     }
   }
 

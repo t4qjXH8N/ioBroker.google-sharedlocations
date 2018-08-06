@@ -1,8 +1,12 @@
 {
     "common": {
         "name":                     "google-sharedlocations",
-        "version":                  "1.0.1",
+        "version":                  "1.1.0",
         "news": {
+          "1.1.0": {
+            "en": "Store address of the user in a state.",
+            "de": "Adresse der Nutzer werden in einem State gespeichert."
+          },
           "1.0.1": {
             "en": "Code cleanup. Moved authentification to its own module.",
             "de": "Code aufgeräumt und Authentifizierungsroutinen in eigenes Modul ausgelagert."
