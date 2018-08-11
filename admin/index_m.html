@@ -55,17 +55,55 @@
       function load(settings, onChange) {
         if (!settings) return;
 
-        fences = settings.fences || [];
+        let fences = settings.fences || [];
 
         for (let key in settings) {
           if (!settings.hasOwnProperty(key)) continue;
           setValue(key, settings[key], onChange);
         }
 
-        values2table('values', fences, onChange);
+        values2table('values', fences, onChange, function() {
+          sendTo('google-sharedlocations.' + instance, 'getUsersFromDB', null, function (users) {
+            updateUsersInTable(users, fences);
+          });
 
-        M.updateTextFields();  // function Materialize.updateTextFields(); to reinitialize all the Materialize labels on the page if you are dynamically adding inputs.
+        });
+
         onChange(false);
+      }
+
+      function updateUsersInTable(users, fences, callback) {
+        let optionstr;
+        let oldval = [];
+
+        if(!fences) {
+          for(let i=0;i<$("table.table-values select[data-name='userid']").length;i++) {
+            oldval.push($("table.table-values tr[data-index=" + i + "] select[data-name='userid']").val());
+          }
+        }
+
+        $("table.table-values select[data-name='userid']").empty();
+
+        for(let i=0;i<users.length; i++) {
+          optionstr = "<option value='" + users[i].id + "' data-icon='" + users[i].photoURL + "'> " + users[i].name + " </option>";
+
+          // update geofences userid combo
+          $("table.table-values select[data-name='userid']").append(optionstr);
+        }
+
+        if(fences) {
+          for(let i=0;i<fences.length;i++) {
+            $("table.table-values tr[data-index=" + i + "] select[data-name='userid']").val(fences[i].userid);
+          }
+        } else {
+          for(let i=0;i<$("table.table-values select[data-name='userid']").length;i++) {
+            $("table.table-values tr[data-index=" + i + "] select[data-name='userid']").val(oldval[i]);
+          }
+        }
+
+        $("table.table-values select[data-name='userid']").select(); // update combos
+
+        if(callback) callback(true);
       }
 
       // ... and the function save has to exist.
@@ -86,6 +124,63 @@
 
         callback(obj, {localLink: obj.webserverEnabled ? 'http://%ip%:' + obj.webserverPort : ''});
       }
+
+      $(function() {
+        $('#btn_check_connection').on('click', function () {
+          let active = false;
+          getIsAdapterAlive(function (isAlive) {
+            if (isAlive || common.enabled) {
+              active = true;
+            }
+
+            if (!active) {
+              showMessage(_('Enable adapter first'), 'Warning', 'info');
+              return;
+            }
+
+            let credentials =
+              '{' +
+              '"google_username": "' + $('#google_username.value').val() + '",' +
+              '"google_password": "' + $('#google_password.value').val() + '",' +
+              '"google_verify_email": "' + $('#google_verify_email.value').val() + '"' +
+              '}';
+
+            sendTo('google-sharedlocations.' + instance, 'checkConnection', credentials, function (conn_status) {
+              if(conn_status === true) {
+                showMessage(_('Connection successful!'), 'Connection test', 'info');
+              } else {
+                showMessage(_('Connection failed.'), 'Connection test', 'info');
+              }
+            });
+          });
+        });
+
+        $('#table-button-search').on('click', function () {
+          let active = false;
+          getIsAdapterAlive(function (isAlive) {
+            if (isAlive || common.enabled) {
+              active = true;
+            }
+
+            if (!active) {
+              showMessage(_('Enable adapter first'), 'Warning', 'info');
+              return;
+            }
+
+            let credentials =
+              '{' +
+              '"google_username": "' + $('#google_username.value').val() + '",' +
+              '"google_password": "' + $('#google_password.value').val() + '",' +
+              '"google_verify_email": "' + $('#google_verify_email.value').val() + '"' +
+              '}';
+
+            sendTo('google-sharedlocations.' + instance, 'getUsers', credentials, function (users) {
+                updateUsersInTable(users, null);
+            });
+          });
+        });
+      });
+
     </script>
 </head>
 <body>
@@ -120,6 +215,11 @@
                 </div>
             </div>
             <div class="row">
+                <div class="col s12 m8 l4">
+                    <a id="btn_check_connection" class="waves-effect waves-light btn translate">check_connection</a>
+                </div>
+            </div>
+            <div class="row">
                 <div class="input-field col s12 m8 l2">
                     <input class="value" id="google_polling_interval" size="5" maxlength="5" type="number">
                     <label for="google_polling_interval" class="translate">google_polling_interval</label>
@@ -140,7 +240,7 @@
         <div id="tab-fences" class="col s12 page">
             <div class="col s12" id="values">
                 <a class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
-                <a id="table-button-search" class="btn-floating waves-effect waves-light blue disabled"><i class="material-icons">search</i><span class="translate">Search</span></a>
+                <a id="table-button-search" class="btn-floating waves-effect waves-light blue"><i class="material-icons">search</i><span class="translate">Search</span></a>
                 <div class="table-values-div">
                     <table class="table-values" style="width: 100%;">
                         <thead>
@@ -150,7 +250,7 @@
                             <th data-name="center_lat" class="translate">center_lat</th>
                             <th data-name="center_long" class="translate">center_long</th>
                             <th data-name="radius" class="translate">radius</th>
-                            <th data-name="userid" class="translate">userid</th>
+                            <th data-name="userid" data-type="select" data-options="press search" class="translate">user</th>
                             <th data-buttons="delete" style="width: 40px"></th>
                         </tr>
                         </thead>

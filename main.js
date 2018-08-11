@@ -74,7 +74,7 @@ adapter.on('install', function () {
 adapter.on('unload', function (callback) {
   try {
     // logout from google
-    logout(function (err) {
+    auth.logout(function (err) {
       if (err) {
         adapter.log.error('Could not logout from google when unloading the adapter.');
         callback(err);
@@ -133,6 +133,98 @@ adapter.on('ready', function () {
 
 });
 
+// messages
+adapter.on('message', function (obj) {
+  let wait = false;
+  let credentials;
+  let connected;
+
+  function DBUsersToSendTo(callback) {
+    let ids = [];
+
+    // get users
+    adapter.getStates('google-sharedlocations.' + adapter.instance + '.user.*', function(err, states) {
+      for (let cstate in states) {
+        if (cstate.split('.')[cstate.split('.').length - 1] === 'id') {
+          ids.push(cstate.split('.')[cstate.split('.').length - 2]);
+        }
+      }
+
+      // get photo urls
+      let res = [];
+      for (let i = 0; i < ids.length; i++) {
+        res.push({
+          "id": ids[i],
+          "photoURL": states['google-sharedlocations.' + adapter.instance + '.user.' + ids[i] + '.photoURL'].val,
+          "name": states['google-sharedlocations.' + adapter.instance + '.user.' + ids[i] + '.name'].val
+        });
+      }
+
+      callback(res);
+    });
+  }
+
+
+  if (obj) {
+    switch (obj.command) {
+      case 'checkConnection':
+        credentials = JSON.parse(obj.message);
+
+        auth.connect(credentials.google_username, credentials.google_password, credentials.google_verify_email, function(err, cookieheader) {
+          if(!err) {
+            // after the query, issue a logout
+            auth.logout();
+
+            adapter.sendTo(obj.from, obj.command, true, obj.callback);
+          } else {
+            adapter.sendTo(obj.from, obj.command, false, obj.callback);
+          }
+        });
+        wait = true;
+        break;
+      case 'getUsers':
+        connected = false;
+        credentials = JSON.parse(obj.message);
+
+        auth.connect(credentials.google_username, credentials.google_password, credentials.google_verify_email, function(err, cookieheader) {
+          if(!err) {
+            connected = true;
+            google_cookie_header = cookieheader;
+
+            querySharedLocations(function (err) {
+              if (!err) {
+                DBUsersToSendTo(function (res) {
+                  adapter.sendTo(obj.from, obj.command, res, obj.callback);
+                });
+
+                // after the query, issue a logout
+                auth.logout();
+              }
+            });
+          }
+        });
+        wait = true;
+        break;
+      case 'getUsersFromDB':
+        // get users
+        DBUsersToSendTo(function (res) {
+          adapter.sendTo(obj.from, obj.command, res, obj.callback);
+        });
+        wait = true;
+        break;
+      default:
+        adapter.log.warn("Unknown command: " + obj.command);
+        break;
+    }
+  }
+  if (!wait && obj.callback) {
+    adapter.sendTo(obj.from, obj.command, obj.message, obj.callback);
+  }
+
+  return true;
+});
+
+
 // main function
 function main() {
   // The adapters config (in the instance object everything under the attribute "native") is accessible via
@@ -145,22 +237,28 @@ function main() {
   } else {
     // first connect and query
     // connect to Google
-    auth.connect(adapter.config.google_username, adapter.config.google_password, adapter.config.google_verify_email, function(err, cookieheader) {
-      if(err) {
-        adapter.log.error('First connection failed.');
-        adapter.setState('info.connection', false, false);
-      } else {
-        adapter.setState('info.connection', true, false);
-        google_cookie_header = cookieheader;
+    if(adapter.config.google_username && adapter.config.google_username !== ''
+      && adapter.config.google_password && adapter.config.google_password !== ''
+      && adapter.config.google_verify_email && adapter.config.google_verify_email !== '') {
+      auth.connect(adapter.config.google_username, adapter.config.google_password, adapter.config.google_verify_email, function (err, cookieheader) {
+        if (err) {
+          adapter.log.error('First connection failed.');
+          adapter.setState('info.connection', false, false);
+        } else {
+          adapter.setState('info.connection', true, false);
+          google_cookie_header = cookieheader;
 
-        querySharedLocations(function (err) {});
+          querySharedLocations(function (err) {
+          });
 
-        // enable polling
-        google_polling_interval_id = setInterval(function () {
-          poll(function(err) {});
-        }, Number(adapter.config.google_polling_interval)*1000);
-      }
-    });
+          // enable polling
+          google_polling_interval_id = setInterval(function () {
+            poll(function (err) {
+            });
+          }, Number(adapter.config.google_polling_interval) * 1000);
+        }
+      });
+    }
 
     // google subscribes to all state changes
     adapter.subscribeStates('info.connection');
@@ -168,7 +266,7 @@ function main() {
   }
 }
 
-// login, get locations and logout
+// get locations
 function querySharedLocations(callback) {
   getSharedLocations(function (err, userobjarr) {
     if (err) {
@@ -178,7 +276,7 @@ function querySharedLocations(callback) {
       // notify places adapter
       notifyPlaces(userobjarr, function(err) {
         if (err) {
-          adapter.log.error('Error during places notification.')
+          adapter.log.error('Error during places notification.');
           if (callback) callback(err)
         }
       });
@@ -186,7 +284,7 @@ function querySharedLocations(callback) {
       // check fences
       checkFences(userobjarr, function (err) {
         if (err) {
-          adapter.log.error('Error during fence check.')
+          adapter.log.error('Error during fence check.');
           if (callback) callback(err)
         } else {
           updateStates(userobjarr, function (err) {

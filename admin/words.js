@@ -178,4 +178,19 @@ systemDictionary = {
     "es": "user id",
     "pl": "user id"
   },
+  "user": {
+    "en": "user",
+    "de": "Benutzer",
+    "ru": "пользователя",
+    "pt": "user",
+    "nl": "user",
+    "fr": "user",
+    "it": "user",
+    "es": "user",
+    "pl": "user"
+  },
+  "check_connection": {
+    "en": "check connection",
+    "de": "Verbindungstest"
+  }
 };

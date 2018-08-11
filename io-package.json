@@ -1,8 +1,12 @@
 {
     "common": {
         "name":                     "google-sharedlocations",
-        "version":                  "1.1.0",
+        "version":                  "1.1.1",
         "news": {
+          "1.1.1": {
+            "en": "Benutzer können in der Konfiguration einfach ausgewählt werden, es muss keine ID mehr händisch eingetippt werden..",
+            "de": "Users can be simply selected in the admin config, i.e. userid need not to be entered manually."
+          },
           "1.1.0": {
             "en": "Store address of the user in a state.",
             "de": "Adresse der Nutzer werden in einem State gespeichert."
@@ -64,11 +68,12 @@
         "loglevel":                 "info",
         "type":                     "geoposition",
         "materialize":              true,
+        "messagebox":               true,
         "restartAdapters":          []
     },
     "native": {
-      "google_username": "me@me.com",
-      "google_password": "secret",
+      "google_username": "",
+      "google_password": "",
       "google_polling_interval": "600",
       "places_adapter": "",
       "google_verify_email": "",
