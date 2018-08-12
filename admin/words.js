@@ -196,5 +196,9 @@ systemDictionary = {
   "none": {
     "en": "none",
     "de": "keine"
-  }
+  },
+  "foreignadapters": {
+    "en": "Foreign adapters",
+    "de": "Weitere Adapter"
+}
 };

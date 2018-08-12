@@ -214,6 +214,7 @@
             <ul class="tabs">
                 <li class="tab col s5"><a href="#tab-main"    class="translate active">main settings</a></li>
                 <li class="tab col s5"><a href="#tab-fences" class="translate">geofences</a></li>
+                <li class="tab col s5"><a href="#tab-foreign-adapters" class="translate">foreignadapters</a></li>
             </ul>
         </div>
         <div id="tab-main" class="col s12 page">
@@ -239,20 +240,14 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col s12 m8 l4">
-                    <a id="btn_check_connection" class="waves-effect waves-light btn translate">check_connection</a>
-                </div>
-            </div>
-            <div class="row">
                 <div class="input-field col s12 m8 l2">
                     <input class="value" id="google_polling_interval" size="5" maxlength="5" type="number">
                     <label for="google_polling_interval" class="translate">google_polling_interval</label>
                 </div>
             </div>
             <div class="row">
-                <div class="input-field col s12 m8 l4">
-                    <select class="value" id="places_adapter"></select>
-                    <label for="places_adapter" class="translate">places_adapter</label>
+                <div class="col s12 m8 l4">
+                    <a id="btn_check_connection" class="waves-effect waves-light btn translate">check_connection</a>
                 </div>
             </div>
             <div class="row">
@@ -279,6 +274,14 @@
                         </tr>
                         </thead>
                     </table>
+                </div>
+            </div>
+        </div>
+        <div id="tab-foreign-adapters" class="col s12 page">
+            <div class="row">
+                <div class="input-field col s12 m8 l4">
+                    <select class="value" id="places_adapter"></select>
+                    <label for="places_adapter" class="translate">places_adapter</label>
                 </div>
             </div>
         </div>
