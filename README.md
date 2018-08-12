@@ -1,10 +1,13 @@
 ![Logo](admin/google-sharedlocations.png)
-# ioBroker.google-sharedlocations
+ioBroker adapter for google-sharedlocations
 =================
 [![NPM version](http://img.shields.io/npm/v/iobroker.google-sharedlocations.svg)](https://www.npmjs.com/package/iobroker.google-sharedlocations)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.google-sharedlocations.svg)](https://www.npmjs.com/package/iobroker.google-sharedlocations)
 
 [![NPM](https://nodei.co/npm/iobroker.google-sharedlocations.png?downloads=true)](https://nodei.co/npm/iobroker.google-sharedlocations/)
+
+[![Build Status](https://travis-ci.org/t4qjXH8N/ioBroker.google-sharedlocations.svg?branch=master)](https://travis-ci.org/t4qjXH8N/ioBroker.google-sharedlocations)
+[![Build status](https://ci.appveyor.com/api/projects/status/d5rora9wgp7otg23/branch/master?svg=true)](https://ci.appveyor.com/project/t4qjXH8N/iobroker-google-sharedlocations/branch/master)
 
 ## Description
 This is an ioBroker-adapter that can retrieve the location data of users that are sharing their location via google shared locations. It can not retrieve the location of the user that is used to access google.
