@@ -380,7 +380,7 @@ function poll(callback) {
 function notifyPlaces(userobjarr, callback) {
   let places = adapter.config.places_adapter;
 
-  if (places != null) {
+  if (places && places !== '') {
     // go through all users
     for(let j=0;j<userobjarr.length;j++) {
       let cuser = userobjarr[j];

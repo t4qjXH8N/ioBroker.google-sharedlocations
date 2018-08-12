@@ -4,7 +4,7 @@
         "version":                  "1.1.1",
         "news": {
           "1.1.1": {
-            "en": "Benutzer können in der Konfiguration einfach ausgewählt werden, es muss keine ID mehr händisch eingetippt werden..",
+            "en": "Benutzer können in der Konfiguration einfach ausgewählt werden, es muss keine ID mehr händisch eingetippt werden.",
             "de": "Users can be simply selected in the admin config, i.e. userid need not to be entered manually."
           },
           "1.1.0": {

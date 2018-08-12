@@ -62,14 +62,38 @@
           setValue(key, settings[key], onChange);
         }
 
-        values2table('values', fences, onChange, function() {
+        getPlacesAdapter('#places_adapter', settings.places_adapter);
+
+        values2table('values', fences, onChange, function () {
           sendTo('google-sharedlocations.' + instance, 'getUsersFromDB', null, function (users) {
-            updateUsersInTable(users, fences);
+            getIsAdapterAlive(function (isAlive) {
+              if (isAlive || common.enabled) {
+                $('#table-button-search').removeClass('disabled');
+              } else {
+                $('#table-button-search').addClass('disabled');
+              }
+
+              updateUsersInTable(users, fences);
+            });
+
           });
 
+          onChange(false);
         });
+      }
 
-        onChange(false);
+      function getPlacesAdapter(elem, current) {
+        socket.emit('getObjectView', 'system', 'instance', {startkey: 'system.adapter.places.', endkey: 'system.adapter.places.\u9999'}, function (err, res) {
+          if (!err && res) {
+            for (let i = 0; i < res.rows.length; i++) {
+              let n =  res.rows[i].id.replace('system.adapter.', '');
+              $(elem).append('<option value="' + n + '">' + n + '</option>');
+            }
+          }
+          $(elem).append('<option value="" class="translate">none</option>');
+          $(elem).val(current);
+          $(elem).select() // update combo box
+        });
       }
 
       function updateUsersInTable(users, fences, callback) {
@@ -227,7 +251,7 @@
             </div>
             <div class="row">
                 <div class="input-field col s12 m8 l4">
-                    <input class="value" id="places_adapter" type="text">
+                    <select class="value" id="places_adapter"></select>
                     <label for="places_adapter" class="translate">places_adapter</label>
                 </div>
             </div>

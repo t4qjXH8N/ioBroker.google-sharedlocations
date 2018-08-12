@@ -192,5 +192,9 @@ systemDictionary = {
   "check_connection": {
     "en": "check connection",
     "de": "Verbindungstest"
+  },
+  "none": {
+    "en": "none",
+    "de": "keine"
   }
 };
