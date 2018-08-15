@@ -15,7 +15,7 @@ systemDictionary = {
   },
   "center_long": {
     "en": "Center Longitude (decimal)",
-    "de": "Mitte Länge (dezimal)",
+    "de": "Längengrad (dezimal)",
     "ru": "Центральная долгота (десятичная)",
     "pt": "Longitude do centro (decimal)",
     "nl": "Middenlengtegraad (decimaal)",

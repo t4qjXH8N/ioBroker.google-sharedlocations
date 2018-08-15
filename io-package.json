@@ -1,62 +1,167 @@
 {
     "common": {
         "name":                     "google-sharedlocations",
-        "version":                  "1.1.1",
+        "version":                  "1.1.2",
+        "license":                  "MIT",
+        "authors": [
+          "Christian Vorholt <chvorholt@gmail.com>"
+        ],
         "news": {
+          "1.1.2": {
+            "en": "Preparations for publishing the adapter.",
+            "de": "Vorbereitungen für die Veröffentlichung des Adapters.",
+            "ru": "Подготовка к публикации адаптера.",
+            "pt": "Preparações para publicar o adaptador.",
+            "nl": "Voorbereidingen voor het publiceren van de adapter.",
+            "fr": "Préparations pour la publication de l'adaptateur.",
+            "it": "Preparativi per la pubblicazione dell'adattatore.",
+            "es": "Preparativos para publicar el adaptador.",
+            "pl": "Przygotowania do opublikowania adaptera."
+          },
           "1.1.1": {
-            "en": "Benutzer können in der Konfiguration einfach ausgewählt werden, es muss keine ID mehr händisch eingetippt werden.",
-            "de": "Users can be simply selected in the admin config, i.e. userid need not to be entered manually."
+            "en": "Users can be simply selected in the admin config, i.e. userid need not to be entered manually.",
+            "de": "Benutzer können einfach in der Admin-Konfiguration ausgewählt werden, d.h. Benutzer-ID muss nicht manuell eingegeben werden.",
+            "ru": "Пользователи могут быть просто выбраны в конфигурации администратора, т. Е. Пользователю не нужно вводить вручную.",
+            "pt": "Os usuários podem ser simplesmente selecionados na configuração de administração, ou seja, o ID do usuário não precisa ser inserido manualmente.",
+            "nl": "Gebruikers kunnen eenvoudig worden geselecteerd in de admin config, d.w.z. userid hoeft niet handmatig te worden ingevoerd.",
+            "fr": "Les utilisateurs peuvent être simplement sélectionnés dans la configuration admin, c.-à-d. Que l'ID utilisateur n'a pas besoin d'être saisi manuellement.",
+            "it": "Gli utenti possono essere semplicemente selezionati nella configurazione dell'amministratore, cioè l'ID utente non deve essere inserito manualmente.",
+            "es": "Los usuarios pueden simplemente seleccionarse en la configuración de administrador, es decir, el ID de usuario no necesita ser ingresado manualmente.",
+            "pl": "Użytkownicy mogą być po prostu wybrani w konfiguracji administratora, tj. Identyfikator użytkownika nie musi być wprowadzany ręcznie."
           },
           "1.1.0": {
             "en": "Store address of the user in a state.",
-            "de": "Adresse der Nutzer werden in einem State gespeichert."
+            "de": "Geschäftsadresse des Benutzers in einem Zustand speichern.",
+            "ru": "Храните адрес пользователя в состоянии.",
+            "pt": "Armazene o endereço do usuário em um estado.",
+            "nl": "Bewaar het adres van de gebruiker in een staat.",
+            "fr": "Adresse de stockage de l'utilisateur dans un état.",
+            "it": "Memorizza l'indirizzo dell'utente in uno stato.",
+            "es": "Almacenar la dirección del usuario en un estado.",
+            "pl": "Przechowuj adres użytkownika w stanie."
           },
           "1.0.1": {
-            "en": "Code cleanup. Moved authentification to its own module.",
-            "de": "Code aufgeräumt und Authentifizierungsroutinen in eigenes Modul ausgelagert."
+            "en": "Code cleanup. Moved authentification to a separate module.",
+            "de": "Codebereinigung Die Authentifizierung wurde in ein separates Modul verschoben.",
+            "ru": "Очистка кода. Перемещенная проверка подлинности на отдельный модуль.",
+            "pt": "Limpeza de código. Movido a autenticação para um módulo separado.",
+            "nl": "Code opschonen. Verificatie naar een afzonderlijke module verplaatst.",
+            "fr": "Nettoyage du code Déplacement de l'authentification vers un module distinct.",
+            "it": "Pulizia del codice. Spostamento dell'autenticazione in un modulo separato.",
+            "es": "Limpieza del código Se movió la autenticación a un módulo separado.",
+            "pl": "Oczyszczanie kodu. Przeniesiono uwierzytelnianie do osobnego modułu."
           },
           "1.0.0": {
             "en": "Added support for Admin3.",
-            "de": "Unterstützung für Admin3 hinzugefügt."
+            "de": "Unterstützung für Admin3 hinzugefügt.",
+            "ru": "Добавлена ​​поддержка Admin3.",
+            "pt": "Adicionado suporte para Admin3.",
+            "nl": "Ondersteuning toegevoegd voor Admin3.",
+            "fr": "Ajout du support pour Admin3.",
+            "it": "Aggiunto supporto per Admin3.",
+            "es": "Se agregó soporte para Admin3.",
+            "pl": "Dodano obsługę Admin3."
           },
           "0.0.7": {
             "en": "Enhanced google compatibility.",
-            "de": "Deutlich verbesserte Google-Kompatibilität."
+            "de": "Verbesserte Google-Kompatibilität",
+            "ru": "Улучшенная совместимость Google.",
+            "pt": "Compatibilidade aprimorada do google.",
+            "nl": "Verbeterde google-compatibiliteit.",
+            "fr": "Amélioration de la compatibilité avec Google",
+            "it": "Compatibilità google migliorata.",
+            "es": "Compatibilidad mejorada con google",
+            "pl": "Zwiększona zgodność z Google."
           },
           "0.0.6": {
             "en": "Added support for ioBroker.places adapter.",
-            "de": "Unterstützung für ioBroker.places-Adapter hinzugefügt."
+            "de": "Unterstützung für ioBroker.places-Adapter hinzugefügt.",
+            "ru": "Добавлена ​​поддержка адаптера ioBroker.places.",
+            "pt": "Adicionado suporte para o adaptador ioBroker.places.",
+            "nl": "Ondersteuning toegevoegd voor de adapter ioBroker.places.",
+            "fr": "Ajout de la prise en charge de l'adaptateur ioBroker.places.",
+            "it": "Aggiunto supporto per l'adattatore ioBroker.places.",
+            "es": "Se agregó soporte para el adaptador ioBroker.places.",
+            "pl": "Dodano obsługę adaptera ioBroker.places."
           },
           "0.0.5": {
             "en": "Fixed errors when no fences exist.",
-            "de": "Fehler behoben der auftritt wenn keine Fences angelegt sind."
+            "de": "Fehler behoben, wenn keine Zäune vorhanden sind.",
+            "ru": "Исправлены ошибки при отсутствии ограждений.",
+            "pt": "Corrigidos erros quando não existem cercas.",
+            "nl": "Fouten opgelost wanneer er geen hekken bestaan.",
+            "fr": "Erreurs corrigées lorsque aucune clôture n'existe.",
+            "it": "Risolti errori quando non esistevano recinzioni.",
+            "es": "Se corrigieron los errores cuando no existen vallas.",
+            "pl": "Naprawiono błędy, gdy nie istnieją żadne ogrodzenia."
           },
           "0.0.4": {
             "en": "Adapter does no longer crash if location data of a user has not been updated for a long time.",
-            "de": "Adapter stürzt nicht mehr ab wenn länger keine Positionsdaten mehr empfangen werden."
+            "de": "Der Adapter stürzt nicht mehr ab, wenn die Standortdaten eines Benutzers für längere Zeit nicht aktualisiert wurden.",
+            "ru": "Адаптер больше не сбой, если данные местоположения пользователя не были обновлены в течение длительного времени.",
+            "pt": "O adaptador não falha mais se os dados de localização de um usuário não forem atualizados por um longo tempo.",
+            "nl": "Adapter crasht niet meer als locatiegegevens van een gebruiker lange tijd niet zijn bijgewerkt.",
+            "fr": "L'adaptateur ne se bloque plus si les données de localisation d'un utilisateur n'ont pas été mises à jour depuis longtemps.",
+            "it": "L'adattatore non si blocca più se i dati sulla posizione di un utente non sono stati aggiornati per un lungo periodo.",
+            "es": "El adaptador ya no falla si los datos de ubicación de un usuario no se han actualizado durante mucho tiempo.",
+            "pl": "Adapter nie ulega już awarii, jeśli dane lokalizacji użytkownika nie były aktualizowane od dłuższego czasu."
           },
           "0.0.3": {
-            "en": "Bugfixes, improved authentification",
-            "de": "Diverse Fehlerbehebungen, verbesserter Login."
+            "en": "Bugfixes, improved authentification.",
+            "de": "Bug Fixes, verbesserte Authentifizierung.",
+            "ru": "Исправления ошибок, улучшенная аутентификация.",
+            "pt": "Correções de bugs, autenticação aprimorada.",
+            "nl": "Bugfixes, verbeterde authenticatie.",
+            "fr": "Correction de bugs, authentification améliorée.",
+            "it": "Correzioni di bug, autenticazione migliorata.",
+            "es": "Corrección de errores, autenticación mejorada.",
+            "pl": "Poprawione błędy, ulepszone uwierzytelnianie."
           },
             "0.0.2": {
               "en": "Bugfixes",
-              "de": "Diverse Fehlerbehebungen"
+              "de": "Fehlerbehebung",
+              "ru": "Исправление ошибок",
+              "pt": "Correções de bugs",
+              "nl": "Bugfixes",
+              "fr": "Correction de bugs",
+              "it": "Correzioni di bug",
+              "es": "Corrección de errores",
+              "pl": "Poprawione błędy"
             },
             "0.0.1": {
-              "en": "initial adapter",
-              "de": "Initiale Version",
-              "ru": "Первоначальный адаптер"
+              "en": "Initial adapter",
+              "de": "Anfangsadapter",
+              "ru": "Начальный адаптер",
+              "pt": "Adaptador inicial",
+              "nl": "Initiële adapter",
+              "fr": "Adaptateur initial",
+              "it": "Adattatore iniziale",
+              "es": "Adaptador inicial",
+              "pl": "Początkowy adapter"
             }
         },
-        "title": "Google shared locations adapter",
+        "title": "Google shared locations",
         "titleLang": {
-          "en": "Google shared locations adapter",
-          "de": "Google Standortverlauf Adapter"
-        },        
+          "en": "An ioBroker adapter for retrieving locations from Google shared locations",
+          "de": "Ein ioBroker-Adapter zum Abrufen von Standorten von freigegebenen Google-Standorten",
+          "ru": "Адаптер ioBroker для поиска местоположений из общих мест Google",
+          "pt": "Um adaptador ioBroker para recuperar locais de locais compartilhados do Google",
+          "nl": "Een ioBroker-adapter voor het ophalen van locaties van gedeelde Google-locaties",
+          "fr": "Un adaptateur ioBroker pour récupérer des emplacements à partir d'emplacements partagés Google",
+          "it": "Un adattatore ioBroker per il recupero di posizioni da posizioni condivise di Google",
+          "es": "Un adaptador ioBroker para recuperar ubicaciones de ubicaciones compartidas de Google",
+          "pl": "Adapter ioBroker do pobierania lokalizacji z udostępnianych lokalizacji Google"
+        },
         "desc": {
-           "en": "ioBroker Google Shared Locations Adapter",
-           "de": "ioBroker Google Shared Locations Adapter"
+          "en": "With this adapter one can retrieve of family members or friends from locations from Google shared locations if they share their location. ",
+          "de": "Mit diesem Adapter können Sie Familienmitglieder oder Freunde von Standorten von freigegebenen Google-Standorten abrufen, wenn sie ihren Standort teilen.",
+          "ru": "С помощью этого адаптера вы можете получить членов семьи или друзей из мест размещения в Google, если они делят свое местоположение.",
+          "pt": "Com esse adaptador, é possível recuperar membros da família ou amigos de locais de locais compartilhados do Google, se eles compartilharem sua localização.",
+          "nl": "Met deze adapter kunt u familieleden of vrienden ophalen van locaties op gedeelde Google-locaties als ze hun locatie delen.",
+          "fr": "Avec cet adaptateur, vous pouvez récupérer des membres de votre famille ou des amis depuis des emplacements partagés de Google s'ils partagent leur emplacement.",
+          "it": "Con questo adattatore è possibile recuperare familiari o amici da posizioni condivise da Google se condividono la loro posizione.",
+          "es": "Con este adaptador, uno puede recuperar a miembros de la familia o amigos de ubicaciones de ubicaciones compartidas de Google si comparten su ubicación.",
+          "pl": "Dzięki temu adapterowi można odzyskać członków rodziny lub znajomych z lokalizacji z udostępnionych lokalizacji Google, jeśli udostępniają oni swoją lokalizację."
         },
         "platform":                 "Javascript/Node.js",
         "mode":                     "daemon",

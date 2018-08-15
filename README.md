@@ -20,6 +20,9 @@ When opening the configuration for the first time enter only the google login da
 In this case check the google account of the user that is used by the google-sharedlocations adapter. Log in with a browser and check if google blocked some logins. Click on a blocked login and confirm to google that this was you. Additionally check that two factor authentification is turned off.
 
 ## Changelog
+#### 1.1.2 (15-Aug-2018)
+- Preparations for publishing the adapter
+
 #### 1.1.1 (11-Aug-2018)
 - Users can be simply selected in the admin config, i.e. userid need not to be entered manually
 
