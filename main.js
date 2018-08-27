@@ -144,23 +144,27 @@ adapter.on('message', function (obj) {
 
     // get users
     adapter.getStates('google-sharedlocations.' + adapter.instance + '.user.*', function(err, states) {
-      for (let cstate in states) {
-        if (cstate.split('.')[cstate.split('.').length - 1] === 'id') {
-          ids.push(cstate.split('.')[cstate.split('.').length - 2]);
+      if(!err) {
+        for (let cstate in states) {
+          if (cstate.split('.')[cstate.split('.').length - 1] === 'id') {
+            ids.push(cstate.split('.')[cstate.split('.').length - 2]);
+          }
         }
-      }
 
-      // get photo urls
-      let res = [];
-      for (let i = 0; i < ids.length; i++) {
-        res.push({
-          "id": ids[i],
-          "photoURL": states['google-sharedlocations.' + adapter.instance + '.user.' + ids[i] + '.photoURL'].val,
-          "name": states['google-sharedlocations.' + adapter.instance + '.user.' + ids[i] + '.name'].val
-        });
-      }
+        // get photo urls
+        let res = [];
+        for (let i = 0; i < ids.length; i++) {
+          res.push({
+            "id": ids[i],
+            "photoURL": states['google-sharedlocations.' + adapter.instance + '.user.' + ids[i] + '.photoURL'].val,
+            "name": states['google-sharedlocations.' + adapter.instance + '.user.' + ids[i] + '.name'].val
+          });
+        }
 
-      callback(res);
+        callback(res);
+      } else {
+        callback(false);
+      }
     });
   }
 
