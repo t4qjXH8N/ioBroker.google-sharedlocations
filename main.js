@@ -189,7 +189,7 @@ function main() {
   adapter.log.info('Starting google shared locations adapter');
 
   // check polling interval
-  if (Number(adapter.config.google_polling_interval)*1000 < min_polling_interval) {
+    if (Number(adapter.config.google_polling_interval)*1000 < min_polling_interval) {
     adapter.log.error('Polling interval should be greater than ' + min_polling_interval);
   } else {
     // first connect and query

@@ -1,12 +1,23 @@
 {
     "common": {
         "name":                     "google-sharedlocations",
-        "version":                  "1.1.2",
+        "version":                  "1.1.3",
         "license":                  "MIT",
         "authors": [
           "Christian Vorholt <chvorholt@gmail.com>"
         ],
         "news": {
+          "1.1.3" : {
+            "en": "fix installation problem",
+            "de": "Installationsproblem beheben",
+            "ru": "устранить проблему установки",
+            "pt": "corrigir problema de instalação",
+            "nl": "fix installatie probleem",
+            "fr": "résoudre le problème d'installation",
+            "it": "risolvere il problema di installazione",
+            "es": "arreglar problema de instalación",
+            "pl": "napraw problem z instalacją"
+          },
           "1.1.2": {
             "en": "Preparations for publishing the adapter.",
             "de": "Vorbereitungen für die Veröffentlichung des Adapters.",
@@ -166,7 +177,8 @@
         "platform":                 "Javascript/Node.js",
         "mode":                     "daemon",
         "icon":                     "google-sharedlocations.png",
-        "enabled":                  true,
+        "enabled":                  false,
+        "stopBeforeUpdate":         true,
         "extIcon":                  "https://raw.githubusercontent.com/t4qjXH8N/ioBroker.google-sharedlocations/master/admin/google-sharedlocations.png",
         "keywords":                 ["google", "geofence", "sharedlocations"],
         "readme":                   "https://github.com/t4qjXH8N/ioBroker.google-sharedlocations/master/README.md",
