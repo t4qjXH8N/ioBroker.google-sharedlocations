@@ -451,7 +451,8 @@ function getSharedLocations(callback) {
       // connection established but auth failure
       if(response.statusCode !== 200) {
         adapter.log.debug('Removed cookies.');
-        adapter.log.error('Connection works, but authorization failure (cookie not valid?)!');
+        adapter.log.error('Connection works, but authorization failure, please login manually!');
+        adapter.log.info('Could not connect to google, please login manually!');
 
         if(callback) callback(true);
       } else {
