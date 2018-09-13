@@ -258,7 +258,7 @@ function updateStates(userobjarr, callback) {
                   name: cprop,
                   desc: '',
                   type: 'number',
-                  role: 'value.number',
+                  role: 'value',
                   read: 'true',
                   write: 'false'
                 }
@@ -270,7 +270,7 @@ function updateStates(userobjarr, callback) {
                   name: cprop,
                   desc: '',
                   type: 'string',
-                  role: 'value.string',
+                  role: 'text',
                   read: 'true',
                   write: 'false'
                 }
@@ -282,7 +282,7 @@ function updateStates(userobjarr, callback) {
                   name: cprop,
                   desc: '',
                   type: 'boolean',
-                  role: 'value.boolean',
+                  role: 'indicator',
                   read: 'true',
                   write: 'false'
                 }
@@ -299,7 +299,6 @@ function updateStates(userobjarr, callback) {
 
 // poll locations, devices, etc.
 function poll(callback) {
-
   adapter.log.info('Polling locations.');
 
   querySharedLocations(function (err) {
@@ -366,7 +365,7 @@ function checkFences(userobjarr, callback) {
             name: cfence.description,
             desc: 'Fence for user ' + cuser.name,
             type: 'boolean',
-            role: 'value.boolean',
+            role: 'indicator',
             read: 'true',
             write: 'false'
           }
