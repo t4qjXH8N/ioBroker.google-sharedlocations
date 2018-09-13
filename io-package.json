@@ -199,5 +199,21 @@
       ]
     },
     "objects": [
-    ]
+    ],
+    "instanceObjects": [
+    {
+      "_id": "info.connection",
+      "type": "state",
+      "common": {
+        "name": "connected",
+        "desc": "Connected to Google Shared Location",
+        "type": "boolean",
+        "def": "false",
+        "read": "true",
+        "role": "value.info",
+        "write": "false"
+      }
+    }
+  ]
+
 }

@@ -65,25 +65,8 @@ adapter.on('stateChange', function (id, state) {
 // is called when databases are connected and adapter received configuration.
 // start here!
 adapter.on('ready', function () {
-  adapter.setObjectNotExists('info.connection', {
-    type: 'state',
-    common: {
-      name: 'connected',
-      desc: 'Connected to Google account?',
-      type: 'boolean',
-      def: 'false',
-      read: 'true',
-      role: 'value.info',
-      write: 'false'
-    },
-    native: {}
-  }, function(err) {
-    if(!err) {
-      // start main function
-      main();
-    }
-  });
-
+  // start main function
+  main();
 });
 
 // messages
