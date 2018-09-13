@@ -212,8 +212,22 @@
         "read": "true",
         "role": "value.info",
         "write": "false"
-      }
+        },
+      "native": {}
+      },
+      {
+        "_id": "locations.trigger_poll",
+        "type": "state",
+        "common": {
+          "name": "poll",
+          "desc": "Setting to true issues a poll.",
+          "type": "boolean",
+          "def": "false",
+          "read": "true",
+          "write": "true",
+          "role": "button"
+        },
+        "native": {}
     }
   ]
-
 }

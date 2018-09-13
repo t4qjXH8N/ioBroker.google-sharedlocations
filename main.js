@@ -56,6 +56,13 @@ adapter.on('stateChange', function (id, state) {
 
   }
 
+  // a poll is triggered
+  if(id && state && id === 'google-sharedlocations.' + adapter.instance + '.locations.trigger_poll' && state.val === true) {
+    triggerSingleQuery();
+
+    adapter.setState('locations.trigger_poll', false, false)
+  }
+
   // you can use the ack flag to detect if it is status (true) or command (false)
   if (state && state.val && !state.ack) {
     adapter.log.debug('ack is not set!');
@@ -122,6 +129,12 @@ adapter.on('message', function (obj) {
         });
         wait = true;
         break;
+      case 'triggerPoll':
+        triggerSingleQuery(function (err) {
+          adapter.sendTo(obj.from, obj.command, err, obj.callback);
+        });
+        wait = true;
+        break;
       case 'getUsers':
         connected = false;
         credentials = JSON.parse(obj.message);
@@ -172,8 +185,11 @@ function main() {
   adapter.log.info('Starting google shared locations adapter');
 
   // check polling interval
-    if (Number(adapter.config.google_polling_interval)*1000 < min_polling_interval) {
+  if (Number(adapter.config.google_polling_interval)*1000 < min_polling_interval && Number(adapter.config.google_polling_interval) !== 0) {
     adapter.log.error('Polling interval should be greater than ' + min_polling_interval);
+  } else if (Number(adapter.config.google_polling_interval) === 0) {
+    // query locations is triggered only
+    adapter.log.info('Locations poll can be triggered only.');
   } else {
     // first connect and query
     // connect to Google
@@ -189,6 +205,12 @@ function main() {
           google_cookie_header = cookieheader;
 
           querySharedLocations(function (err) {
+            if (err) {
+              adapter.log.error('An error occurred during polling the locations!');
+              adapter.setState('info.connection', false, false);
+            } else {
+              adapter.setState('info.connection', true, false);
+            }
           });
 
           // enable polling
@@ -202,7 +224,46 @@ function main() {
 
     // google subscribes to all state changes
     adapter.subscribeStates('info.connection');
+    adapter.subscribeStates('locations.trigger_poll');
     adapter.subscribeStates('fence.*');
+  }
+}
+
+// issue a single query. If not connected, open a new connection
+function triggerSingleQuery(callback) {
+  // are we already connected to google?
+  if (!google_cookie_header) {
+    // we have to setup a connection first
+    auth.connect(adapter.config.google_username, adapter.config.google_password, adapter.config.google_verify_email, function (err, cookieheader) {
+      if (err) {
+        adapter.log.error('First connection failed.');
+        adapter.setState('info.connection', false, false);
+      } else {
+        adapter.setState('info.connection', true, false);
+        google_cookie_header = cookieheader;
+
+        querySharedLocations(function (err) {
+          if (err) {
+            adapter.log.error('An error occurred during polling the locations!');
+            adapter.setState('info.connection', false, false);
+            if(callback) callback(err);
+          } else {
+            adapter.setState('info.connection', true, false);
+            if(callback) callback(false);
+          }
+        });
+      }
+    });
+  } else {
+    // connection already active
+    querySharedLocations(function (err) {
+      if (err) {
+        adapter.log.error('An error occurred during polling the locations!');
+        adapter.setState('info.connection', false, false);
+      } else {
+        adapter.setState('info.connection', true, false);
+      }
+    });
   }
 }
 
