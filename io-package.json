@@ -212,7 +212,8 @@
         "read": "true",
         "role": "value.info",
         "write": "false"
-      }
+      },
+      "native": {}
     }
   ]
 
