@@ -8,15 +8,15 @@
         ],
         "news": {
           "1.2.0" : {
-            "en": "state added showing the battery level",
-            "de": "Status hinzugefügt, der den Akkustand anzeigt",
-            "ru": "добавленное состояние, показывающее уровень заряда батареи",
-            "pt": "estado adicionado mostrando o nível da bateria",
-            "nl": "status toegevoegd die het batterijniveau toont",
-            "fr": "état ajouté montrant le niveau de la batterie",
-            "it": "stato aggiunto che mostra il livello della batteria",
-            "es": "estado agregado que muestra el nivel de la batería",
-            "pl": "dodano stan pokazujący poziom naładowania baterii"
+            "en": "state added showing the battery level and timestamp",
+            "de": "Status hinzugefügt, der den Batteriestand und den Zeitstempel anzeigt",
+            "ru": "добавлено состояние, показывающее уровень заряда батареи и временную метку",
+            "pt": "estado adicionado mostrando o nível da bateria e o timestamp",
+            "nl": "status toegevoegd die het batterijniveau en tijdstempel toont",
+            "fr": "état ajouté indiquant le niveau de batterie et l'horodatage",
+            "it": "stato aggiunto che mostra il livello della batteria e il timestamp",
+            "es": "estado agregado que muestra el nivel de batería y la marca de tiempo",
+            "pl": "dodano stan pokazujący poziom naładowania baterii i datownik"
           },
           "1.1.4" : {
             "en": "fixed roles",

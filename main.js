@@ -517,7 +517,8 @@ function extractUserLocationData(userdata, callback) {
       "lat": undefined,
       "long": undefined,
       "address": undefined,
-      "battery": undefined
+      "battery": undefined,
+      "timestamp": undefined
     }
   } else {
     // userdata present
@@ -529,7 +530,8 @@ function extractUserLocationData(userdata, callback) {
       "lat": userdata[1][1][2],
       "long": userdata[1][1][1],
       "address": userdata[1][4],
-      "battery": userdata[13][1]
+      "battery": userdata[13][1],
+      "timestamp": userdata[1][2]
     }
   }
 
