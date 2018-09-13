@@ -21,7 +21,7 @@ In this case check the google account of the user that is used by the google-sha
 
 ## Changelog
 #### 1.2.0 (13-Sep-2018)
-- added state showing battery level
+- added state showing battery level and timestamp (solves #11)
 
 #### 1.1.4 (13-Sep-2018)
 - fixed roles
