@@ -21,7 +21,10 @@ In this case check the google account of the user that is used by the google-sha
 
 ## Changelog
 #### 1.2.0 (13-Sep-2018)
-- polls can be triggered by sending a message to the adapter ("triggerPoll") or by changing a trigger state
+- added state showing battery level and timestamp (solves #11)
+
+#### 1.1.4 (13-Sep-2018)
+- fixed roles
 
 #### 1.1.3 (1-Sep-2018)
 - Fixed installation problem

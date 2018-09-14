@@ -311,27 +311,51 @@ function updateStates(userobjarr, callback) {
         if(userobjarr[i].hasOwnProperty(cprop)) {
           // cur properties
           let cid = 'user.' + userobjarr[i].id + '.' + cprop;
+          let crole = 'state'; // default role
 
           switch(typeof userobjarr[i][cprop]) {
             case 'number':
+              switch(cprop) {
+                case 'lat':
+                  crole = 'value.gps.latitude';
+                  break;
+                case 'long':
+                  crole = 'value.gps.longitude';
+                  break;
+                case 'battery':
+                  crole = 'value.battery';
+                  break;
+                default:
+                  crole = 'value';
+              }
               setStateEx(cid, {
                 common: {
                   name: cprop,
                   desc: '',
                   type: 'number',
-                  role: 'value.number',
+                  role: crole,
                   read: 'true',
                   write: 'false'
                 }
                 }, userobjarr[i][cprop], true);
               break;
             case 'string':
+              switch(cprop) {
+                case 'photoURL':
+                  crole = 'text.url';
+                  break;
+                case 'address':
+                  crole = 'location';
+                  break;
+                default:
+                  crole = 'text';
+              }
               setStateEx(cid, {
                 common: {
                   name: cprop,
                   desc: '',
                   type: 'string',
-                  role: 'value.string',
+                  role: crole,
                   read: 'true',
                   write: 'false'
                 }
@@ -343,7 +367,7 @@ function updateStates(userobjarr, callback) {
                   name: cprop,
                   desc: '',
                   type: 'boolean',
-                  role: 'value.boolean',
+                  role: 'indicator',
                   read: 'true',
                   write: 'false'
                 }
@@ -360,7 +384,6 @@ function updateStates(userobjarr, callback) {
 
 // poll locations, devices, etc.
 function poll(callback) {
-
   adapter.log.info('Polling locations.');
 
   querySharedLocations(function (err) {
@@ -427,7 +450,7 @@ function checkFences(userobjarr, callback) {
             name: cfence.description,
             desc: 'Fence for user ' + cuser.name,
             type: 'boolean',
-            role: 'value.boolean',
+            role: 'indicator',
             read: 'true',
             write: 'false'
           }
@@ -549,12 +572,14 @@ function extractUserLocationData(userdata, callback) {
     // no userdata present
 
     userdataobj = {
-      "id": userdata[0][0],
-      "photoURL": userdata[0][1],
-      "name": userdata[0][3],
+      "id": undefined,
+      "photoURL": undefined,
+      "name": undefined,
       "lat": undefined,
       "long": undefined,
-      "address": undefined
+      "address": undefined,
+      "battery": undefined,
+      "timestamp": undefined
     }
   } else {
     // userdata present
@@ -565,7 +590,9 @@ function extractUserLocationData(userdata, callback) {
       "name": userdata[0][3],
       "lat": userdata[1][1][2],
       "long": userdata[1][1][1],
-      "address": userdata[1][4]
+      "address": userdata[1][4],
+      "battery": userdata[13][1],
+      "timestamp": userdata[1][2]
     }
   }
 
