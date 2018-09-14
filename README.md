@@ -20,6 +20,9 @@ When opening the configuration for the first time enter only the google login da
 In this case check the google account of the user that is used by the google-sharedlocations adapter. Log in with a browser and check if google blocked some logins. Click on a blocked login and confirm to google that this was you. Additionally check that two factor authentification is turned off.
 
 ## Changelog
+#### 1.3.0 (14-Sep-2018)
+- locations poll can be triggered by a state or by sending a message ("triggerPoll") to the adapter
+
 #### 1.2.0 (13-Sep-2018)
 - added state showing battery level and timestamp (solves #11)
 

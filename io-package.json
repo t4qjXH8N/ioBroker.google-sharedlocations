@@ -1,12 +1,45 @@
 {
     "common": {
         "name":                     "google-sharedlocations",
-        "version":                  "1.1.3",
+        "version":                  "1.3.0",
         "license":                  "MIT",
         "authors": [
           "Christian Vorholt <chvorholt@gmail.com>"
         ],
         "news": {
+          "1.3.0": {
+            "en": "locations poll can be triggered by a state or by sending a message to the adapter",
+            "de": "Die Standortabfrage kann durch einen Status ausgelöst werden oder indem eine Nachricht an den Adapter gesendet wird",
+            "ru": "опрос местоположений может быть вызван состоянием или путем отправки сообщения на адаптер",
+            "pt": "polls de localização podem ser acionados por um estado ou enviando uma mensagem para o adaptador",
+            "nl": "locatie poll kan worden geactiveerd door een staat of door een bericht naar de adapter te sturen",
+            "fr": "les emplacements peuvent être déclenchés par un état ou en envoyant un message à l'adaptateur",
+            "it": "il sondaggio delle località può essere attivato da uno stato o inviando un messaggio all'adattatore",
+            "es": "la encuesta de ubicaciones puede ser activada por un estado o enviando un mensaje al adaptador",
+            "pl": "Sonda lokalizacji może zostać wywołana przez stan lub wysyłając wiadomość do adaptera"
+          },
+          "1.2.0" : {
+            "en": "state added showing the battery level and timestamp",
+            "de": "Status hinzugefügt, der den Batteriestand und den Zeitstempel anzeigt",
+            "ru": "добавлено состояние, показывающее уровень заряда батареи и временную метку",
+            "pt": "estado adicionado mostrando o nível da bateria e o timestamp",
+            "nl": "status toegevoegd die het batterijniveau en tijdstempel toont",
+            "fr": "état ajouté indiquant le niveau de batterie et l'horodatage",
+            "it": "stato aggiunto che mostra il livello della batteria e il timestamp",
+            "es": "estado agregado que muestra el nivel de batería y la marca de tiempo",
+            "pl": "dodano stan pokazujący poziom naładowania baterii i datownik"
+          },
+          "1.1.4" : {
+            "en": "fixed roles",
+            "de": "feste Rollen",
+            "ru": "фиксированные роли",
+            "pt": "papéis fixos",
+            "nl": "vaste rollen",
+            "fr": "rôles fixes",
+            "it": "ruoli fissi",
+            "es": "roles fijos",
+            "pl": "naprawione role"
+          },
           "1.1.3" : {
             "en": "fix installation problem",
             "de": "Installationsproblem beheben",

@@ -10,6 +10,8 @@ const request = require('request');
 
 const min_polling_interval = 30; // minimum polling interval in seconds
 
+const trigger_poll_state = 'locations.trigger_poll';  // state for triggering a poll
+
 // you have to call the adapter function and pass a options object
 // name has to be set and has to be equal to adapters folder name and main file name excluding extension
 // adapter will be restarted automatically every time as the configuration changed, e.g system.adapter.google-sharedlocations.0
@@ -57,10 +59,10 @@ adapter.on('stateChange', function (id, state) {
   }
 
   // a poll is triggered
-  if(id && state && id === 'google-sharedlocations.' + adapter.instance + '.locations.trigger_poll' && state.val === true) {
+  if(id && state && id === 'google-sharedlocations.' + adapter.instance + '.' + trigger_poll_state && state.val === true) {
     triggerSingleQuery();
 
-    adapter.setState('locations.trigger_poll', false, false)
+    adapter.setState(trigger_poll_state, false, false)
   }
 
   // you can use the ack flag to detect if it is status (true) or command (false)
@@ -222,11 +224,11 @@ function main() {
       });
     }
 
-    // google subscribes to all state changes
-    adapter.subscribeStates('info.connection');
-    adapter.subscribeStates('locations.trigger_poll');
-    adapter.subscribeStates('fence.*');
   }
+  // subscribe
+  adapter.subscribeStates('info.connection');
+  adapter.subscribeStates(trigger_poll_state);
+  adapter.subscribeStates('fence.*');
 }
 
 // issue a single query. If not connected, open a new connection
