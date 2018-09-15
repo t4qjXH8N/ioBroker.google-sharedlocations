@@ -1,12 +1,15 @@
 {
     "common": {
         "name":                     "google-sharedlocations",
-        "version":                  "1.3.0",
+        "version":                  "1.4.0",
         "license":                  "MIT",
         "authors": [
           "Christian Vorholt <chvorholt@gmail.com>"
         ],
         "news": {
+          "1.4.0": {
+            "en": "Fences id can be customized now. Fences are properly added and removed.",
+          },
           "1.3.0": {
             "en": "locations poll can be triggered by a state or by sending a message to the adapter",
             "de": "Die Standortabfrage kann durch einen Status ausgelöst werden oder indem eine Nachricht an den Adapter gesendet wird",

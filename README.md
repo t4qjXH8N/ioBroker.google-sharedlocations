@@ -10,16 +10,20 @@ ioBroker adapter for google-sharedlocations
 [![Build status](https://ci.appveyor.com/api/projects/status/d5rora9wgp7otg23/branch/master?svg=true)](https://ci.appveyor.com/project/t4qjXH8N/iobroker-google-sharedlocations/branch/master)
 
 ## Description
-This is an ioBroker-adapter that can retrieve the location data of users that are sharing their location via google shared locations. It can not retrieve the location of the user that is used to access google.
+This is an ioBroker-adapter that can retrieve the location data of users that are sharing their location via google shared locations. It can not retrieve the location of the user that is used to access google. The adapter can receive and process a bunch of messages, please have a look at main.js for details.
 
 ## Usage
 When opening the configuration for the first time enter only the google login data. Two factor authentification has to be disabled for the user.
 
 ## Troubleshooting
-### instance indicator is green but no location data is received
+### instance indicator is green but no location data is received or instance indicator is yellow and the log says "please login manually" 
 In this case check the google account of the user that is used by the google-sharedlocations adapter. Log in with a browser and check if google blocked some logins. Click on a blocked login and confirm to google that this was you. Additionally check that two factor authentification is turned off.
 
 ## Changelog
+#### 1.4.0 (16-Sep-2018)
+- fences id can be determined by the user
+- fences are properly added and removed now
+
 #### 1.3.0 (14-Sep-2018)
 - locations poll can be triggered by a state or by sending a message ("triggerPoll") to the adapter
 

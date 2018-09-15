@@ -35,6 +35,17 @@ systemDictionary = {
     "es": "descripción",
     "pl": "opis"
   },
+  "fenceid": {
+    "en": "Fence id",
+    "de": "Zaun ID",
+    "ru": "Идентификатор ограждения",
+    "pt": "ID da cerca",
+    "nl": "Fence id",
+    "fr": "ID de clôture",
+    "it": "Recinzione id",
+    "es": "ID de valla",
+    "pl": "Płot id"
+  },
   "geofences": {
     "en": "Geofences",
     "de": "Geofences",

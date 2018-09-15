@@ -179,12 +179,65 @@ adapter.on('message', function (obj) {
   return true;
 });
 
+// synchronize config
+function syncConfig() {
+  function stateInConfig(cstate) {
+    let fences = adapter.config.fences;
+    for(let j=0;j<fences.length;j++) {
+      if('google-sharedlocations.' + adapter.instance + '.fence.' + fences[j].fenceid === cstate) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function stateInDB(cstate, callback) {
+    adapter.getStates('google-sharedlocations.' + adapter.instance + '.fence.*', function(err, states) {
+      callback(states.hasOwnProperty(cstate));
+    });
+  }
+
+  // check if there are states that have to be removed
+  adapter.getStates('google-sharedlocations.' + adapter.instance + '.fence.*', function(err, states) {
+    if (err) {
+      adapter.log.error('SyncConfig: Could not retrieve states!');
+    } else {
+      for (let cstate in states) {
+        if (!stateInConfig(cstate)) adapter.delObject(cstate);
+      }
+    }
+  });
+
+  let fences = adapter.config.fences;
+  // create missing states
+  for(let i=0;i<fences.length;i++) {
+    stateInDB('google-sharedlocations.' + adapter.instance + '.fence.' + fences[i].fenceid, function(inDB) {
+      if(!inDB) {
+        // set all states to false at the beginning and create them if they do not exist
+        setStateEx('fence.' + fences[i].fenceid, {
+          common: {
+            name: fences[i].description,
+            desc: 'Fence for user ' + fences[i].userid,
+            type: 'boolean',
+            role: 'indicator',
+            def: 'false',
+            read: 'true',
+            write: 'false'
+          }
+        }, false, true);
+      }
+    });
+  }
+}
 
 // main function
 function main() {
   // The adapters config (in the instance object everything under the attribute "native") is accessible via
   // adapter.config:
   adapter.log.info('Starting google shared locations adapter');
+
+  // sync config
+  syncConfig();
 
   // check polling interval
   if (Number(adapter.config.google_polling_interval)*1000 < min_polling_interval && Number(adapter.config.google_polling_interval) !== 0) {
@@ -435,7 +488,7 @@ function checkFences(userobjarr, callback) {
   for(let i=0;i<fences.length;i++) {
     let cfence = fences[i];
 
-    // go through all users
+    // go through all users in the received structure
     for(let j=0;j<userobjarr.length;j++) {
       let cuser = userobjarr[j];
 
@@ -447,28 +500,13 @@ function checkFences(userobjarr, callback) {
 
         let cstate = curdist <= cfence.radius;
 
-        setStateEx(fenceid, {
-          common: {
-            name: cfence.description,
-            desc: 'Fence for user ' + cuser.name,
-            type: 'boolean',
-            role: 'indicator',
-            read: 'true',
-            write: 'false'
-          }
-        }, cstate, true);
-
+        adapter.setState(fenceid, cstate, false);
         break;
       }
     }
   }
 
   callback(false);
-}
-
-// synchronize config
-function syncConfig() {
-
 }
 
 // setStateEx
@@ -486,7 +524,7 @@ function setStateEx(id, common, val, ack, callback) {
     });
   };
 
-  adapter.setObject(id, common_full, cfunc);
+  adapter.setObjectNotExists(id, common_full, cfunc);
 
   if(callback) callback(false);
 }
