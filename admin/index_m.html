@@ -64,7 +64,18 @@
 
         getPlacesAdapter('#places_adapter', settings.places_adapter);
 
+        let changed = false;
+        for(let i=0;i<fences.length;i++) {
+          if(fences[i].fenceid === '' || !fences[i].fenceid) {
+            fences[i].fenceid = fences[i].description.replace(/\s/g, '_') + '-' + i;
+            changed = true;
+          }
+        }
+
+        // if ids are empty, fill them with a combination of description and index
         values2table('values', fences, onChange, function () {
+          if (changed) onChange(changed);
+
           sendTo('google-sharedlocations.' + instance, 'getUsersFromDB', null, function (users) {
             getIsAdapterAlive(function (isAlive) {
               if (isAlive || common.enabled) {
@@ -75,11 +86,10 @@
 
               updateUsersInTable(users, fences);
             });
-
           });
-
-          onChange(false);
         });
+
+        if (!changed) onChange(false);
       }
 
       function getPlacesAdapter(elem, current) {
@@ -130,12 +140,47 @@
         if(callback) callback(true);
       }
 
+      function input_validation() {
+        let tab_vals = table2values('values');
+
+        for(let i=0;i<tab_vals.length;i++) {
+          if(tab_vals[i].description === '') {
+            showMessage(_('One description is empty!'), 'Error', 'error');
+            return false;
+          }
+          if(isNaN(Number(tab_vals[i].center_lat)) || !tab_vals[i].center_lat || tab_vals[i].center_lat === '') {
+            showMessage(_('Latitude of ' + tab_vals[i].description + ' has to be numeric'), 'Error', 'error');
+            return false;
+          }
+          if(isNaN(Number(tab_vals[i].center_long)) || !tab_vals[i].center_long || tab_vals[i].center_long === '') {
+            showMessage(_('Longitude of ' + tab_vals[i].description + ' has to be numeric'), 'Error', 'error');
+            return false;
+          }
+          if(isNaN(Number(tab_vals[i].radius)) || !tab_vals[i].radius || tab_vals[i].radius === '') {
+            showMessage(_('Radius of ' + tab_vals[i].description + ' has to be numeric'), 'Error', 'error');
+            return false;
+          }
+          if(isNaN(Number(tab_vals[i].userid)) || !tab_vals[i].userid || tab_vals[i].userid === '') {
+            showMessage(_('Userid of ' + tab_vals[i].description + ' must not be empty'), 'Error', 'error');
+            return false;
+          }
+          if(tab_vals[i].fenceid === '' || tab_vals[i].fenceid.match(/[\s*,.;'"`<>\[\]\?]/g) !== null) {
+            showMessage(_('Fence id of ' + tab_vals[i].description + ' contains forbidden characters (*,.;\'"`<>\\[\\]\\\\s?) or is empty!'), 'Error', 'error');
+            return false;
+          }
+        }
+
+      }
+
       // ... and the function save has to exist.
       // you have to make sure the callback is called with the settings object as first param!
       function save(callback) {
-        var obj = {};
+        // validate text fields
+        if(input_validation() === false) return;
+
+        let obj = {};
         $('.value').each(function () {
-          var $this = $(this);
+          let $this = $(this);
           if ($this.attr('type') == 'checkbox') {
             obj[$this.attr('id')] = $this.prop('checked');
           } else {
