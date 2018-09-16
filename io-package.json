@@ -1,14 +1,33 @@
 {
     "common": {
         "name":                     "google-sharedlocations",
-        "version":                  "1.4.0",
+        "version":                  "1.4.1",
         "license":                  "MIT",
         "authors": [
           "Christian Vorholt <chvorholt@gmail.com>"
         ],
         "news": {
-          "1.4.0": {
-            "en": "Fences id can be customized now. Fences are properly added and removed."
+          "1.4.1": {
+            "en": "Missing Places-Adapter support fixed. Fixed translation issues with polling-time.",
+            "de": "Fehlende Orte - Adapterunterstützung behoben. Probleme bei der Übersetzung mit Polling-Zeit behoben.",
+            "ru": "Исправлена ​​поддержка пропущенных мест-адаптеров. Исправлены проблемы перевода с периодом опроса.",
+            "pt": "Suporte ausente para lugares-adaptadores corrigido. Correção de problemas de tradução com o tempo de pesquisa.",
+            "nl": "Ontbrekende plaatsen-Adapter-ondersteuning opgelost. Vaste vertaalproblemen met polling-tijd.",
+            "fr": "Prise en charge des adaptateurs manquants Correction de problèmes de traduction avec le temps d'interrogation.",
+            "it": "Posti mancanti: il supporto dell'adattatore è stato risolto. Risolti i problemi di traduzione con il tempo di polling.",
+            "es": "Falta el soporte de adaptadores de lugares fijo. Se corrigieron los problemas de traducción con el tiempo de sondeo.",
+            "pl": "Naprawiono brakujące wsparcie dla adaptera lokalizacji. Naprawiono problemy z tłumaczeniem z czasem głosowania."
+          },
+          "1.4.0":  {
+            "en": "Fences id can be customized now. Fences states are properly added and removed.",
+            "de": "Fences ID kann jetzt angepasst werden. Fences-Zustände werden ordnungsgemäß hinzugefügt und entfernt.",
+            "ru": "Идентификатор Fences теперь можно настроить. Состояние забора правильно добавляется и удаляется.",
+            "pt": "ID de cercas pode ser personalizado agora. Os estados de cercas são devidamente adicionados e removidos.",
+            "nl": "Omheiningsidentificatie kan nu worden aangepast. Omheiningen worden correct toegevoegd en verwijderd.",
+            "fr": "L'identification des clôtures peut être personnalisée maintenant. Les états des clôtures sont correctement ajoutés et supprimés.",
+            "it": "L'ID di recinti può essere personalizzato ora. Gli stati dei recinti sono stati correttamente aggiunti e rimossi.",
+            "es": "La identificación de Fences se puede personalizar ahora. Los estados de cercas se agregan y eliminan correctamente.",
+            "pl": "Fences id można teraz dostosować. Stany ogrodzeń są odpowiednio dodawane i usuwane."
           },
           "1.3.0": {
             "en": "locations poll can be triggered by a state or by sending a message to the adapter",
@@ -217,7 +236,7 @@
         "stopBeforeUpdate":         true,
         "extIcon":                  "https://raw.githubusercontent.com/t4qjXH8N/ioBroker.google-sharedlocations/master/admin/google-sharedlocations.png",
         "keywords":                 ["google", "geofence", "sharedlocations"],
-        "readme":                   "https://github.com/t4qjXH8N/ioBroker.google-sharedlocations/master/README.md",
+        "readme":                   "https://github.com/t4qjXH8N/ioBroker.google-sharedlocations/blob/master/README.md",
         "loglevel":                 "info",
         "type":                     "geoposition",
         "materialize":              true,

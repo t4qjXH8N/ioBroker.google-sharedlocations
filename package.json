@@ -1,6 +1,6 @@
 {
   "name": "iobroker.google-sharedlocations",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Google Shared Locations Adapter",
   "author": {
     "name": "Christian Vorholt",
