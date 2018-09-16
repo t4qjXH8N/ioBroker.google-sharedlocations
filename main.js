@@ -382,7 +382,7 @@ function updateStates(userobjarr, callback) {
                   crole = 'value.battery';
                   cunit = '%';
                   break;
-                case 'GPS_accuracy':
+                case 'accuracy':
                   crole = 'value';
                   cunit = 'm';
                   break;
@@ -622,7 +622,7 @@ function extractUserLocationData(userdata, callback) {
     "address": undefined,
     "battery": undefined,
     "timestamp": undefined,
-    "GPS_accuracy": undefined
+    "accuracy": undefined
   };
 
   if(userdata && Array.isArray(userdata)) {
@@ -635,7 +635,7 @@ function extractUserLocationData(userdata, callback) {
     if(userdata[1] && userdata[1][4]) userdataobj['address'] = userdata[1][4];
     if(userdata[13] && userdata[13][1]) userdataobj['battery'] = userdata[13][1];
     if(userdata[1] && userdata[1][2]) userdataobj['timestamp'] = userdata[1][2];
-    if(userdata[1] && userdata[1][3]) userdataobj['GPS_accuracy'] = userdata[1][3];
+    if(userdata[1] && userdata[1][3]) userdataobj['accuracy'] = userdata[1][3];
   }
 
   if(callback) callback(false, userdataobj);
