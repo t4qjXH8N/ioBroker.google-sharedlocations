@@ -367,6 +367,7 @@ function updateStates(userobjarr, callback) {
           // cur properties
           let cid = 'user.' + userobjarr[i].id + '.' + cprop;
           let crole = 'state'; // default role
+          let cunit = ''; // default unit
 
           switch(typeof userobjarr[i][cprop]) {
             case 'number':
@@ -379,6 +380,11 @@ function updateStates(userobjarr, callback) {
                   break;
                 case 'battery':
                   crole = 'value.battery';
+                  cunit = '%';
+                  break;
+                case 'GPS_accuracy':
+                  crole = 'value';
+                  cunit = 'm';
                   break;
                 default:
                   crole = 'value';
@@ -389,6 +395,7 @@ function updateStates(userobjarr, callback) {
                   desc: '',
                   type: 'number',
                   role: crole,
+                  unit: cunit,
                   read: 'true',
                   write: 'false'
                 }
@@ -423,6 +430,7 @@ function updateStates(userobjarr, callback) {
                   desc: '',
                   type: 'boolean',
                   role: 'indicator',
+                  def: 'false',
                   read: 'true',
                   write: 'false'
                 }
@@ -619,7 +627,8 @@ function extractUserLocationData(userdata, callback) {
       "long": undefined,
       "address": undefined,
       "battery": undefined,
-      "timestamp": undefined
+      "timestamp": undefined,
+      "GPS_accuracy": undefined
     }
   } else {
     // userdata present
@@ -632,7 +641,8 @@ function extractUserLocationData(userdata, callback) {
       "long": userdata[1][1][1],
       "address": userdata[1][4],
       "battery": userdata[13][1],
-      "timestamp": userdata[1][2]
+      "timestamp": userdata[1][2],
+      "GPS_accuracy": userdata[1][3]
     }
   }
 
