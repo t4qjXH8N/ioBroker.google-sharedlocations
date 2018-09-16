@@ -8,7 +8,7 @@
         ],
         "news": {
           "1.4.0": {
-            "en": "Fences id can be customized now. Fences are properly added and removed.",
+            "en": "Fences id can be customized now. Fences are properly added and removed."
           },
           "1.3.0": {
             "en": "locations poll can be triggered by a state or by sending a message to the adapter",
