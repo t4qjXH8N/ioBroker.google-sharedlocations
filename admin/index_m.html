@@ -33,10 +33,10 @@
           }).keyup(function() {
             // Check that only numbers entered
             if ($(this).hasClass('number')) {
-              var val = $(this).val();
+              let val = $(this).val();
               if (val) {
-                var newVal = '';
-                for (var i = 0; i < val.length; i++) {
+                let newVal = '';
+                for (let i = 0; i < val.length; i++) {
                   if (val[i] >= '0' && val[i] <= '9') {
                     newVal += val[i];
                   }
@@ -85,10 +85,12 @@
               }
 
               updateUsersInTable(users, fences);
+              M.updateTextFields();
             });
           });
         });
 
+        M.updateTextFields();
         if (!changed) onChange(false);
       }
 
@@ -314,7 +316,7 @@
                             <th data-name="center_lat" class="translate">center_lat</th>
                             <th data-name="center_long" class="translate">center_long</th>
                             <th data-name="radius" class="translate">radius</th>
-                            <th data-name="userid" data-type="select" data-options="press search" class="translate">user</th>
+                            <th data-name="userid" data-type="select" data-options="activate adapter instance" class="translate">user</th>
                             <th data-name="fenceid" class="translate">fenceid</th>
                             <th data-buttons="delete" style="width: 40px"></th>
                         </tr>
