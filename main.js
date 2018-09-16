@@ -613,37 +613,29 @@ function parseLocationData(locationdata, callback) {
 
 // get user date and create states form
 function extractUserLocationData(userdata, callback) {
+  let userdataobj = {
+    "id": undefined,
+    "photoURL": undefined,
+    "name": undefined,
+    "lat": undefined,
+    "long": undefined,
+    "address": undefined,
+    "battery": undefined,
+    "timestamp": undefined,
+    "GPS_accuracy": undefined
+  };
 
-  let userdataobj = {};
-  // location data present?
-  if(!userdata[1]) {
-    // no userdata present
-
-    userdataobj = {
-      "id": undefined,
-      "photoURL": undefined,
-      "name": undefined,
-      "lat": undefined,
-      "long": undefined,
-      "address": undefined,
-      "battery": undefined,
-      "timestamp": undefined,
-      "GPS_accuracy": undefined
-    }
-  } else {
+  if(userdata && Array.isArray(userdata)) {
     // userdata present
-
-    userdataobj = {
-      "id": userdata[0][0],
-      "photoURL": userdata[0][1],
-      "name": userdata[0][3],
-      "lat": userdata[1][1][2],
-      "long": userdata[1][1][1],
-      "address": userdata[1][4],
-      "battery": userdata[13][1],
-      "timestamp": userdata[1][2],
-      "GPS_accuracy": userdata[1][3]
-    }
+    if(userdata[0] && userdata[0][0]) userdataobj['id'] = userdata[0][0];
+    if(userdata[0] && userdata[0][1]) userdataobj['photoURL'] = userdata[0][1];
+    if(userdata[0] && userdata[0][3]) userdataobj['name'] = userdata[0][3];
+    if(userdata[1] && userdata[1][1] && userdata[1][1][2]) userdataobj['lat'] = userdata[1][1][2];
+    if(userdata[1] && userdata[1][1] && userdata[1][1][1]) userdataobj['long'] = userdata[1][1][1];
+    if(userdata[1] && userdata[1][4]) userdataobj['address'] = userdata[1][4];
+    if(userdata[13] && userdata[13][1]) userdataobj['battery'] = userdata[13][1];
+    if(userdata[1] && userdata[1][2]) userdataobj['timestamp'] = userdata[1][2];
+    if(userdata[1] && userdata[1][3]) userdataobj['GPS_accuracy'] = userdata[1][3];
   }
 
   if(callback) callback(false, userdataobj);
