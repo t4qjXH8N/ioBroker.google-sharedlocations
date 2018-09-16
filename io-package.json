@@ -1,12 +1,23 @@
 {
     "common": {
         "name":                     "google-sharedlocations",
-        "version":                  "1.4.1",
+        "version":                  "1.5.0",
         "license":                  "MIT",
         "authors": [
           "Christian Vorholt <chvorholt@gmail.com>"
         ],
         "news": {
+          "1.5.0": {
+            "en": "Added GPS accuracy. Adapter should be more robust against datagram changes.",
+            "de": "GPS-Genauigkeit hinzugefügt Der Adapter sollte robuster gegen Datagrammänderungen sein.",
+            "ru": "Добавлена ​​точность GPS. Адаптер должен быть более устойчивым к изменениям дейтаграмм.",
+            "pt": "Adicionado precisão do GPS. Adaptador deve ser mais robusto contra alterações de datagrama.",
+            "nl": "GPS-nauwkeurigheid toegevoegd. Adapter moet robuuster zijn tegen datagramwijzigingen.",
+            "fr": "Ajout de la précision GPS. L'adaptateur doit être plus robuste contre les changements de datagramme.",
+            "it": "Aggiunta la precisione del GPS. L'adattatore dovrebbe essere più robusto contro le modifiche del datagramma.",
+            "es": "Se agregó precisión GPS. El adaptador debe ser más robusto contra los cambios en los datagramas.",
+            "pl": "Dodano dokładność GPS. Adapter powinien być bardziej odporny na zmiany datagramów."
+          },
           "1.4.1": {
             "en": "Missing Places-Adapter support fixed. Fixed translation issues with polling-time.",
             "de": "Fehlende Orte - Adapterunterstützung behoben. Probleme bei der Übersetzung mit Polling-Zeit behoben.",

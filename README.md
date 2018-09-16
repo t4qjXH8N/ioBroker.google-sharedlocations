@@ -20,6 +20,10 @@ When opening the configuration for the first time enter only the google login da
 In this case check the google account of the user that is used by the google-sharedlocations adapter. Log in with a browser and check if google blocked some logins. Click on a blocked login and confirm to google that this was you. Additionally check that two factor authentification is turned off.
 
 ## Changelog
+#### 1.5.0 (16-Sep-2018)
+- added GPS position accuracy
+- adapter should be more robust against datagram changes
+
 #### 1.4.1 (16-Sep-2018)
 - fixed places adapter support
 - fixed translation issue with polling
