@@ -90,16 +90,16 @@ systemDictionary = {
     "es": "Contraseña",
     "pl": "Hasło"
   },
-  "Polling interval, 0=disabled (s)": {
-    "en": "Polling interval, 0 = disabled (s)",
-    "de": "Abrufintervall, 0 = deaktiviert (s)",
-    "ru": "Интервал опроса, 0 = отключен (ы)",
-    "pt": "Intervalo de sondagem, 0 = desativado (s)",
-    "nl": "Polling-interval, 0 = uitgeschakeld (s)",
-    "fr": "Intervalle d'interrogation, 0 = désactivé (s)",
-    "it": "Intervallo di polling, 0 = disabilitato / i",
-    "es": "Intervalo de sondeo, 0 = deshabilitado (s)",
-    "pl": "Interwał odpytywania, 0 = wyłączony (s)"
+  "google_polling_interval": {
+    "en": "Polling interval (s), 0 = disabled",
+    "de": "Abrufintervall (s), 0 = deaktiviert",
+    "ru": "Интервал опроса (ы), 0 = отключен",
+    "pt": "Intervalo de sondagem (s), 0 = desativado",
+    "nl": "Polling-interval (s), 0 = uitgeschakeld",
+    "fr": "Intervalle d'interrogation (s), 0 = désactivé",
+    "it": "Intervallo di polling (s), 0 = disabilitato",
+    "es": "Intervalo de sondeo (s), 0 = deshabilitado",
+    "pl": "Interwał odpytywania (s), 0 = wyłączony"
   },
   "google_username": {
     "en": "Username",
