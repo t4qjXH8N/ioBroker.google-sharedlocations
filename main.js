@@ -10,7 +10,7 @@ const request = require('request');
 
 const min_polling_interval = 30; // minimum polling interval in seconds
 
-const trigger_poll_state = 'locations.trigger_poll';  // state for triggering a poll
+const trigger_poll_state = 'trigger_poll';  // state for triggering a poll
 
 // you have to call the adapter function and pass a options object
 // name has to be set and has to be equal to adapters folder name and main file name excluding extension
@@ -363,6 +363,21 @@ function updateStates(userobjarr, callback) {
     for(let i=0;i<userobjarr.length;i++) {
       // go through users
       for(let cprop in userobjarr[i]) {
+        // we have a user, create the group
+        let username = '';
+
+        if (userobjarr[i].hasOwnProperty('name') && userobjarr[i]['name']) username = userobjarr[i]['name'];
+
+        let obj = {
+            "_id": "user." + userobjarr[i].id,
+            "type": "group",
+            "common": {
+            "name": username
+          },
+            "native": {}
+          };
+        adapter.setObjectNotExists('user.' + userobjarr[i].id, obj);
+
         if(userobjarr[i].hasOwnProperty(cprop)) {
           // cur properties
           let cid = 'user.' + userobjarr[i].id + '.' + cprop;

@@ -1,12 +1,23 @@
 {
     "common": {
         "name":                     "google-sharedlocations",
-        "version":                  "1.5.0",
+        "version":                  "1.5.1",
         "license":                  "MIT",
         "authors": [
           "Christian Vorholt <chvorholt@gmail.com>"
         ],
         "news": {
+          "1.5.1": {
+            "en": "Changed location of trigger poll state. States are now members of named groups.",
+            "de": "Geänderte Position des Trigger-Poll-Status. Zustände sind jetzt Mitglieder von benannten Gruppen.",
+            "ru": "Изменено местоположение состояния опроса триггеров. Государства теперь являются членами названных групп.",
+            "pt": "Localização alterada do estado de pesquisa do acionador. Os estados são agora membros de grupos nomeados.",
+            "nl": "Gewijzigde locatie van trigger poll-status. Staten zijn nu lid van benoemde groepen.",
+            "fr": "Emplacement modifié de l'état d'interrogation du déclencheur. Les États sont désormais membres de groupes nommés.",
+            "it": "Posizione modificata dello stato di polling del trigger. Gli stati sono ora membri di gruppi con nome.",
+            "es": "Se modificó la ubicación del estado de sondeo de activación. Los estados ahora son miembros de grupos nombrados.",
+            "pl": "Zmieniono lokalizację stanu sondowania spustu. Stany są teraz członkami nazwanych grup."
+          },
           "1.5.0": {
             "en": "Added GPS accuracy. Adapter should be more robust against datagram changes.",
             "de": "GPS-Genauigkeit hinzugefügt Der Adapter sollte robuster gegen Datagrammänderungen sein.",
@@ -268,6 +279,14 @@
     ],
     "instanceObjects": [
     {
+      "_id": "info",
+      "type": "channel",
+      "common": {
+        "name": "Information"
+      },
+      "native": {}
+    },
+    {
       "_id": "info.connection",
       "type": "state",
       "common": {
@@ -282,7 +301,7 @@
       "native": {}
       },
       {
-        "_id": "locations.trigger_poll",
+        "_id": "trigger_poll",
         "type": "state",
         "common": {
           "name": "poll",
@@ -294,7 +313,24 @@
           "role": "button"
         },
         "native": {}
-    }
+      },
+      {
+        "_id": "fence",
+        "type": "group",
+        "common": {
+          "name": "Geofences",
+          "desc": "States for fences defined in the config."
+        },
+        "native": {}
+      },
+      {
+        "_id": "user",
+        "type": "group",
+        "common": {
+          "name": "Users",
+          "desc": "Retrieved information on users."
+        },
+        "native": {}
+      }
   ]
-
 }
