@@ -401,6 +401,9 @@ function updateStates(userobjarr, callback) {
                   crole = 'value';
                   cunit = 'm';
                   break;
+                case 'timestamp':
+                  crole = 'date';
+                  break;
                 default:
                   crole = 'value';
               }
