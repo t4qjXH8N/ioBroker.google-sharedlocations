@@ -231,7 +231,7 @@
         "title": "Google shared locations",
         "titleLang": {
           "en": "An ioBroker adapter for retrieving locations from Google shared locations",
-          "de": "Ein ioBroker-Adapter zum Abrufen von Standorten von freigegebenen Google-Standorten",
+          "de": "Ein ioBroker-Adapter zum Abrufen von freigegebenen Google-Standorten",
           "ru": "Адаптер ioBroker для поиска местоположений из общих мест Google",
           "pt": "Um adaptador ioBroker para recuperar locais de locais compartilhados do Google",
           "nl": "Een ioBroker-adapter voor het ophalen van locaties van gedeelde Google-locaties",
@@ -241,15 +241,15 @@
           "pl": "Adapter ioBroker do pobierania lokalizacji z udostępnianych lokalizacji Google"
         },
         "desc": {
-          "en": "With this adapter one can retrieve of family members or friends from locations from Google shared locations if they share their location. ",
-          "de": "Mit diesem Adapter können Sie Familienmitglieder oder Freunde von Standorten von freigegebenen Google-Standorten abrufen, wenn sie ihren Standort teilen.",
-          "ru": "С помощью этого адаптера вы можете получить членов семьи или друзей из мест размещения в Google, если они делят свое местоположение.",
-          "pt": "Com esse adaptador, é possível recuperar membros da família ou amigos de locais de locais compartilhados do Google, se eles compartilharem sua localização.",
-          "nl": "Met deze adapter kunt u familieleden of vrienden ophalen van locaties op gedeelde Google-locaties als ze hun locatie delen.",
-          "fr": "Avec cet adaptateur, vous pouvez récupérer des membres de votre famille ou des amis depuis des emplacements partagés de Google s'ils partagent leur emplacement.",
-          "it": "Con questo adattatore è possibile recuperare familiari o amici da posizioni condivise da Google se condividono la loro posizione.",
-          "es": "Con este adaptador, uno puede recuperar a miembros de la familia o amigos de ubicaciones de ubicaciones compartidas de Google si comparten su ubicación.",
-          "pl": "Dzięki temu adapterowi można odzyskać członków rodziny lub znajomych z lokalizacji z udostępnionych lokalizacji Google, jeśli udostępniają oni swoją lokalizację."
+          "en": "Locations of family members or friends can be retrieved from Google shared locations if they share their location.",
+          "de": "Standorte von Familienmitgliedern oder Freunden können von freigegebenen Google-Standorten abgerufen werden, wenn sie ihren Standort teilen.",
+          "ru": "Положения членов семьи или друзей могут быть получены из общих мест Google, если они делят свое местоположение.",
+          "pt": "Locais de membros da família ou amigos podem ser recuperados de locais compartilhados do Google se eles compartilharem sua localização.",
+          "nl": "Locaties van familieleden of vrienden kunnen worden opgehaald op gedeelde locaties van Google als ze hun locatie delen.",
+          "fr": "Les emplacements des membres de la famille ou des amis peuvent être récupérés à partir des emplacements partagés de Google s'ils partagent leur emplacement.",
+          "it": "Le posizioni di familiari o amici possono essere recuperate dalle posizioni condivise di Google se condividono la loro posizione.",
+          "es": "Las ubicaciones de los miembros de la familia o amigos pueden recuperarse de las ubicaciones compartidas de Google si comparten su ubicación.",
+          "pl": "Lokalizacje członków rodziny lub znajomych można pobierać z udostępnianych lokalizacji Google, jeśli udostępniają swoją lokalizację."
         },
         "platform":                 "Javascript/Node.js",
         "mode":                     "daemon",
