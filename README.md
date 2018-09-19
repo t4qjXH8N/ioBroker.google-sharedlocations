@@ -10,7 +10,11 @@ ioBroker adapter for google-sharedlocations
 [![Build status](https://ci.appveyor.com/api/projects/status/d5rora9wgp7otg23/branch/master?svg=true)](https://ci.appveyor.com/project/t4qjXH8N/iobroker-google-sharedlocations/branch/master)
 
 ## Description
-This is an ioBroker-adapter that can retrieve the location data of users that are sharing their location via google shared locations. It can not retrieve the location of the user that is used to access google. The adapter can receive and process a bunch of messages, please have a look at main.js for details. Sometimes the recovery email address has to be used to solve a challenge by Googles, therefore it may have to be entered in the adapter. 
+This is an ioBroker-adapter that can retrieve the location data of users that are sharing their location via google shared locations. It can not retrieve the location of the user that is used to access google. 
+
+Circularly shaped geofences can be defined in the adapter config. These geofences can be associated with users, i.e. that a state is toogled if the user enters or leaves a geofence.
+
+The adapter can receive and process a bunch of messages, please have a look at main.js for details. Sometimes the recovery email address has to be used to solve a challenge by Googles, therefore it may have to be entered in the adapter. 
 
 ## Usage
 When opening the configuration for the first time enter only the google login data. Two factor authentification has to be disabled for the user.
