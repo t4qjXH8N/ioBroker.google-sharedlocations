@@ -522,11 +522,9 @@ function checkFences(userobjarr, callback) {
       if(cuser.id === cfence.userid) {
         // calc distance
         let curdist = haversine(cuser.lat, cuser.long, Number(cfence.center_lat), Number(cfence.center_long));
-        let fenceid = 'fence.' + i;
-
         let cstate = curdist <= cfence.radius;
 
-        adapter.setState(fenceid, cstate, false);
+        adapter.setState('fence.' + cfence.fenceid, cstate, false);
         break;
       }
     }

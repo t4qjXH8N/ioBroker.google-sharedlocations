@@ -1,12 +1,23 @@
 {
     "common": {
         "name":                     "google-sharedlocations",
-        "version":                  "1.5.1",
+        "version":                  "1.5.2",
         "license":                  "MIT",
         "authors": [
           "Christian Vorholt <chvorholt@gmail.com>"
         ],
         "news": {
+          "1.5.2": {
+            "en": "Fence is now updated correctly.",
+            "de": "Zaun wird jetzt korrekt aktualisiert.",
+            "ru": "Забор теперь обновляется правильно.",
+            "pt": "Cerca agora é atualizada corretamente.",
+            "nl": "Fence is nu correct bijgewerkt.",
+            "fr": "La clôture est maintenant mise à jour correctement.",
+            "it": "Il recinto è ora aggiornato correttamente.",
+            "es": "La cerca ahora se ha actualizado correctamente.",
+            "pl": "Ogrodzenie jest teraz poprawnie aktualizowane."
+          },
           "1.5.1": {
             "en": "Changed location of trigger poll state. States are now members of named groups.",
             "de": "Geänderte Position des Trigger-Poll-Status. Zustände sind jetzt Mitglieder von benannten Gruppen.",
