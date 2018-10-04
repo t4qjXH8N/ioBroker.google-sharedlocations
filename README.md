@@ -23,6 +23,8 @@ When opening the configuration for the first time enter only the google login da
 ### instance indicator is green but no location data is received or instance indicator is yellow and the log says "please login manually" 
 In this case check the google account of the user that is used by the google-sharedlocations adapter. Log in with a browser and check if google blocked some logins. Click on a blocked login and confirm to google that this was you. Additionally check that two factor authentification is turned off.
 
+If you are still experience problems please open an issue. Please set the adapter level to debug and publish the log there. Otherwise I have no change to help.
+
 ## Changelog
 #### 1.5.2 (19-Sep-2018)
 - fence was not updated correctly
