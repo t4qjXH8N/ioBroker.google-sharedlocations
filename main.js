@@ -119,7 +119,7 @@ adapter.on('message', function (obj) {
       case 'checkConnection':
         credentials = JSON.parse(obj.message);
 
-        auth.connect(credentials.google_username, credentials.google_password, credentials.google_verify_email, function(err, cookieheader) {
+        auth.connect(credentials.google_username, credentials.google_password, credentials.google_verify_email, adapter, function(err, cookieheader) {
           if(!err) {
             // after the query, issue a logout
             auth.logout();
@@ -141,7 +141,7 @@ adapter.on('message', function (obj) {
         connected = false;
         credentials = JSON.parse(obj.message);
 
-        auth.connect(credentials.google_username, credentials.google_password, credentials.google_verify_email, function(err, cookieheader) {
+        auth.connect(credentials.google_username, credentials.google_password, credentials.google_verify_email, adapter, function(err, cookieheader) {
           if(!err) {
             connected = true;
             google_cookie_header = cookieheader;
@@ -251,7 +251,7 @@ function main() {
     if(adapter.config.google_username && adapter.config.google_username !== ''
       && adapter.config.google_password && adapter.config.google_password !== ''
       && adapter.config.google_verify_email && adapter.config.google_verify_email !== '') {
-      auth.connect(adapter.config.google_username, adapter.config.google_password, adapter.config.google_verify_email, function (err, cookieheader) {
+      auth.connect(adapter.config.google_username, adapter.config.google_password, adapter.config.google_verify_email, adapter, function (err, cookieheader) {
         if (err) {
           adapter.log.error('First connection failed.');
           adapter.setState('info.connection', false, false);
@@ -289,7 +289,7 @@ function triggerSingleQuery(callback) {
   // are we already connected to google?
   if (!google_cookie_header) {
     // we have to setup a connection first
-    auth.connect(adapter.config.google_username, adapter.config.google_password, adapter.config.google_verify_email, function (err, cookieheader) {
+    auth.connect(adapter.config.google_username, adapter.config.google_password, adapter.config.google_verify_email, adapter, function (err, cookieheader) {
       if (err) {
         adapter.log.error('First connection failed.');
         adapter.setState('info.connection', false, false);
