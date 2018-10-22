@@ -25,6 +25,9 @@ In this case check the google account of the user that is used by the google-sha
 
 If you still experience problems please open an issue. Please set the adapter level to debug and publish the log there. Otherwise I have no change to help.
 
+## Donation
+If this project help you reduce time to develop, you can give me a cup of coffee or a bottle of beer via PayPal(chvorholt@gmail.com) :-)  
+
 ## Changelog
 #### 1.5.2 (19-Sep-2018)
 - fence was not updated correctly
