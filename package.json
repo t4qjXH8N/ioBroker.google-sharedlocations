@@ -4,10 +4,10 @@
   "description": "Google Shared Locations Adapter",
   "author": {
     "name": "Christian Vorholt",
-    "email": "chvorholt@mail.com"
+    "email": "chvorholt@gmail.com"
   },
   "homepage": "https://github.com/t4qjXH8N/ioBroker.google-sharedlocations",
-  "readme": "https://github.com/t4qjXH8N/ioBroker.google-sharedlocations/master/README.md",
+  "readme": "https://github.com/t4qjXH8N/ioBroker.google-sharedlocations/blob/master/README.md",
   "keywords": ["ioBroker", "geofence", "google", "google shared locations"],
   "repository": {
     "type": "git",
