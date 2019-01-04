@@ -15,7 +15,7 @@ const trigger_poll_state = 'trigger_poll';  // state for triggering a poll
 // you have to call the adapter function and pass a options object
 // name has to be set and has to be equal to adapters folder name and main file name excluding extension
 // adapter will be restarted automatically every time as the configuration changed, e.g system.adapter.google-sharedlocations.0
-const adapter = utils.adapter('google-sharedlocations');
+const adapter = new utils.Adapter('google-sharedlocations');
 
 let google_polling_interval_id = null;
 let google_cookie_header = null;

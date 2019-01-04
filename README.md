@@ -26,7 +26,7 @@ In this case check the google account of the user that is used by the google-sha
 If you still experience problems please open an issue. Please set the adapter level to debug and publish the log there. Otherwise I have no change to help.
 
 ## Donation
-If this project help you reduce time to develop, you can give me a cup of coffee or a bottle of beer via PayPal(chvorholt@gmail.com) :-)  
+If this project helped you to reduce developing time, you can give me a cup of coffee or a bottle of beer via PayPal(chvorholt@gmail.com) :-)  
 
 ## Changelog
 #### 1.5.2 (19-Sep-2018)
@@ -100,7 +100,7 @@ If this project help you reduce time to develop, you can give me a cup of coffee
 #### 0.0.1 (31-Dec-2017)
 - basic features tested
 
-known issued
+## Known issues
 - objects for fences have to be deleted manually when they are removed in the admin interface
 
 ## Disclaimer
@@ -109,7 +109,7 @@ I am not in any association with Google.
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2017-2018 Christian Vorholt <chvorholt@gmail.com>
+Copyright (c) 2017-2019 Christian Vorholt <chvorholt@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
