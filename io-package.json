@@ -1,12 +1,23 @@
 {
     "common": {
         "name":                     "google-sharedlocations",
-        "version":                  "1.5.2",
+        "version":                  "1.6.0",
         "license":                  "MIT",
         "authors": [
           "Christian Vorholt <chvorholt@gmail.com>"
         ],
         "news": {
+          "1.6.0":  {
+            "en": "Cookie can be retrieved via proxy.",
+            "de": "Das Cookie kann über einen Proxy abgerufen werden.",
+            "ru": "Cookie можно получить через прокси.",
+            "pt": "Cookie pode ser recuperado via proxy.",
+            "nl": "Cookie kan worden opgehaald via proxy.",
+            "fr": "Le cookie peut être récupéré via un proxy.",
+            "it": "I cookie possono essere recuperati tramite proxy.",
+            "es": "La cookie se puede recuperar a través de proxy.",
+            "pl": "Plik cookie można pobrać za pośrednictwem serwera proxy."
+          },
           "1.5.2": {
             "en": "Fence is now updated correctly.",
             "de": "Zaun wird jetzt korrekt aktualisiert.",
@@ -216,28 +227,28 @@
             "es": "Corrección de errores, autenticación mejorada.",
             "pl": "Poprawione błędy, ulepszone uwierzytelnianie."
           },
-            "0.0.2": {
-              "en": "Bugfixes",
-              "de": "Fehlerbehebung",
-              "ru": "Исправление ошибок",
-              "pt": "Correções de bugs",
-              "nl": "Bugfixes",
-              "fr": "Correction de bugs",
-              "it": "Correzioni di bug",
-              "es": "Corrección de errores",
-              "pl": "Poprawione błędy"
-            },
-            "0.0.1": {
-              "en": "Initial adapter",
-              "de": "Anfangsadapter",
-              "ru": "Начальный адаптер",
-              "pt": "Adaptador inicial",
-              "nl": "Initiële adapter",
-              "fr": "Adaptateur initial",
-              "it": "Adattatore iniziale",
-              "es": "Adaptador inicial",
-              "pl": "Początkowy adapter"
-            }
+          "0.0.2": {
+            "en": "Bugfixes",
+            "de": "Fehlerbehebung",
+            "ru": "Исправление ошибок",
+            "pt": "Correções de bugs",
+            "nl": "Bugfixes",
+            "fr": "Correction de bugs",
+            "it": "Correzioni di bug",
+            "es": "Corrección de errores",
+            "pl": "Poprawione błędy"
+          },
+          "0.0.1": {
+            "en": "Initial adapter",
+            "de": "Anfangsadapter",
+            "ru": "Начальный адаптер",
+            "pt": "Adaptador inicial",
+            "nl": "Initiële adapter",
+            "fr": "Adaptateur initial",
+            "it": "Adattatore iniziale",
+            "es": "Adaptador inicial",
+            "pl": "Początkowy adapter"
+          }
         },
         "title": "Google shared locations",
         "titleLang": {
@@ -265,7 +276,7 @@
         "platform":                 "Javascript/Node.js",
         "mode":                     "daemon",
         "icon":                     "google-sharedlocations.png",
-        "enabled":                  false,
+        "enabled":                  true,
         "stopBeforeUpdate":         true,
         "extIcon":                  "https://raw.githubusercontent.com/t4qjXH8N/ioBroker.google-sharedlocations/master/admin/google-sharedlocations.png",
         "keywords":                 ["google", "geofence", "sharedlocations"],
@@ -282,6 +293,7 @@
       "google_polling_interval": "600",
       "places_adapter": "",
       "google_verify_email": "",
+      "cookie_string": "",
       "fences": [
         {"description": "", "center_lat": "0.0000", "center_long": "0.0000", "radius": "100", "userid": "", "fenceid": ""}
       ]
@@ -302,7 +314,7 @@
       "type": "state",
       "common": {
         "name": "connected",
-        "desc": "Connected to Google Shared Location",
+        "desc": "Connected to Google",
         "type": "boolean",
         "def": "false",
         "read": "true",

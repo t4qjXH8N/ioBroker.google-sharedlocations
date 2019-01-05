@@ -1,6 +1,6 @@
 {
   "name": "iobroker.google-sharedlocations",
-  "version": "1.5.2",
+  "version": "1.6.0",
   "description": "Google Shared Locations Adapter",
   "author": {
     "name": "Christian Vorholt",
@@ -8,22 +8,33 @@
   },
   "homepage": "https://github.com/t4qjXH8N/ioBroker.google-sharedlocations",
   "readme": "https://github.com/t4qjXH8N/ioBroker.google-sharedlocations/blob/master/README.md",
-  "keywords": ["ioBroker", "geofence", "google", "google shared locations"],
+  "keywords": [
+    "ioBroker",
+    "geofence",
+    "google",
+    "google shared locations"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/t4qjXH8N/ioBroker.google-sharedlocations.git"
   },
   "dependencies": {
     "request": ">=2.83.0",
-    "cheerio": "^1.0.0-rc.2"
+    "cheerio": "^1.0.0-rc.2",
+    "cookie": "^0.3.1",
+    "express": "^4.16.4",
+    "http-proxy-middleware": "^0.19.1",
+    "http-proxy-response-rewrite": "^0.0.1",
+    "https": "^1.0.0",
+    "querystring": "^0.2.0"
   },
   "scripts": {
     "test": "node node_modules/mocha/bin/mocha --exit"
   },
   "devDependencies": {
-	"gulp": "^3.9.1",
+    "gulp": "^3.9.1",
     "mocha": "^4.1.0",
-    "chai": "^4.1.2"  
+    "chai": "^4.1.2"
   },
   "bugs": {
     "url": "https://github.com/t4qjXH8N/ioBroker.google-sharedlocations/issues"

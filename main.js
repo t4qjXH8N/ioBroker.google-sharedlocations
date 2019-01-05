@@ -181,6 +181,15 @@ adapter.on('message', function (obj) {
 
 // synchronize config
 function syncConfig() {
+
+  /*
+  if (alexa.cookie !== adapter.config.cookie) {
+    adapter.log.info('Update cookie in adapter configuration ... restarting ...');
+    adapter.extendForeignObject('system.adapter.' + adapter.namespace, {native: {cookie: alexa.cookie, csrf: alexa.csrf, cookieData: alexa.cookieData}});
+    return;
+  }
+  */
+
   function stateInConfig(cstate) {
     let fences = adapter.config.fences;
     for(let j=0;j<fences.length;j++) {

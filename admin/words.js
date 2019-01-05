@@ -134,6 +134,39 @@ systemDictionary = {
     "es": "Datos de ingreso",
     "pl": "Dane logowania"
   },
+  "Cookie-String": {
+    "en": "Cookie-String",
+    "de": "Cookie-String",
+    "ru": "Cookie-струнной",
+    "pt": "Cookie-String",
+    "nl": "Cookie-String",
+    "fr": "Cookie-String",
+    "it": "Cookie-String",
+    "es": "Cadena de galletas",
+    "pl": "Cookie-String"
+  },
+  "Enter Cookie directly": {
+    "en": "Enter Cookie directly",
+    "de": "Geben Sie das Cookie direkt ein",
+    "ru": "Введите Cookie напрямую",
+    "pt": "Insira o cookie diretamente",
+    "nl": "Voer Cookie rechtstreeks in",
+    "fr": "Entrez le cookie directement",
+    "it": "Inserisci direttamente il cookie",
+    "es": "Ingrese Cookie directamente",
+    "pl": "Wprowadź Cookie bezpośrednio"
+  },
+  "activate adapter instance": {
+    "en": "activate adapter instance",
+    "de": "Aktivieren Sie die Adapterinstanz",
+    "ru": "активировать экземпляр адаптера",
+    "pt": "ativar instância do adaptador",
+    "nl": "activeer adapter-instantie",
+    "fr": "activer l'instance d'adaptateur",
+    "it": "attiva l'istanza dell'adattatore",
+    "es": "activar instancia de adaptador",
+    "pl": "aktywuj instancję adaptera"
+  },
   "on save adapter restarts with new config immediately": {
     "en": "on save adapter restarts with new config immediately",
     "de": "Beim Speichern wird der Adapter sofort mit der neuen Konfiguration neu gestartet",
@@ -167,17 +200,6 @@ systemDictionary = {
     "es": "radio (m)",
     "pl": "promień (m)"
   },
-  "search": {
-    "en": "search",
-    "de": "Suche",
-    "ru": "поиск",
-    "pt": "pesquisa",
-    "nl": "zoeken",
-    "fr": "chercher",
-    "it": "ricerca",
-    "es": "buscar",
-    "pl": "Szukaj"
-  },
   "userid": {
     "en": "user id",
     "de": "Benutzeridentifikation",
@@ -210,6 +232,50 @@ systemDictionary = {
     "it": "controllare la connessione",
     "es": "verifica la conexión",
     "pl": "Sprawdź połączenie"
+  },
+  "Cookie Retrieval by Proxy": {
+    "en": "Cookie Retrieval by Proxy",
+    "de": "Cookie-Abruf durch Proxy",
+    "ru": "Поиск файлов cookie по доверенности",
+    "pt": "Recuperação de Cookie por Proxy",
+    "nl": "Cookie Retrieval by Proxy",
+    "fr": "Récupération de cookies par proxy",
+    "it": "Cookie Retrieval by Proxy",
+    "es": "Recuperación de cookies por proxy",
+    "pl": "Odzyskiwanie plików cookie przez serwer proxy"
+  },
+  "open proxy website": {
+    "en": "open proxy website",
+    "de": "Proxy-Website öffnen",
+    "ru": "открыть прокси сайт",
+    "pt": "site de proxy aberto",
+    "nl": "open proxywebsite",
+    "fr": "site proxy ouvert",
+    "it": "sito web proxy aperto",
+    "es": "sitio web de proxy abierto",
+    "pl": "otwarta strona proxy"
+  },
+  "Google-Account Credentials": {
+    "en": "Google-Account Credentials",
+    "de": "Google-Konto-Anmeldeinformationen",
+    "ru": "Учетные данные Google-аккаунта",
+    "pt": "Credenciais da conta do Google",
+    "nl": "Inloggegevens van Google-account",
+    "fr": "Informations d'identification du compte Google",
+    "it": "Google-Account Credentials",
+    "es": "Credenciales de la cuenta de Google",
+    "pl": "Poświadczenia konta Google"
+  },
+  "cookie_retrieval": {
+    "en": "",
+    "de": "Es gibt drei Möglichkeiten, sich bei Ihrem Google-Konto anzumelden. Die erste Möglichkeit besteht darin, die Zugangsdaten Ihres Kontos und die dem Konto zugeordnete Wiederherstellungs-E-Mail-Adresse anzugeben. Wenn die erste Möglichkeit fehlschlägt, verwenden Sie die zweite Möglichkeit. Die zweite Möglichkeit ruft den Cookie über einen Proxy ab. Wenn die zweite Möglichkeit fehlschlägt, können Sie den Cookie direkt eingeben.",
+    "ru": "Есть три возможности войти в свою учетную запись Google. Первая возможность - ввести учетные данные вашей учетной записи и адрес электронной почты для восстановления, связанный с этой учетной записью. Если первая возможность не удалась, используйте вторую возможность. Вторая возможность извлекает куки, используя прокси. Если вторая возможность не удалась, вы можете ввести cookie напрямую.",
+    "pt": "Existem três possibilidades para acessar sua conta do Google. A primeira possibilidade é inserir as credenciais da sua conta e o endereço de e-mail de recuperação associado à conta. Se a primeira possibilidade falhar, use a segunda possibilidade. A segunda possibilidade recupera o cookie usando um proxy. Se a segunda possibilidade falhar, você poderá inserir o cookie diretamente.",
+    "nl": "Er zijn drie mogelijkheden om in te loggen in uw Google-account. De eerste mogelijkheid bestaat uit het invoeren van de inloggegevens van uw account en het herstel-e-mailadres dat aan het account is gekoppeld. Als de eerste mogelijkheid faalt, gebruik dan de tweede mogelijkheid. De tweede mogelijkheid haalt de cookie op met behulp van een proxy. Als de tweede mogelijkheid faalt, kunt u de cookie rechtstreeks invoeren.",
+    "fr": "Il existe trois possibilités pour vous connecter à votre compte Google. La première possibilité consiste à saisir les informations d'identification de votre compte et l'adresse électronique de récupération associée au compte. Si la première possibilité échoue, utilisez la deuxième possibilité. La deuxième possibilité récupère le cookie à l'aide d'un proxy. Si la deuxième possibilité échoue, vous pouvez directement saisir le cookie.",
+    "it": "Ci sono tre possibilità per accedere al tuo account Google. La prima possibilità è inserire le credenziali dell'account e l'indirizzo email di recupero associato all'account. Se la prima possibilità fallisce, usa la seconda possibilità. La seconda possibilità recupera il cookie utilizzando un proxy. Se la seconda possibilità fallisce, puoi inserire direttamente il cookie.",
+    "es": "Hay tres posibilidades para iniciar sesión en su cuenta de Google. La primera posibilidad es ingresar las credenciales de su cuenta y la dirección de correo electrónico de recuperación asociada con la cuenta. Si la primera posibilidad falla, usa la segunda posibilidad. La segunda posibilidad recupera la cookie utilizando un proxy. Si la segunda posibilidad falla, puede ingresar la cookie directamente.",
+    "pl": "Istnieją trzy możliwości zalogowania się na konto Google. Pierwszą możliwością jest podanie poświadczeń konta i adresu pomocniczego e-mail powiązanego z kontem. Jeśli pierwsza możliwość zawodzi, użyj drugiej możliwości. Druga możliwość pobiera plik cookie za pomocą serwera proxy. Jeśli druga możliwość się nie powiedzie, możesz bezpośrednio wprowadzić plik cookie."
   },
   "none": {
     "en": "none",

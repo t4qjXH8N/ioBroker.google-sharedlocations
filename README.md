@@ -17,7 +17,7 @@ Circularly shaped geofences can be defined in the adapter config. These geofence
 The adapter can receive and process a bunch of messages, please have a look at main.js for details. Sometimes the recovery email address has to be used to solve a challenge by Googles, therefore it may have to be entered in the adapter. 
 
 ## Usage
-When opening the configuration for the first time enter only the google login data. Two factor authentification has to be disabled for the user.
+There are three possibilities to login into your Google account. The first possibility is to enter your account credentials and the recovery email address associated with the account. If the first possibility fails, use the second possibility . The second possibility retrieves the cookie using a proxy. If the second possibility fails, you can enter the cookie directly. Two factor authentification has to be disabled for the user. 
 
 ## Troubleshooting
 ### instance indicator is green but no location data is received or instance indicator is yellow and the log says "please login manually" 
@@ -29,6 +29,9 @@ If you still experience problems please open an issue. Please set the adapter le
 If this project helped you to reduce developing time, you can give me a cup of coffee or a bottle of beer via PayPal(chvorholt@gmail.com) :-)  
 
 ## Changelog
+#### 1.6.0 (06-Jan-2019)
+- cookie can be retrieved via proxy, many thanks to Apollon77 and soef!
+
 #### 1.5.2 (19-Sep-2018)
 - fence was not updated correctly
 
