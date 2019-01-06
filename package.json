@@ -19,14 +19,13 @@
     "url": "https://github.com/t4qjXH8N/ioBroker.google-sharedlocations.git"
   },
   "dependencies": {
-    "request": ">=2.83.0",
+    "async": "^2.6.1",
     "cheerio": "^1.0.0-rc.2",
-    "cookie": "^0.3.1",
     "express": "^4.16.4",
+    "express-http-proxy": "^1.5.0",
     "http-proxy-middleware": "^0.19.1",
-    "http-proxy-response-rewrite": "^0.0.1",
-    "https": "^1.0.0",
-    "querystring": "^0.2.0"
+    "request": ">=2.83.0",
+    "underscore": "^1.9.1"
   },
   "scripts": {
     "test": "node node_modules/mocha/bin/mocha --exit"

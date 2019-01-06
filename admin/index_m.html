@@ -210,14 +210,13 @@
             }
 
             let credentials =
-              '{' +
-              '"google_username": "' + $('#google_username.value').val() + '",' +
-              '"google_password": "' + $('#google_password.value').val() + '",' +
-              '"google_verify_email": "' + $('#google_verify_email.value').val() + '"' +
-              '}';
+              {
+                google_username: $('#google_username.value').val(),
+                google_password: $('#google_password.value').val()
+              };
 
-            sendTo('google-sharedlocations.' + instance, 'checkConnection', credentials, function (conn_status) {
-              if(conn_status === true) {
+            sendTo('google-sharedlocations.' + instance, 'checkConnection', JSON.stringify(credentials), (cookie) => {
+              if(cookie) {
                 showMessage(_('Connection successful!'), 'Connection test', 'info');
               } else {
                 showMessage(_('Connection failed. Use the proxy method to retrieve the cookie.'), 'Connection test', 'info');
@@ -228,6 +227,12 @@
 
         $('#btn_open_proxy_website').on('click', function () {
           let active = false;
+          const credentials =
+            {
+              google_username: $('#google_username.value').val(),
+              google_password: $('#google_password.value').val()
+            };
+
           getIsAdapterAlive(function (isAlive) {
             if (isAlive || common.enabled) {
               active = true;
@@ -237,6 +242,20 @@
               showMessage(_('Enable adapter first'), 'Warning', 'info');
               return
             }
+            showMessage(_('Open url http://localhost:50000/ServiceLogin in your browser in inkognito mode. Ignore the error at the end of the login procedure.'), 'Proxy setup', 'info');
+
+            sendTo('google-sharedlocations.' + instance, 'startProxy', JSON.stringify(credentials), (proxy_result) => {
+              if(proxy_result) {
+                $('#cookie_string').val(proxy_result);
+                M.updateTextFields();
+                $('#cookie_string').trigger('change');
+
+                showMessage(_('Got cookie!'), 'Cookie retrieval by proxy', 'info');
+              } else {
+                showMessage(_('Could not get the cookie.'), 'Cookie retrieval by proxy', 'info');
+              }
+            });
+
           });
         });
 
@@ -252,14 +271,13 @@
               return;
             }
 
-            let credentials =
-              '{' +
-              '"google_username": "' + $('#google_username.value').val() + '",' +
-              '"google_password": "' + $('#google_password.value').val() + '",' +
-              '"google_verify_email": "' + $('#google_verify_email.value').val() + '"' +
-              '}';
+            const credentials =
+              {
+                google_username: $('#google_username.value').val(),
+                google_password: $('#google_password.value').val()
+              };
 
-            sendTo('google-sharedlocations.' + instance, 'getUsers', credentials, function (users) {
+            sendTo('google-sharedlocations.' + instance, 'getUsers', JSON.stringify(credentials), (users) => {
                 updateUsersInTable(users, null);
             });
           });
@@ -295,16 +313,6 @@
                 <div class="input-field col s6 m4 l2">
                     <input class="value" id="google_password" type="password">
                     <label for="google_password" class="translate active">google_password</label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="input-field col s8 m5 l2">
-                    <input class="value" id="google_verify_email" type="text">
-                    <label for="google_verify_email" class="translate active">google_verify_email</label>
-                </div>
-                <div class="input-field col s4 m3 l2">
-                    <input class="value" id="google_polling_interval" size="5" maxlength="5" type="number">
-                    <label for="google_polling_interval" class="translate active">google_polling_interval</label>
                 </div>
             </div>
             <div class="row">

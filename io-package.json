@@ -292,11 +292,8 @@
       "google_password": "",
       "google_polling_interval": "600",
       "places_adapter": "",
-      "google_verify_email": "",
       "cookie_string": "",
-      "fences": [
-        {"description": "", "center_lat": "0.0000", "center_long": "0.0000", "radius": "100", "userid": "", "fenceid": ""}
-      ]
+      "fences": []
     },
     "objects": [
     ],
@@ -322,6 +319,20 @@
         "write": "false"
         },
       "native": {}
+      },
+      {
+        "_id": "info.cookies",
+        "type": "state",
+        "common": {
+          "name": "cookie",
+          "desc": "Google Cookies used for authentification",
+          "type": "string",
+          "def": "false",
+          "read": "true",
+          "role": "json",
+          "write": "false"
+        },
+        "native": {}
       },
       {
         "_id": "trigger_poll",

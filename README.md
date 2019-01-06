@@ -29,8 +29,9 @@ If you still experience problems please open an issue. Please set the adapter le
 If this project helped you to reduce developing time, you can give me a cup of coffee or a bottle of beer via PayPal(chvorholt@gmail.com) :-)  
 
 ## Changelog
-#### 1.6.0 (06-Jan-2019)
-- cookie can be retrieved via proxy, many thanks to Apollon77 and soef!
+#### 1.6.0 (12-Jan-2019)
+- cookie can be retrieved via proxy (experimental)
+- reduced verbosity
 
 #### 1.5.2 (19-Sep-2018)
 - fence was not updated correctly
