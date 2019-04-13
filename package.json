@@ -8,22 +8,32 @@
   },
   "homepage": "https://github.com/t4qjXH8N/ioBroker.google-sharedlocations",
   "readme": "https://github.com/t4qjXH8N/ioBroker.google-sharedlocations/blob/master/README.md",
-  "keywords": ["ioBroker", "geofence", "google", "google shared locations"],
+  "keywords": [
+    "ioBroker",
+    "geofence",
+    "google",
+    "google shared locations"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/t4qjXH8N/ioBroker.google-sharedlocations.git"
   },
   "dependencies": {
     "request": ">=2.83.0",
-    "cheerio": "^1.0.0-rc.2"
+    "cheerio": "^1.0.0-rc.2",
+    "@iobroker/adapter-core": "^1.0.3"
   },
   "scripts": {
-    "test": "node node_modules/mocha/bin/mocha --exit"
+    "test": "npm run test:package && npm run test:unit",
+    "test:package": "mocha test/package --exit",
+    "test:unit": "mocha test/unit --exit",
+    "test:integration": "mocha test/integration --exit"
   },
   "devDependencies": {
-	"gulp": "^3.9.1",
+    "gulp": "^3.9.1",
     "mocha": "^4.1.0",
-    "chai": "^4.1.2"  
+    "chai": "^4.1.2",
+    "@iobroker/testing": "^1.1.10"
   },
   "bugs": {
     "url": "https://github.com/t4qjXH8N/ioBroker.google-sharedlocations/issues"
