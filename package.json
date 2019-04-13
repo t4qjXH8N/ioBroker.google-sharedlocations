@@ -1,6 +1,6 @@
 {
   "name": "iobroker.google-sharedlocations",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "description": "Google Shared Locations Adapter",
   "author": {
     "name": "Christian Vorholt",
@@ -19,8 +19,8 @@
     "url": "https://github.com/t4qjXH8N/ioBroker.google-sharedlocations.git"
   },
   "dependencies": {
-    "request": ">=2.83.0",
-    "cheerio": "^1.0.0-rc.2",
+    "request": "^2.88.0",
+    "cheerio": "^1.0.0-rc.3",
     "@iobroker/adapter-core": "^1.0.3"
   },
   "scripts": {
@@ -30,7 +30,7 @@
     "test:integration": "mocha test/integration --exit"
   },
   "devDependencies": {
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.0",
     "mocha": "^4.1.0",
     "chai": "^4.1.2",
     "@iobroker/testing": "^1.1.10"

@@ -7,16 +7,17 @@
           "Christian Vorholt <chvorholt@gmail.com>"
         ],
         "news": {
-          "1.6.0":  {
-            "en": "Cookie can be retrieved via proxy.",
-            "de": "Das Cookie kann über einen Proxy abgerufen werden.",
-            "ru": "Cookie можно получить через прокси.",
-            "pt": "Cookie pode ser recuperado via proxy.",
-            "nl": "Cookie kan worden opgehaald via proxy.",
-            "fr": "Le cookie peut être récupéré via un proxy.",
-            "it": "I cookie possono essere recuperati tramite proxy.",
-            "es": "La cookie se puede recuperar a través de proxy.",
-            "pl": "Plik cookie można pobrać za pośrednictwem serwera proxy."
+          "1.5.3": {
+            "en": "updated npm dependencies and integrated adapter core",
+            "de": "Aktualisierte NPM-Abhängigkeiten und integrierter Adapterkern",
+            "ru": "обновлены зависимости npm и встроенное ядро ​​адаптера",
+            "pt": "dependências atualizadas do npm e núcleo do adaptador integrado",
+            "nl": "bijgewerkte npm-afhankelijkheden en geïntegreerde adapterkern",
+            "fr": "dépendances npm mises à jour et noyau d'adaptateur intégré",
+            "it": "dipendenze aggiornate di npm e core adattatore integrato",
+            "es": "Dependencias npm actualizadas y núcleo adaptador integrado.",
+            "pl": "zaktualizowane zależności npm i zintegrowany rdzeń adaptera",
+            "zh-cn": "更新的npm依赖项和集成的适配器核心"
           },
           "1.5.2": {
             "en": "Fence is now updated correctly.",
@@ -171,83 +172,6 @@
             "it": "Aggiunto supporto per Admin3.",
             "es": "Se agregó soporte para Admin3.",
             "pl": "Dodano obsługę Admin3."
-          },
-          "0.0.7": {
-            "en": "Enhanced google compatibility.",
-            "de": "Verbesserte Google-Kompatibilität",
-            "ru": "Улучшенная совместимость Google.",
-            "pt": "Compatibilidade aprimorada do google.",
-            "nl": "Verbeterde google-compatibiliteit.",
-            "fr": "Amélioration de la compatibilité avec Google",
-            "it": "Compatibilità google migliorata.",
-            "es": "Compatibilidad mejorada con google",
-            "pl": "Zwiększona zgodność z Google."
-          },
-          "0.0.6": {
-            "en": "Added support for ioBroker.places adapter.",
-            "de": "Unterstützung für ioBroker.places-Adapter hinzugefügt.",
-            "ru": "Добавлена ​​поддержка адаптера ioBroker.places.",
-            "pt": "Adicionado suporte para o adaptador ioBroker.places.",
-            "nl": "Ondersteuning toegevoegd voor de adapter ioBroker.places.",
-            "fr": "Ajout de la prise en charge de l'adaptateur ioBroker.places.",
-            "it": "Aggiunto supporto per l'adattatore ioBroker.places.",
-            "es": "Se agregó soporte para el adaptador ioBroker.places.",
-            "pl": "Dodano obsługę adaptera ioBroker.places."
-          },
-          "0.0.5": {
-            "en": "Fixed errors when no fences exist.",
-            "de": "Fehler behoben, wenn keine Zäune vorhanden sind.",
-            "ru": "Исправлены ошибки при отсутствии ограждений.",
-            "pt": "Corrigidos erros quando não existem cercas.",
-            "nl": "Fouten opgelost wanneer er geen hekken bestaan.",
-            "fr": "Erreurs corrigées lorsque aucune clôture n'existe.",
-            "it": "Risolti errori quando non esistevano recinzioni.",
-            "es": "Se corrigieron los errores cuando no existen vallas.",
-            "pl": "Naprawiono błędy, gdy nie istnieją żadne ogrodzenia."
-          },
-          "0.0.4": {
-            "en": "Adapter does no longer crash if location data of a user has not been updated for a long time.",
-            "de": "Der Adapter stürzt nicht mehr ab, wenn die Standortdaten eines Benutzers für längere Zeit nicht aktualisiert wurden.",
-            "ru": "Адаптер больше не сбой, если данные местоположения пользователя не были обновлены в течение длительного времени.",
-            "pt": "O adaptador não falha mais se os dados de localização de um usuário não forem atualizados por um longo tempo.",
-            "nl": "Adapter crasht niet meer als locatiegegevens van een gebruiker lange tijd niet zijn bijgewerkt.",
-            "fr": "L'adaptateur ne se bloque plus si les données de localisation d'un utilisateur n'ont pas été mises à jour depuis longtemps.",
-            "it": "L'adattatore non si blocca più se i dati sulla posizione di un utente non sono stati aggiornati per un lungo periodo.",
-            "es": "El adaptador ya no falla si los datos de ubicación de un usuario no se han actualizado durante mucho tiempo.",
-            "pl": "Adapter nie ulega już awarii, jeśli dane lokalizacji użytkownika nie były aktualizowane od dłuższego czasu."
-          },
-          "0.0.3": {
-            "en": "Bugfixes, improved authentification.",
-            "de": "Bug Fixes, verbesserte Authentifizierung.",
-            "ru": "Исправления ошибок, улучшенная аутентификация.",
-            "pt": "Correções de bugs, autenticação aprimorada.",
-            "nl": "Bugfixes, verbeterde authenticatie.",
-            "fr": "Correction de bugs, authentification améliorée.",
-            "it": "Correzioni di bug, autenticazione migliorata.",
-            "es": "Corrección de errores, autenticación mejorada.",
-            "pl": "Poprawione błędy, ulepszone uwierzytelnianie."
-          },
-          "0.0.2": {
-            "en": "Bugfixes",
-            "de": "Fehlerbehebung",
-            "ru": "Исправление ошибок",
-            "pt": "Correções de bugs",
-            "nl": "Bugfixes",
-            "fr": "Correction de bugs",
-            "it": "Correzioni di bug",
-            "es": "Corrección de errores",
-            "pl": "Poprawione błędy"
-          },
-          "0.0.1": {
-            "en": "Initial adapter",
-            "de": "Anfangsadapter",
-            "ru": "Начальный адаптер",
-            "pt": "Adaptador inicial",
-            "nl": "Initiële adapter",
-            "fr": "Adaptateur initial",
-            "it": "Adattatore iniziale",
-            "es": "Adaptador inicial",
-            "pl": "Początkowy adapter"
           }
         },
         "title": "Google shared locations",
