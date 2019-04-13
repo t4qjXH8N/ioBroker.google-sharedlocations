@@ -1,6 +1,6 @@
 {
   "name": "iobroker.google-sharedlocations",
-  "version": "1.6.0",
+  "version": "1.5.2",
   "description": "Google Shared Locations Adapter",
   "author": {
     "name": "Christian Vorholt",
@@ -21,20 +21,19 @@
   "dependencies": {
     "request": ">=2.83.0",
     "cheerio": "^1.0.0-rc.2",
-    "cookie": "^0.3.1",
-    "express": "^4.16.4",
-    "http-proxy-middleware": "^0.19.1",
-    "http-proxy-response-rewrite": "^0.0.1",
-    "https": "^1.0.0",
-    "querystring": "^0.2.0"
+    "@iobroker/adapter-core": "^1.0.3"
   },
   "scripts": {
-    "test": "node node_modules/mocha/bin/mocha --exit"
+    "test": "npm run test:package && npm run test:unit",
+    "test:package": "mocha test/package --exit",
+    "test:unit": "mocha test/unit --exit",
+    "test:integration": "mocha test/integration --exit"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
     "mocha": "^4.1.0",
-    "chai": "^4.1.2"
+    "chai": "^4.1.2",
+    "@iobroker/testing": "^1.1.10"
   },
   "bugs": {
     "url": "https://github.com/t4qjXH8N/ioBroker.google-sharedlocations/issues"
