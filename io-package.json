@@ -212,7 +212,7 @@
         "platform":                 "Javascript/Node.js",
         "mode":                     "daemon",
         "icon":                     "google-sharedlocations.png",
-        "enabled":                  true,
+        "enabled":                  false,
         "stopBeforeUpdate":         true,
         "extIcon":                  "https://raw.githubusercontent.com/t4qjXH8N/ioBroker.google-sharedlocations/master/admin/google-sharedlocations.png",
         "keywords":                 ["google", "geofence", "sharedlocations"],
@@ -229,7 +229,6 @@
       "google_polling_interval": "600",
       "places_adapter": "",
       "google_verify_email": "",
-      "cookie_string": "",
       "fences": [
         {"description": "", "center_lat": "0.0000", "center_long": "0.0000", "radius": "100", "userid": "", "fenceid": ""}
       ]
