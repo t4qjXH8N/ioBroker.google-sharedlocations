@@ -30,8 +30,7 @@ If this project helped you to reduce developing time, you can give me a cup of c
 
 ## Changelog
 #### 1.5.4 (14-Apr-2019)
-- updated npm package dependencies
-- integrated adapter core from Apollon
+- user groups are no longer created
 
 #### 1.5.3 (13-Apr-2019)
 - updated npm package dependencies
