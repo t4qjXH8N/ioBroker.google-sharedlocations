@@ -379,7 +379,7 @@ function updateStates(userobjarr, callback) {
 
         let obj = {
             "_id": "user." + userobjarr[i].id,
-            "type": "group",
+            "type": "",
             "common": {
             "name": username
           },

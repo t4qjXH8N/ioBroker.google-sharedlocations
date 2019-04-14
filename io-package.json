@@ -1,12 +1,24 @@
 {
     "common": {
         "name":                     "google-sharedlocations",
-        "version":                  "1.5.3",
+        "version":                  "1.5.4",
         "license":                  "MIT",
         "authors": [
           "Christian Vorholt <chvorholt@gmail.com>"
         ],
         "news": {
+          "1.5.4": {
+            "en": "surplus usergroups are no longer created",
+            "de": "überschüssige Benutzergruppen werden nicht mehr erstellt",
+            "ru": "лишние группы пользователей больше не создаются",
+            "pt": "grupos de usuários excedentes não são mais criados",
+            "nl": "overtollige gebruikersgroepen worden niet langer aangemaakt",
+            "fr": "les groupes d'utilisateurs en surplus ne sont plus créés",
+            "it": "gli utenti in eccedenza non vengono più creati",
+            "es": "los grupos de usuarios excedentes ya no se crean",
+            "pl": "nadmiarowe grupy użytkowników nie są już tworzone",
+            "zh-cn": "不再创建剩余用户组"
+          },
           "1.5.3": {
             "en": "updated npm dependencies and integrated adapter core",
             "de": "Aktualisierte NPM-Abhängigkeiten und integrierter Adapterkern",
@@ -263,7 +275,7 @@
       },
       {
         "_id": "fence",
-        "type": "group",
+        "type": "",
         "common": {
           "name": "Geofences",
           "desc": "States for fences defined in the config."
@@ -272,7 +284,7 @@
       },
       {
         "_id": "user",
-        "type": "group",
+        "type": "",
         "common": {
           "name": "Users",
           "desc": "Retrieved information on users."
