@@ -29,9 +29,16 @@ If you still experience problems please open an issue. Please set the adapter le
 If this project helped you to reduce developing time, you can give me a cup of coffee or a bottle of beer via PayPal(chvorholt@gmail.com) :-)  
 
 ## Changelog
-#### 1.6.0 (12-Jan-2019)
+#### 1.6.0 (XX-Apr-2019)
 - cookie can be retrieved via proxy (experimental)
 - reduced verbosity
+
+#### 1.5.4 (14-Apr-2019)
+- user groups are no longer created
+
+#### 1.5.3 (13-Apr-2019)
+- updated npm package dependencies
+- integrated adapter core from Apollon
 
 #### 1.5.2 (19-Sep-2018)
 - fence was not updated correctly

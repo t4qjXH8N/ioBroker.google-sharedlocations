@@ -2,23 +2,24 @@
 
 const async        = require('async');
 const google_auth  = require(__dirname + '/lib/google_auth');
+const module_path = __dirname + '/lib/google_auth';
 
 // you have to require the utils module and call adapter function
-const utils = require(__dirname + '/lib/utils'); // Get common adapter utils
+const utils = require('@iobroker/adapter-core'); // Get common adapter utils
 
 // for communication
 const request = require('request');
 
-const adapter = new utils.Adapter('google-sharedlocations');
+const min_polling_interval = 30; // minimum polling interval in seconds
+const trigger_poll_state = 'trigger_poll';  // state for triggering a poll
 
-const module_path = __dirname + '/lib/google_auth';
+// you have to call the adapter function and pass a options object
+// name has to be set and has to be equal to adapters folder name and main file name excluding extension
+// adapter will be restarted automatically every time as the configuration changed, e.g system.adapter.google-sharedlocations.0
+const adapter = new utils.adapter('google-sharedlocations');
 
 const auth    = new google_auth.Auth('google.com');
 //import Auth from module_path;
-
-// CONSTANTS
-const min_polling_interval = 30; // minimum polling interval in seconds
-const trigger_poll_state = 'trigger_poll';  // state for triggering a poll
 
 // VARIABLES
 let google_polling_interval_id;
@@ -516,7 +517,7 @@ function updateStates(userobjarr, callback) {
 
         let obj = {
           "_id": "user." + userobjarr[i].id,
-          "type": "group",
+          "type": "",
           "common": {
             "name": username
           },

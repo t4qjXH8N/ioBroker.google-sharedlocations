@@ -28,12 +28,16 @@
     "underscore": "^1.9.1"
   },
   "scripts": {
-    "test": "node node_modules/mocha/bin/mocha --exit"
+    "test": "npm run test:package && npm run test:unit",
+    "test:package": "mocha test/package --exit",
+    "test:unit": "mocha test/unit --exit",
+    "test:integration": "mocha test/integration --exit"
   },
   "devDependencies": {
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.0",
     "mocha": "^4.1.0",
-    "chai": "^4.1.2"
+    "chai": "^4.1.2",
+    "@iobroker/testing": "^1.1.10"
   },
   "bugs": {
     "url": "https://github.com/t4qjXH8N/ioBroker.google-sharedlocations/issues"
