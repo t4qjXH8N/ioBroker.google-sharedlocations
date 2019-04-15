@@ -9,6 +9,8 @@ ioBroker adapter for google-sharedlocations
 [![Build Status](https://travis-ci.org/t4qjXH8N/ioBroker.google-sharedlocations.svg?branch=master)](https://travis-ci.org/t4qjXH8N/ioBroker.google-sharedlocations)
 [![Build status](https://ci.appveyor.com/api/projects/status/d5rora9wgp7otg23/branch/master?svg=true)](https://ci.appveyor.com/project/t4qjXH8N/iobroker-google-sharedlocations/branch/master)
 
+# NOTE: Google does not allow logins without Javascript anymore. Hence this adapter will be useless until another solution is found.
+
 ## Description
 This is an ioBroker-adapter that can retrieve the location data of users that are sharing their location via google shared locations. It can not retrieve the location of the user that is used to access google. 
 
