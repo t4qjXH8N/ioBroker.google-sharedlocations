@@ -229,9 +229,7 @@
       "google_polling_interval": "600",
       "places_adapter": "",
       "google_verify_email": "",
-      "fences": [
-        {"description": "", "center_lat": "0.0000", "center_long": "0.0000", "radius": "100", "userid": "", "fenceid": ""}
-      ]
+      "fences": []
     },
     "objects": [
     ],

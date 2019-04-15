@@ -253,7 +253,7 @@ function main() {
       && adapter.config.google_verify_email && adapter.config.google_verify_email !== '') {
       auth.connect(adapter.config.google_username, adapter.config.google_password, adapter.config.google_verify_email, adapter, function (err, cookieheader) {
         if (err) {
-          adapter.log.error('First connection failed.');
+          adapter.log.error('An error occurred ' + err);
           adapter.setState('info.connection', false, false);
         } else {
           adapter.setState('info.connection', true, false);
