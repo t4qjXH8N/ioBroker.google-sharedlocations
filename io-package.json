@@ -234,7 +234,7 @@
     "instanceObjects": [
     {
       "_id": "info",
-      "type": "channel",
+      "type": "folder",
       "common": {
         "name": "Information"
       },
@@ -247,10 +247,10 @@
         "name": "connected",
         "desc": "Connected to Google",
         "type": "boolean",
-        "def": "false",
-        "read": "true",
-        "role": "value.info",
-        "write": "false"
+        "def": false,
+        "read": true,
+        "role": "indicator.connected",
+        "write": false
         },
       "native": {}
       },
@@ -261,16 +261,16 @@
           "name": "poll",
           "desc": "Setting to true issues a poll.",
           "type": "boolean",
-          "def": "false",
-          "read": "true",
-          "write": "true",
+          "def": false,
+          "read": true,
+          "write": true,
           "role": "button"
         },
         "native": {}
       },
       {
         "_id": "fence",
-        "type": "",
+        "type": "folder",
         "common": {
           "name": "Geofences",
           "desc": "States for fences defined in the config."
@@ -279,7 +279,7 @@
       },
       {
         "_id": "user",
-        "type": "",
+        "type": "folder",
         "common": {
           "name": "Users",
           "desc": "Retrieved information on users."

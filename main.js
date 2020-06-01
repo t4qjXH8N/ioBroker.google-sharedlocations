@@ -300,7 +300,6 @@ function querySharedLocations(callback) {
 
 // update states
 function updateStates(userobjarr, callback) {
-
   if(userobjarr) {
     for(let i=0;i<userobjarr.length;i++) {
       // go through users
@@ -312,7 +311,7 @@ function updateStates(userobjarr, callback) {
 
         let obj = {
             "_id": "user." + userobjarr[i].id,
-            "type": "",
+            "type": "device",
             "common": {
             "name": username
           },
@@ -340,7 +339,7 @@ function updateStates(userobjarr, callback) {
                   cunit = '%';
                   break;
                 case 'accuracy':
-                  crole = 'value';
+                  crole = 'value.gps.accuracy';
                   cunit = 'm';
                   break;
                 case 'timestamp':
@@ -356,8 +355,8 @@ function updateStates(userobjarr, callback) {
                   type: 'number',
                   role: crole,
                   unit: cunit,
-                  read: 'true',
-                  write: 'false'
+                  read: true,
+                  write: false
                 }
                 }, userobjarr[i][cprop], true);
               break;
@@ -378,8 +377,8 @@ function updateStates(userobjarr, callback) {
                   desc: '',
                   type: 'string',
                   role: crole,
-                  read: 'true',
-                  write: 'false'
+                  read: true,
+                  write: false
                 }
               }, userobjarr[i][cprop], true);
               break;
@@ -390,9 +389,9 @@ function updateStates(userobjarr, callback) {
                   desc: '',
                   type: 'boolean',
                   role: 'indicator',
-                  def: 'false',
-                  read: 'true',
-                  write: 'false'
+                  def: false,
+                  read: true,
+                  write: false
                 }
               }, userobjarr[i][cprop], true);
               break;
@@ -409,18 +408,7 @@ function updateStates(userobjarr, callback) {
 function poll(callback) {
   adapter.log.info('Polling locations.');
 
-  querySharedLocations(function (err) {
-    if (err) {
-      adapter.log.error('An error occurred during polling the locations!');
-      adapter.setState('info.connection', false, false);
-      callback(err);
-
-      // TODO: should we issue a reconnect here?
-    } else {
-      adapter.setState('info.connection', true, false);
-      callback(false);
-    }
-  });
+  triggerSingleQuery(callback);
 }
 
 // notify places adapter
@@ -466,7 +454,7 @@ function checkFences(userobjarr, callback) {
         let curdist = haversine(cuser.lat, cuser.long, Number(cfence.center_lat), Number(cfence.center_long));
         let cstate = curdist <= cfence.radius;
 
-        adapter.setState('fence.' + cfence.fenceid, cstate, false);
+        adapter.setState('fence.' + cfence.fenceid, cstate, true);
         break;
       }
     }
@@ -523,9 +511,7 @@ function getSharedLocations(callback) {
 
       // connection established but auth failure
       if(response.statusCode !== 200) {
-        adapter.log.debug('Removed cookies.');
-        adapter.log.error('Connection works, but authorization failure, please login manually!');
-        adapter.log.info('Could not connect to google, please login manually!');
+        adapter.log.error('Failed getting locations: ' + response.statusCode + ' - ' + response.statusMessage + ' - ' + response.body);
 
         if(callback) callback(true);
       } else {
