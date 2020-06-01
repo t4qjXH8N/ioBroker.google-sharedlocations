@@ -1,7 +1,5 @@
 "use strict";
 
-const auth = require(__dirname + '/lib/google_auth');
-
 // you have to require the utils module and call adapter function
 const utils = require('@iobroker/adapter-core'); // Get common adapter utils
 
@@ -18,7 +16,7 @@ const trigger_poll_state = 'trigger_poll';  // state for triggering a poll
 const adapter = new utils.adapter('google-sharedlocations');
 
 let google_polling_interval_id = null;
-let google_cookie_header = null;
+let google_cookie_header;
 
 // triggered when the adapter is installed
 adapter.on('install', function () {
@@ -28,14 +26,6 @@ adapter.on('install', function () {
 // is called when the adapter shuts down - callback has to be called under any circumstances!
 adapter.on('unload', function (callback) {
   try {
-    // logout from google
-    auth.logout(function (err) {
-      if (err) {
-        adapter.log.error('Could not logout from google when unloading the adapter.');
-        callback(err);
-      }
-    });
-
     adapter.log.info('cleaned everything up...');
   } catch (e) {
     callback(e);
@@ -82,7 +72,6 @@ adapter.on('ready', function () {
 adapter.on('message', function (obj) {
   let wait = false;
   let credentials;
-  let connected;
 
   function DBUsersToSendTo(callback) {
     let ids = [];
@@ -116,14 +105,14 @@ adapter.on('message', function (obj) {
 
   if (obj) {
     switch (obj.command) {
-      case 'checkConnection':
-        credentials = JSON.parse(obj.message);
+      case 'checkConnection': {
+        const cookie = JSON.parse(obj.message).cookie;
+        if (cookie) {
+          google_cookie_header = cookie;
+        }
 
-        auth.connect(credentials.google_username, credentials.google_password, credentials.google_verify_email, adapter, function(err, cookieheader) {
-          if(!err) {
-            // after the query, issue a logout
-            auth.logout();
-
+        getSharedLocations((err) => {
+          if (!err) {
             adapter.sendTo(obj.from, obj.command, true, obj.callback);
           } else {
             adapter.sendTo(obj.from, obj.command, false, obj.callback);
@@ -131,45 +120,42 @@ adapter.on('message', function (obj) {
         });
         wait = true;
         break;
-      case 'triggerPoll':
+      }
+      case 'triggerPoll': {
         triggerSingleQuery(function (err) {
           adapter.sendTo(obj.from, obj.command, err, obj.callback);
         });
         wait = true;
         break;
-      case 'getUsers':
-        connected = false;
-        credentials = JSON.parse(obj.message);
+      }
+      case 'getUsers': {
+        const cookie = JSON.parse(obj.message).cookie;
+        if (cookie) {
+          google_cookie_header = cookie;
+        }
 
-        auth.connect(credentials.google_username, credentials.google_password, credentials.google_verify_email, adapter, function(err, cookieheader) {
-          if(!err) {
-            connected = true;
-            google_cookie_header = cookieheader;
-
-            querySharedLocations(function (err) {
-              if (!err) {
-                DBUsersToSendTo(function (res) {
-                  adapter.sendTo(obj.from, obj.command, res, obj.callback);
-                });
-
-                // after the query, issue a logout
-                auth.logout();
-              }
+        querySharedLocations(function (err) {
+          if (!err) {
+            DBUsersToSendTo(function (res) {
+              adapter.sendTo(obj.from, obj.command, res, obj.callback);
             });
           }
         });
         wait = true;
         break;
-      case 'getUsersFromDB':
+      }
+      case 'getUsersFromDB': {
         // get users
         DBUsersToSendTo(function (res) {
           adapter.sendTo(obj.from, obj.command, res, obj.callback);
         });
         wait = true;
         break;
-      default:
+      }
+      default: {
         adapter.log.warn("Unknown command: " + obj.command);
         break;
+      }
     }
   }
   if (!wait && obj.callback) {
@@ -248,35 +234,15 @@ function main() {
   } else {
     // first connect and query
     // connect to Google
-    if(adapter.config.google_username && adapter.config.google_username !== ''
-      && adapter.config.google_password && adapter.config.google_password !== ''
-      && adapter.config.google_verify_email && adapter.config.google_verify_email !== '') {
-      auth.connect(adapter.config.google_username, adapter.config.google_password, adapter.config.google_verify_email, adapter, function (err, cookieheader) {
-        if (err) {
-          adapter.log.error('An error occurred ' + err);
-          adapter.setState('info.connection', false, false);
-        } else {
-          adapter.setState('info.connection', true, false);
-          google_cookie_header = cookieheader;
-
-          querySharedLocations(function (err) {
-            if (err) {
-              adapter.log.error('An error occurred during polling the locations!');
-              adapter.setState('info.connection', false, false);
-            } else {
-              adapter.setState('info.connection', true, false);
-            }
-          });
-
-          // enable polling
-          google_polling_interval_id = setInterval(function () {
-            poll(function (err) {
-            });
-          }, Number(adapter.config.google_polling_interval) * 1000);
-        }
-      });
+    if(adapter.config.google_cookie) {
+      google_cookie_header = adapter.config.google_cookie;
+      triggerSingleQuery();
+      // enable polling
+      google_polling_interval_id = setInterval(function () {
+        poll(function (err) {
+        });
+      }, Number(adapter.config.google_polling_interval) * 1000);
     }
-
   }
   // subscribe
   adapter.subscribeStates('info.connection');
@@ -286,40 +252,16 @@ function main() {
 
 // issue a single query. If not connected, open a new connection
 function triggerSingleQuery(callback) {
-  // are we already connected to google?
-  if (!google_cookie_header) {
-    // we have to setup a connection first
-    auth.connect(adapter.config.google_username, adapter.config.google_password, adapter.config.google_verify_email, adapter, function (err, cookieheader) {
-      if (err) {
-        adapter.log.error('First connection failed.');
-        adapter.setState('info.connection', false, false);
-      } else {
-        adapter.setState('info.connection', true, false);
-        google_cookie_header = cookieheader;
-
-        querySharedLocations(function (err) {
-          if (err) {
-            adapter.log.error('An error occurred during polling the locations!');
-            adapter.setState('info.connection', false, false);
-            if(callback) callback(err);
-          } else {
-            adapter.setState('info.connection', true, false);
-            if(callback) callback(false);
-          }
-        });
-      }
-    });
-  } else {
-    // connection already active
-    querySharedLocations(function (err) {
-      if (err) {
-        adapter.log.error('An error occurred during polling the locations!');
-        adapter.setState('info.connection', false, false);
-      } else {
-        adapter.setState('info.connection', true, false);
-      }
-    });
-  }
+  querySharedLocations(function (err) {
+    if (err) {
+      adapter.log.error('An error occurred during polling the locations: ' + err.stack);
+      adapter.setState('info.connection', false, true);
+      if(callback) callback(err);
+    } else {
+      adapter.setState('info.connection', true, true);
+      if(callback) callback(false);
+    }
+  });
 }
 
 // get locations

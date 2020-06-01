@@ -79,17 +79,6 @@ systemDictionary = {
     "es": "Configuración del adaptador de ubicación compartida de Google",
     "pl": "Ustawienia adaptera Google sharedlocations"
   },
-  "google_password": {
-    "en": "Password",
-    "de": "Passwort",
-    "ru": "пароль",
-    "pt": "Senha",
-    "nl": "Wachtwoord",
-    "fr": "Mot de passe",
-    "it": "Parola d'ordine",
-    "es": "Contraseña",
-    "pl": "Hasło"
-  },
   "google_polling_interval": {
     "en": "Polling interval (s), 0 = disabled",
     "de": "Abrufintervall (s), 0 = deaktiviert",
@@ -101,27 +90,16 @@ systemDictionary = {
     "es": "Intervalo de sondeo (s), 0 = deshabilitado",
     "pl": "Interwał odpytywania (s), 0 = wyłączony"
   },
-  "google_username": {
-    "en": "Username",
-    "de": "Nutzername",
-    "ru": "имя пользователя",
-    "pt": "Nome de usuário",
-    "nl": "Gebruikersnaam",
-    "fr": "Nom d'utilisateur",
-    "it": "Nome utente",
-    "es": "Nombre de usuario",
-    "pl": "Nazwa Użytkownika"
-  },
-  "google_verify_email": {
-    "en": "Recovery email address",
-    "de": "Email zur Kontowiederherstellung",
-    "ru": "Восстановить адрес электронной почты",
-    "pt": "Endereço de e-mail de recuperação",
-    "nl": "Herstel e-mailadres",
-    "fr": "Adresse mail de secours",
-    "it": "Indirizzo email di recupero",
-    "es": "Dirección de correo electrónico de recuperación",
-    "pl": "Odzyskiwanie adres e-mail"
+  "google_cookie": {
+    "en": "Google Cookie",
+    "de": "Google Cookie",
+    "ru": "Google Cookie",
+    "pt": "Google Cookie",
+    "nl": "Google Cookie",
+    "fr": "Google Cookie",
+    "it": "Google Cookie",
+    "es": "Google Cookie",
+    "pl": "Google Cookie"
   },
   "login_data": {
     "en": "Login data",
