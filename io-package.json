@@ -1,12 +1,24 @@
 {
     "common": {
         "name":                     "google-sharedlocations",
-        "version":                  "1.5.4",
+        "version":                  "2.0.0",
         "license":                  "MIT",
         "authors": [
           "Christian Vorholt <chvorholt@gmail.com>"
         ],
         "news": {
+          "2.0.0": {
+            "en": "fixed warnings from wrong object fields (Garfonso) \nremoved authentication and allowed user to copy in cookie (Garfonso)",
+            "de": "Warnungen von falschen Objektfeldern behoben (Garfonso)\nAuthentifizierung entfernt und Benutzer darf Cookie kopieren (Garfonso)",
+            "ru": "исправлены предупреждения от неправильных полей объекта (Гарфонсо)\nудалил аутентификацию и разрешил пользователю копировать в cookie (Garfonso)",
+            "pt": "avisos corrigidos de campos de objetos incorretos (Garfonso)\nremoção da autenticação e permissão do usuário copiar no cookie (Garfonso)",
+            "nl": "vaste waarschuwingen van verkeerde objectvelden (Garfonso)\nauthenticatie verwijderd en gebruiker toegestaan om te kopiëren in cookie (Garfonso)",
+            "fr": "avertissements fixes de champs d'objet incorrects (Garfonso)\nsupprimé l'authentification et autorisé l'utilisateur à copier dans le cookie (Garfonso)",
+            "it": "corretti avvisi da campi oggetto errati (Garfonso)\nha rimosso l'autenticazione e ha permesso all'utente di copiare i cookie (Garfonso)",
+            "es": "advertencias fijas de campos de objetos incorrectos (Garfonso)\nse eliminó la autenticación y se permitió al usuario copiar en la cookie (Garfonso)",
+            "pl": "naprawiono ostrzeżenia z niewłaściwych pól obiektowych (Garfonso)\nusunięto uwierzytelnianie i zezwolono użytkownikowi na kopiowanie plików cookie (Garfonso)",
+            "zh-cn": "修复了来自错误对象字段的警告（Garfonso）\n删除了身份验证，并允许用户复制Cookie（Garfonso）"
+          },
           "1.5.4": {
             "en": "surplus usergroups are no longer created",
             "de": "überschüssige Benutzergruppen werden nicht mehr erstellt",
