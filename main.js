@@ -27,6 +27,7 @@ adapter.on('install', function () {
 adapter.on('unload', function (callback) {
   try {
     adapter.log.info('cleaned everything up...');
+    callback();
   } catch (e) {
     callback(e);
   }
