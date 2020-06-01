@@ -224,11 +224,9 @@
         "restartAdapters":          []
     },
     "native": {
-      "google_username": "",
-      "google_password": "",
+      "google_cookie": "",
       "google_polling_interval": "600",
       "places_adapter": "",
-      "google_verify_email": "",
       "fences": []
     },
     "objects": [
