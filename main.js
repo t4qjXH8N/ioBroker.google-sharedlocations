@@ -107,7 +107,7 @@ adapter.on('message', function (obj) {
   if (obj) {
     switch (obj.command) {
       case 'checkConnection': {
-        const cookie = JSON.parse(obj.message).cookie;
+        const cookie = obj.message.cookie;
         if (cookie) {
           google_cookie_header = cookie;
         }
@@ -130,7 +130,7 @@ adapter.on('message', function (obj) {
         break;
       }
       case 'getUsers': {
-        const cookie = JSON.parse(obj.message).cookie;
+        const cookie = obj.message.cookie;
         if (cookie) {
           google_cookie_header = cookie;
         }
