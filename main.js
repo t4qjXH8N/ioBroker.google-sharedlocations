@@ -6,7 +6,7 @@ const utils = require('@iobroker/adapter-core'); // Get common adapter utils
 // for communication
 const request = require('request');
 
-const min_polling_interval = 30; // minimum polling interval in seconds
+const min_polling_interval = 60; // minimum polling interval in seconds
 
 const trigger_poll_state = 'trigger_poll';  // state for triggering a poll
 
