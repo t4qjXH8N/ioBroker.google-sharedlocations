@@ -7,6 +7,18 @@
           "Christian Vorholt <chvorholt@gmail.com>"
         ],
         "news": {
+          "2.0.1": {
+            "en": "- enforced min_polling_interval (Garfonso)\n- improved error logging (Garfonso) ",
+            "de": "- erzwungenes min_polling_interval (Garfonso)\n- verbesserte Fehlerprotokollierung (Garfonso)",
+            "ru": "- принудительный min_polling_interval (Гарфонсо)\n- улучшено ведение журнала ошибок (Гарфонсо)",
+            "pt": "- min_polling_interval imposto (Garfonso)\n- registro de erros aprimorado (Garfonso)",
+            "nl": "- afgedwongen min_polling_interval (Garfonso)\n- verbeterde foutregistratie (Garfonso)",
+            "fr": "- min_polling_interval forcé (Garfonso)\n- enregistrement des erreurs amélioré (Garfonso)",
+            "it": "- forzato min_polling_interval (Garfonso)\n- migliorata registrazione degli errori (Garfonso)",
+            "es": "- forzado min_polling_interval (Garfonso)\n- registro de errores mejorado (Garfonso)",
+            "pl": "- wymuszone min_polling_interval (Garfonso)\n- ulepszone rejestrowanie błędów (Garfonso)",
+            "zh-cn": "-实施min_polling_interval（加芬索）\n-改进了错误记录（Garfonso）"
+          },
           "2.0.0": {
             "en": "fixed warnings from wrong object fields (Garfonso) \nremoved authentication and allowed user to copy in cookie (Garfonso)",
             "de": "Warnungen von falschen Objektfeldern behoben (Garfonso)\nAuthentifizierung entfernt und Benutzer darf Cookie kopieren (Garfonso)",
