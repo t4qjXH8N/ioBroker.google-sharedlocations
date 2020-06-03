@@ -42,9 +42,13 @@ If you still experience problems please open an issue. Please set the adapter le
 If this project helped you to reduce developing time, you can give me a cup of coffee or a bottle of beer via PayPal(chvorholt@gmail.com) :-)  
 
 ## Changelog
+### 2.0.1 (03-Jun-2020)
+- enforced min_polling_interval (Garfonso)
+- improved error logging (Garfonso) 
+
 ### 2.0.0 (01-Jun-2020)
-- (Garfonso) fixed warnings from wrong object fields
-- (Garfonso) removed authentication and allowed user to copy in cookie
+- fixed warnings from wrong object fields (Garfonso)
+- removed authentication and allowed user to copy in cookie (Garfonso)
 
 #### 1.5.4 (14-Apr-2019)
 - user groups are no longer created
