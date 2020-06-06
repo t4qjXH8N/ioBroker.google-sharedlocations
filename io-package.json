@@ -1,12 +1,36 @@
 {
     "common": {
         "name":                     "google-sharedlocations",
-        "version":                  "1.5.4",
+        "version":                  "2.0.1",
         "license":                  "MIT",
         "authors": [
           "Christian Vorholt <chvorholt@gmail.com>"
         ],
         "news": {
+          "2.0.1": {
+            "en": "- enforced min_polling_interval (Garfonso)\n- improved error logging (Garfonso) ",
+            "de": "- erzwungenes min_polling_interval (Garfonso)\n- verbesserte Fehlerprotokollierung (Garfonso)",
+            "ru": "- принудительный min_polling_interval (Гарфонсо)\n- улучшено ведение журнала ошибок (Гарфонсо)",
+            "pt": "- min_polling_interval imposto (Garfonso)\n- registro de erros aprimorado (Garfonso)",
+            "nl": "- afgedwongen min_polling_interval (Garfonso)\n- verbeterde foutregistratie (Garfonso)",
+            "fr": "- min_polling_interval forcé (Garfonso)\n- enregistrement des erreurs amélioré (Garfonso)",
+            "it": "- forzato min_polling_interval (Garfonso)\n- migliorata registrazione degli errori (Garfonso)",
+            "es": "- forzado min_polling_interval (Garfonso)\n- registro de errores mejorado (Garfonso)",
+            "pl": "- wymuszone min_polling_interval (Garfonso)\n- ulepszone rejestrowanie błędów (Garfonso)",
+            "zh-cn": "-实施min_polling_interval（加芬索）\n-改进了错误记录（Garfonso）"
+          },
+          "2.0.0": {
+            "en": "fixed warnings from wrong object fields (Garfonso) \nremoved authentication and allowed user to copy in cookie (Garfonso)",
+            "de": "Warnungen von falschen Objektfeldern behoben (Garfonso)\nAuthentifizierung entfernt und Benutzer darf Cookie kopieren (Garfonso)",
+            "ru": "исправлены предупреждения от неправильных полей объекта (Гарфонсо)\nудалил аутентификацию и разрешил пользователю копировать в cookie (Garfonso)",
+            "pt": "avisos corrigidos de campos de objetos incorretos (Garfonso)\nremoção da autenticação e permissão do usuário copiar no cookie (Garfonso)",
+            "nl": "vaste waarschuwingen van verkeerde objectvelden (Garfonso)\nauthenticatie verwijderd en gebruiker toegestaan om te kopiëren in cookie (Garfonso)",
+            "fr": "avertissements fixes de champs d'objet incorrects (Garfonso)\nsupprimé l'authentification et autorisé l'utilisateur à copier dans le cookie (Garfonso)",
+            "it": "corretti avvisi da campi oggetto errati (Garfonso)\nha rimosso l'autenticazione e ha permesso all'utente di copiare i cookie (Garfonso)",
+            "es": "advertencias fijas de campos de objetos incorrectos (Garfonso)\nse eliminó la autenticación y se permitió al usuario copiar en la cookie (Garfonso)",
+            "pl": "naprawiono ostrzeżenia z niewłaściwych pól obiektowych (Garfonso)\nusunięto uwierzytelnianie i zezwolono użytkownikowi na kopiowanie plików cookie (Garfonso)",
+            "zh-cn": "修复了来自错误对象字段的警告（Garfonso）\n删除了身份验证，并允许用户复制Cookie（Garfonso）"
+          },
           "1.5.4": {
             "en": "surplus usergroups are no longer created",
             "de": "überschüssige Benutzergruppen werden nicht mehr erstellt",
@@ -224,11 +248,9 @@
         "restartAdapters":          []
     },
     "native": {
-      "google_username": "",
-      "google_password": "",
+      "google_cookie": "",
       "google_polling_interval": "600",
       "places_adapter": "",
-      "google_verify_email": "",
       "fences": []
     },
     "objects": [
@@ -236,7 +258,7 @@
     "instanceObjects": [
     {
       "_id": "info",
-      "type": "channel",
+      "type": "folder",
       "common": {
         "name": "Information"
       },
@@ -249,10 +271,10 @@
         "name": "connected",
         "desc": "Connected to Google",
         "type": "boolean",
-        "def": "false",
-        "read": "true",
-        "role": "value.info",
-        "write": "false"
+        "def": false,
+        "read": true,
+        "role": "indicator.connected",
+        "write": false
         },
       "native": {}
       },
@@ -263,16 +285,16 @@
           "name": "poll",
           "desc": "Setting to true issues a poll.",
           "type": "boolean",
-          "def": "false",
-          "read": "true",
-          "write": "true",
+          "def": false,
+          "read": true,
+          "write": true,
           "role": "button"
         },
         "native": {}
       },
       {
         "_id": "fence",
-        "type": "",
+        "type": "folder",
         "common": {
           "name": "Geofences",
           "desc": "States for fences defined in the config."
@@ -281,7 +303,7 @@
       },
       {
         "_id": "user",
-        "type": "",
+        "type": "folder",
         "common": {
           "name": "Users",
           "desc": "Retrieved information on users."

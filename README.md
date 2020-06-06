@@ -9,21 +9,32 @@ ioBroker adapter for google-sharedlocations
 [![Build Status](https://travis-ci.org/t4qjXH8N/ioBroker.google-sharedlocations.svg?branch=master)](https://travis-ci.org/t4qjXH8N/ioBroker.google-sharedlocations)
 [![Build status](https://ci.appveyor.com/api/projects/status/d5rora9wgp7otg23/branch/master?svg=true)](https://ci.appveyor.com/project/t4qjXH8N/iobroker-google-sharedlocations/branch/master)
 
-# NOTE: Google does not allow logins without Javascript anymore. Hence this adapter will be useless until another solution is found.
-
 ## Description
-This is an ioBroker-adapter that can retrieve the location data of users that are sharing their location via google shared locations. It can not retrieve the location of the user that is used to access google. 
+This is an ioBroker-adapter that can retrieve the location data of users that are sharing their location via google shared
+ locations. It can not retrieve the location of the user that is used to access google. 
 
-Circularly shaped geofences can be defined in the adapter config. These geofences can be associated with users, i.e. that a state is toogled if the user enters or leaves a geofence.
+Circularly shaped geofences can be defined in the adapter config. These geofences can be associated with users, i.e. 
+that a state is toogled if the user enters or leaves a geofence.
 
-The adapter can receive and process a bunch of messages, please have a look at main.js for details. Sometimes the recovery email address has to be used to solve a challenge by Googles, therefore it may have to be entered in the adapter. 
+The adapter can receive and process a bunch of messages, please have a look at main.js for details. 
 
 ## Usage
-There are three possibilities to login into your Google account. The first possibility is to enter your account credentials and the recovery email address associated with the account. If the first possibility fails, use the second possibility . The second possibility retrieves the cookie using a proxy. If the second possibility fails, you can enter the cookie directly. Two factor authentification has to be disabled for the user. 
+Currently login via the adapter is not possible. In future versions the adapter might create a proxy server and you'll have to
+login via the browser once, similar to the alexa2 adapter. But currently you'll have to enter the cookie in the configuration page
+manually in order to login. For this, do the following:
+1. Log out of your google account
+2. Log in to google.com/maps (.com is important!) with the account used for ioBroker
+3. Open Developer Tools of your browser (ctrl+shift+I)
+4. Navigate to network analysis
+5. select any successful (Status = 200) GET (method) Request from google.com (Host column) (if the window is empty, hit F5 in the browser)
+6. In the headers window copy all contents (ctrl+a then ctrl+c) from the line Cookie.
+![Screenshot](admin/google-cookie.JPG)
 
 ## Troubleshooting
-### instance indicator is green but no location data is received or instance indicator is yellow and the log says "please login manually" 
-In this case check the google account of the user that is used by the google-sharedlocations adapter. Log in with a browser and check if google blocked some logins. Click on a blocked login and confirm to google that this was you. Additionally check that two factor authentification is turned off.
+### instance indicator is green t no location data is received or instance indicator is yellow and the log says "please login manually" 
+In this case check the google account of the user that is used by the google-sharedlocations adapter. Log in with a 
+browser and check if google blocked some logins. Click on a blocked login and confirm to google that this was you.
+ Additionally check that two factor authentification is turned off.
 
 If you still experience problems please open an issue. Please set the adapter level to debug and publish the log there. Otherwise I have no change to help.
 
@@ -31,6 +42,14 @@ If you still experience problems please open an issue. Please set the adapter le
 If this project helped you to reduce developing time, you can give me a cup of coffee or a bottle of beer via PayPal(chvorholt@gmail.com) :-)  
 
 ## Changelog
+### 2.0.1 (03-Jun-2020)
+- enforced min_polling_interval (Garfonso)
+- improved error logging (Garfonso) 
+
+### 2.0.0 (01-Jun-2020)
+- fixed warnings from wrong object fields (Garfonso)
+- removed authentication and allowed user to copy in cookie (Garfonso)
+
 #### 1.5.4 (14-Apr-2019)
 - user groups are no longer created
 

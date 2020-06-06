@@ -1,14 +1,12 @@
 "use strict";
 
-const auth = require(__dirname + '/lib/google_auth');
-
 // you have to require the utils module and call adapter function
 const utils = require('@iobroker/adapter-core'); // Get common adapter utils
 
 // for communication
 const request = require('request');
 
-const min_polling_interval = 30; // minimum polling interval in seconds
+const min_polling_interval = 60; // minimum polling interval in seconds
 
 const trigger_poll_state = 'trigger_poll';  // state for triggering a poll
 
@@ -18,7 +16,7 @@ const trigger_poll_state = 'trigger_poll';  // state for triggering a poll
 const adapter = new utils.adapter('google-sharedlocations');
 
 let google_polling_interval_id = null;
-let google_cookie_header = null;
+let google_cookie_header;
 
 // triggered when the adapter is installed
 adapter.on('install', function () {
@@ -28,15 +26,7 @@ adapter.on('install', function () {
 // is called when the adapter shuts down - callback has to be called under any circumstances!
 adapter.on('unload', function (callback) {
   try {
-    // logout from google
-    auth.logout(function (err) {
-      if (err) {
-        adapter.log.error('Could not logout from google when unloading the adapter.');
-        callback(err);
-      }
-    });
-
-    adapter.log.info('cleaned everything up...');
+    callback();
   } catch (e) {
     callback(e);
   }
@@ -45,29 +35,19 @@ adapter.on('unload', function (callback) {
 // is called if a subscribed object changes
 adapter.on('objectChange', function (id, obj) {
   // Warning, obj can be null if it was deleted
-  adapter.log.debug('objectChange ' + id + ' ' + JSON.stringify(obj));
+  //adapter.log.debug('objectChange ' + id + ' ' + JSON.stringify(obj));
 });
 
 // is called if a subscribed state changes
 adapter.on('stateChange', function (id, state) {
-  // Warning, state can be null if it was deleted
-  adapter.log.debug('stateChange ' + id + ' ' + JSON.stringify(state));
 
-  // connection related state change
-  if(id && state && id === state.from.split('.')[2]+'.'+state.from.split('.')[3] + '.' + 'info.connection') {
-
-  }
-
-  // a poll is triggered
-  if(id && state && id === 'google-sharedlocations.' + adapter.instance + '.' + trigger_poll_state && state.val === true) {
-    triggerSingleQuery();
-
-    adapter.setState(trigger_poll_state, false, false)
-  }
-
-  // you can use the ack flag to detect if it is status (true) or command (false)
-  if (state && state.val && !state.ack) {
-    adapter.log.debug('ack is not set!');
+  if (state && !state.ack) {
+    // a poll is triggered
+    if (id && state && id === 'google-sharedlocations.' + adapter.instance + '.' + trigger_poll_state && state.val === true) {
+      adapter.log.debug('Poll triggered by user.');
+      triggerSingleQuery();
+      adapter.setState(trigger_poll_state, false, false)
+    }
   }
 });
 
@@ -82,7 +62,6 @@ adapter.on('ready', function () {
 adapter.on('message', function (obj) {
   let wait = false;
   let credentials;
-  let connected;
 
   function DBUsersToSendTo(callback) {
     let ids = [];
@@ -116,14 +95,14 @@ adapter.on('message', function (obj) {
 
   if (obj) {
     switch (obj.command) {
-      case 'checkConnection':
-        credentials = JSON.parse(obj.message);
+      case 'checkConnection': {
+        const cookie = obj.message.cookie;
+        if (cookie) {
+          google_cookie_header = cookie;
+        }
 
-        auth.connect(credentials.google_username, credentials.google_password, credentials.google_verify_email, adapter, function(err, cookieheader) {
-          if(!err) {
-            // after the query, issue a logout
-            auth.logout();
-
+        getSharedLocations((err) => {
+          if (!err) {
             adapter.sendTo(obj.from, obj.command, true, obj.callback);
           } else {
             adapter.sendTo(obj.from, obj.command, false, obj.callback);
@@ -131,45 +110,45 @@ adapter.on('message', function (obj) {
         });
         wait = true;
         break;
-      case 'triggerPoll':
+      }
+      case 'triggerPoll': {
         triggerSingleQuery(function (err) {
           adapter.sendTo(obj.from, obj.command, err, obj.callback);
         });
         wait = true;
         break;
-      case 'getUsers':
-        connected = false;
-        credentials = JSON.parse(obj.message);
+      }
+      case 'getUsers': {
+        const cookie = obj.message.cookie;
+        if (cookie) {
+          google_cookie_header = cookie;
+        }
 
-        auth.connect(credentials.google_username, credentials.google_password, credentials.google_verify_email, adapter, function(err, cookieheader) {
-          if(!err) {
-            connected = true;
-            google_cookie_header = cookieheader;
-
-            querySharedLocations(function (err) {
-              if (!err) {
-                DBUsersToSendTo(function (res) {
-                  adapter.sendTo(obj.from, obj.command, res, obj.callback);
-                });
-
-                // after the query, issue a logout
-                auth.logout();
-              }
+        querySharedLocations(function (err) {
+          if (!err) {
+            DBUsersToSendTo(function (res) {
+              adapter.sendTo(obj.from, obj.command, res, obj.callback);
             });
+          } else {
+            this.log.error('Error getting users: ' + err.stack);
+            adapter.sendTo(obj.from.obj.command, [], obj.callback);
           }
         });
         wait = true;
         break;
-      case 'getUsersFromDB':
+      }
+      case 'getUsersFromDB': {
         // get users
         DBUsersToSendTo(function (res) {
           adapter.sendTo(obj.from, obj.command, res, obj.callback);
         });
         wait = true;
         break;
-      default:
+      }
+      default: {
         adapter.log.warn("Unknown command: " + obj.command);
         break;
+      }
     }
   }
   if (!wait && obj.callback) {
@@ -240,99 +219,58 @@ function main() {
   syncConfig();
 
   // check polling interval
-  if (Number(adapter.config.google_polling_interval)*1000 < min_polling_interval && Number(adapter.config.google_polling_interval) !== 0) {
-    adapter.log.error('Polling interval should be greater than ' + min_polling_interval);
-  } else if (Number(adapter.config.google_polling_interval) === 0) {
+  if (Number(adapter.config.google_polling_interval) < min_polling_interval && Number(adapter.config.google_polling_interval) !== 0) {
+    adapter.log.info('Configured poll interval of ' + adapter.config.google_polling_interval + 's smaller than minimum poll interval of ' + min_polling_interval + 's, will increase it to prevent 429 errors.');
+    adapter.config.google_polling_interval = min_polling_interval;
+  }
+
+  if (Number(adapter.config.google_polling_interval) === 0) {
     // query locations is triggered only
-    adapter.log.info('Locations poll can be triggered only.');
+    adapter.log.info('Polling disabled.');
   } else {
     // first connect and query
     // connect to Google
-    if(adapter.config.google_username && adapter.config.google_username !== ''
-      && adapter.config.google_password && adapter.config.google_password !== ''
-      && adapter.config.google_verify_email && adapter.config.google_verify_email !== '') {
-      auth.connect(adapter.config.google_username, adapter.config.google_password, adapter.config.google_verify_email, adapter, function (err, cookieheader) {
-        if (err) {
-          adapter.log.error('An error occurred ' + err);
-          adapter.setState('info.connection', false, false);
-        } else {
-          adapter.setState('info.connection', true, false);
-          google_cookie_header = cookieheader;
-
-          querySharedLocations(function (err) {
-            if (err) {
-              adapter.log.error('An error occurred during polling the locations!');
-              adapter.setState('info.connection', false, false);
-            } else {
-              adapter.setState('info.connection', true, false);
-            }
-          });
-
-          // enable polling
-          google_polling_interval_id = setInterval(function () {
-            poll(function (err) {
-            });
-          }, Number(adapter.config.google_polling_interval) * 1000);
-        }
-      });
+    adapter.log.debug('Polling location every ' + adapter.config.google_polling_interval + 's.');
+    if(adapter.config.google_cookie) {
+      google_cookie_header = adapter.config.google_cookie;
+      triggerSingleQuery();
+      // enable polling
+      google_polling_interval_id = setInterval(function () {
+        poll(function (err) {
+        });
+      }, Number(adapter.config.google_polling_interval) * 1000);
     }
-
   }
   // subscribe
-  adapter.subscribeStates('info.connection');
   adapter.subscribeStates(trigger_poll_state);
-  adapter.subscribeStates('fence.*');
+  //adapter.subscribeStates('fence.*');
 }
 
 // issue a single query. If not connected, open a new connection
 function triggerSingleQuery(callback) {
-  // are we already connected to google?
-  if (!google_cookie_header) {
-    // we have to setup a connection first
-    auth.connect(adapter.config.google_username, adapter.config.google_password, adapter.config.google_verify_email, adapter, function (err, cookieheader) {
-      if (err) {
-        adapter.log.error('First connection failed.');
-        adapter.setState('info.connection', false, false);
-      } else {
-        adapter.setState('info.connection', true, false);
-        google_cookie_header = cookieheader;
-
-        querySharedLocations(function (err) {
-          if (err) {
-            adapter.log.error('An error occurred during polling the locations!');
-            adapter.setState('info.connection', false, false);
-            if(callback) callback(err);
-          } else {
-            adapter.setState('info.connection', true, false);
-            if(callback) callback(false);
-          }
-        });
-      }
-    });
-  } else {
-    // connection already active
-    querySharedLocations(function (err) {
-      if (err) {
-        adapter.log.error('An error occurred during polling the locations!');
-        adapter.setState('info.connection', false, false);
-      } else {
-        adapter.setState('info.connection', true, false);
-      }
-    });
-  }
+  querySharedLocations(function (err) {
+    if (err) {
+      adapter.log.error('An error occurred during polling the locations: ' + err.stack);
+      adapter.setState('info.connection', false, true);
+      if(callback) callback(err);
+    } else {
+      adapter.setState('info.connection', true, true);
+      if(callback) callback(false);
+    }
+  });
 }
 
 // get locations
 function querySharedLocations(callback) {
   getSharedLocations(function (err, userobjarr) {
     if (err) {
-      adapter.log.error('An error occurred during getSharedLocation!');
+      //adapter.log.error('An error occurred during getSharedLocation! ' + err.stack);
       if (callback) callback(err)
     } else {
       // notify places adapter
       notifyPlaces(userobjarr, function(err) {
         if (err) {
-          adapter.log.error('Error during places notification.');
+          adapter.log.error('Error during places notification. ' + err.stack);
           if (callback) callback(err)
         }
       });
@@ -340,7 +278,7 @@ function querySharedLocations(callback) {
       // check fences
       checkFences(userobjarr, function (err) {
         if (err) {
-          adapter.log.error('Error during fence check.');
+          adapter.log.error('Error during fence check. ' + err.stack);
           if (callback) callback(err)
         } else {
           updateStates(userobjarr, function (err) {
@@ -358,7 +296,6 @@ function querySharedLocations(callback) {
 
 // update states
 function updateStates(userobjarr, callback) {
-
   if(userobjarr) {
     for(let i=0;i<userobjarr.length;i++) {
       // go through users
@@ -370,7 +307,7 @@ function updateStates(userobjarr, callback) {
 
         let obj = {
             "_id": "user." + userobjarr[i].id,
-            "type": "",
+            "type": "device",
             "common": {
             "name": username
           },
@@ -398,7 +335,7 @@ function updateStates(userobjarr, callback) {
                   cunit = '%';
                   break;
                 case 'accuracy':
-                  crole = 'value';
+                  crole = 'value.gps.accuracy';
                   cunit = 'm';
                   break;
                 case 'timestamp':
@@ -414,8 +351,8 @@ function updateStates(userobjarr, callback) {
                   type: 'number',
                   role: crole,
                   unit: cunit,
-                  read: 'true',
-                  write: 'false'
+                  read: true,
+                  write: false
                 }
                 }, userobjarr[i][cprop], true);
               break;
@@ -436,8 +373,8 @@ function updateStates(userobjarr, callback) {
                   desc: '',
                   type: 'string',
                   role: crole,
-                  read: 'true',
-                  write: 'false'
+                  read: true,
+                  write: false
                 }
               }, userobjarr[i][cprop], true);
               break;
@@ -448,9 +385,9 @@ function updateStates(userobjarr, callback) {
                   desc: '',
                   type: 'boolean',
                   role: 'indicator',
-                  def: 'false',
-                  read: 'true',
-                  write: 'false'
+                  def: false,
+                  read: true,
+                  write: false
                 }
               }, userobjarr[i][cprop], true);
               break;
@@ -465,20 +402,8 @@ function updateStates(userobjarr, callback) {
 
 // poll locations, devices, etc.
 function poll(callback) {
-  adapter.log.info('Polling locations.');
-
-  querySharedLocations(function (err) {
-    if (err) {
-      adapter.log.error('An error occurred during polling the locations!');
-      adapter.setState('info.connection', false, false);
-      callback(err);
-
-      // TODO: should we issue a reconnect here?
-    } else {
-      adapter.setState('info.connection', true, false);
-      callback(false);
-    }
-  });
+  adapter.log.debug('Polling locations.');
+  triggerSingleQuery(callback);
 }
 
 // notify places adapter
@@ -496,7 +421,8 @@ function notifyPlaces(userobjarr, callback) {
           user: cuser.name,
           latitude: cuser.lat,
           longitude: cuser.long,
-          timestamp: Date.now()
+          timestamp: Date.now(),
+          address: cuser.address
         });
     }
   }
@@ -507,7 +433,7 @@ function notifyPlaces(userobjarr, callback) {
 // check fences
 function checkFences(userobjarr, callback) {
 
-  adapter.log.info('Checking fences.');
+  adapter.log.debug('Checking fences.');
   let fences = adapter.config.fences;
 
   // check fences
@@ -524,7 +450,7 @@ function checkFences(userobjarr, callback) {
         let curdist = haversine(cuser.lat, cuser.long, Number(cfence.center_lat), Number(cfence.center_long));
         let cstate = curdist <= cfence.radius;
 
-        adapter.setState('fence.' + cfence.fenceid, cstate, false);
+        adapter.setState('fence.' + cfence.fenceid, cstate, true);
         break;
       }
     }
@@ -544,7 +470,7 @@ function setStateEx(id, common, val, ack, callback) {
 
   let cfunc = function (err) {
     adapter.setState(id, val, ack, function(err) {
-      if(err) adapter.log.error('Could not create extended state id:' + id + ', val:' + val);
+      if(err) adapter.log.error('Could not create extended state id:' + id + ', val:' + val + ' because ' + err.stack);
     });
   };
 
@@ -577,26 +503,28 @@ function getSharedLocations(callback) {
       if(callback) callback(true);
     } else {
       // connection successful
-      adapter.log.debug('Response: ' + response.statusMessage);
+      adapter.log.debug('Response: ' + response.statusMessage + ' - ' + response.statusCode);
 
       // connection established but auth failure
       if(response.statusCode !== 200) {
-        adapter.log.debug('Removed cookies.');
-        adapter.log.error('Connection works, but authorization failure, please login manually!');
-        adapter.log.info('Could not connect to google, please login manually!');
+        adapter.log.error('Failed getting locations: ' + response.statusCode + ' - ' + response.statusMessage + ' - ' + response.body);
 
         if(callback) callback(true);
       } else {
         // parse and save user locations
-        let locationdata = JSON.parse(body.split('\n').slice(1, -1).join(''));
-
-        parseLocationData(locationdata, function(err, userobjarr) {
-          if(err) {
-            if(callback) callback(err);
-          } else {
-            if(callback) callback(false, userobjarr);
-          }
-        });
+        try {
+          let locationdata = JSON.parse(body.split('\n').slice(1, -1).join(''));
+          parseLocationData(locationdata, function(err, userobjarr) {
+            if(err) {
+              if(callback) callback(err);
+            } else {
+              if(callback) callback(false, userobjarr);
+            }
+          });
+        } catch (e) {
+          //adapter.log.error('Could not parse location data. Probably authentication error. Please check cookie.');
+          callback(e);
+        }
       }
     }
   });
@@ -610,7 +538,6 @@ function parseLocationData(locationdata, callback) {
   let userdataobjarr = [];
 
   if(perlocarr && perlocarr.length > 0) {
-
     for(let i=0; i<perlocarr.length;i++) {
       extractUserLocationData(perlocarr[i], function(err, obj) {
         if(err) {
@@ -621,7 +548,9 @@ function parseLocationData(locationdata, callback) {
         }
       });
     }
-
+  } else {
+    throw new Error('No location data in response. Cookie expired.');
+    adapter.log.debug('No location data: ' + JSON.stringify(locationdata, null, 2));
   }
 
   if(callback) callback(false, userdataobjarr);

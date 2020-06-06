@@ -183,7 +183,7 @@
         let obj = {};
         $('.value').each(function () {
           let $this = $(this);
-          if ($this.attr('type') == 'checkbox') {
+          if ($this.attr('type') === 'checkbox') {
             obj[$this.attr('id')] = $this.prop('checked');
           } else {
             obj[$this.attr('id')] = $this.val();
@@ -209,14 +209,9 @@
               return;
             }
 
-            let credentials =
-              '{' +
-              '"google_username": "' + $('#google_username.value').val() + '",' +
-              '"google_password": "' + $('#google_password.value').val() + '",' +
-              '"google_verify_email": "' + $('#google_verify_email.value').val() + '"' +
-              '}';
+            let cookie = $('#google_cookie.value').val();
 
-            sendTo('google-sharedlocations.' + instance, 'checkConnection', credentials, function (conn_status) {
+            sendTo('google-sharedlocations.' + instance, 'checkConnection', {cookie}, function (conn_status) {
               if(conn_status === true) {
                 showMessage(_('Connection successful!'), 'Connection test', 'info');
               } else {
@@ -238,14 +233,9 @@
               return;
             }
 
-            let credentials =
-              '{' +
-              '"google_username": "' + $('#google_username.value').val() + '",' +
-              '"google_password": "' + $('#google_password.value').val() + '",' +
-              '"google_verify_email": "' + $('#google_verify_email.value').val() + '"' +
-              '}';
+              let cookie = $('#google_cookie.value').val();
 
-            sendTo('google-sharedlocations.' + instance, 'getUsers', credentials, function (users) {
+            sendTo('google-sharedlocations.' + instance, 'getUsers', {cookie}, function (users) {
                 updateUsersInTable(users, null);
             });
           });
@@ -272,18 +262,8 @@
             </div>
             <div class="row">
                 <div class="input-field col s12 m8 l4">
-                    <input class="value" id="google_username" type="text">
-                    <label for="google_username" class="translate active">google_username</label>
-                </div>
-                <div class="input-field col s12 m8 l4">
-                    <input class="value" id="google_password" type="password">
-                    <label for="google_password" class="translate active">google_password</label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="input-field col s12 m8 l4">
-                    <input class="value" id="google_verify_email" type="text">
-                    <label for="google_verify_email" class="translate active">google_verify_email</label>
+                    <input class="value" id="google_cookie" type="text">
+                    <label for="google_cookie" class="translate active">google_cookie</label>
                 </div>
             </div>
             <div class="row">
