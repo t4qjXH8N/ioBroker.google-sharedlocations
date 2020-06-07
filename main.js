@@ -549,7 +549,7 @@ function parseLocationData(locationdata, callback) {
       });
     }
   } else {
-    throw new Error('No location data in response. Cookie expired.');
+    throw new Error('No location data in response. Cookie expired or no users share their location with you.');
     adapter.log.debug('No location data: ' + JSON.stringify(locationdata, null, 2));
   }
 
