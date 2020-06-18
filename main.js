@@ -199,9 +199,9 @@ function syncConfig() {
             desc: 'Fence for user ' + fences[i].userid,
             type: 'boolean',
             role: 'indicator',
-            def: 'false',
-            read: 'true',
-            write: 'false'
+            def: false,
+            read: true,
+            write: false
           }
         }, false, true);
       }
