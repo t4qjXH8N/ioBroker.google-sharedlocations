@@ -53,6 +53,12 @@ If you still experience problems please open an issue. Please set the adapter le
 If this project helped you to reduce developing time, you can give me a cup of coffee or a bottle of beer via PayPal(chvorholt@gmail.com) :-)  
 
 ## Changelog
+### 2.0.3 (13-Jan-2021)
+- fixed 500 errors (Garfonso)
+
+### 2.0.2 (30-Jun-2020)
+- fixed warnings from wrong object fields - fences (Garfonso)
+
 ### 2.0.1 (03-Jun-2020)
 - enforced min_polling_interval (Garfonso)
 - improved error logging (Garfonso) 
