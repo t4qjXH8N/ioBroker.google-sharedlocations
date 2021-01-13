@@ -481,7 +481,7 @@ function setStateEx(id, common, val, ack, callback) {
 
 // query google shared locations
 function getSharedLocations(callback) {
-
+  //see https://github.com/costastf/locationsharinglib/blob/master/locationsharinglib/locationsharinglib.py#L148
   let options_map = {
     uri: "https://www.google.com/maps/rpc/locationsharing/read",
     headers: {

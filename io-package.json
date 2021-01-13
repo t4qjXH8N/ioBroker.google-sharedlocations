@@ -1,12 +1,36 @@
 {
     "common": {
         "name":                     "google-sharedlocations",
-        "version":                  "2.0.1",
+        "version":                  "2.0.3",
         "license":                  "MIT",
         "authors": [
           "Christian Vorholt <chvorholt@gmail.com>"
         ],
         "news": {
+          "2.0.3": {
+            "en": "- fixed 500 errors (Garfonso)",
+            "de": "- 500 Fehler behoben (Garfonso)",
+            "ru": "- исправлено 500 ошибок (Гарфонсо)",
+            "pt": "- corrigiu 500 erros (Garfonso)",
+            "nl": "- 500 fouten opgelost (Garfonso)",
+            "fr": "- correction de 500 erreurs (Garfonso)",
+            "it": "- risolti 500 errori (Garfonso)",
+            "es": "- 500 errores corregidos (Garfonso)",
+            "pl": "- naprawiono błędy 500 (Garfonso)",
+            "zh-cn": "-修正了500个错误（Garfonso）"
+          },
+          "2.0.2": {
+            "en": "- fixed warnings from wrong object fields - fences (Garfonso)",
+            "de": "- Warnungen von falschen Objektfeldern behoben - Zäune (Garfonso)",
+            "ru": "- исправлены предупреждения от неправильных полей объекта - заборы (Garfonso)",
+            "pt": "- avisos corrigidos de campos de objetos errados - cercas (Garfonso)",
+            "nl": "- vaste waarschuwingen van verkeerde objectvelden - hekken (Garfonso)",
+            "fr": "- Correction des avertissements des mauvais champs d'objets - clôtures (Garfonso)",
+            "it": "- risolti avvisi da campi oggetto errati - recinzioni (Garfonso)",
+            "es": "- advertencias corregidas de campos de objetos incorrectos - vallas (Garfonso)",
+            "pl": "- naprawiono ostrzeżenia z niewłaściwych pól obiektów - ogrodzenia (Garfonso)",
+            "zh-cn": "-修复了来自错误对象字段的警告-围栏（Garfonso）"
+          },
           "2.0.1": {
             "en": "- enforced min_polling_interval (Garfonso)\n- improved error logging (Garfonso) ",
             "de": "- erzwungenes min_polling_interval (Garfonso)\n- verbesserte Fehlerprotokollierung (Garfonso)",
