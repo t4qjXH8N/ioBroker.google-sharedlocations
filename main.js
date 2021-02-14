@@ -211,6 +211,7 @@ async function main() {
   if(adapter.config.google_cookie) {
     google_cookie_header = adapter.config.google_cookie.replace('Cookie: ', '');
     await improveCookie();
+    await improveCookie(); //do this two times like HASS.
     await querySharedLocations();
   } else {
     adapter.log.warn('No cookie. Please set cookie in config.');
