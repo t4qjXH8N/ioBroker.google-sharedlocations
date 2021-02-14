@@ -4,7 +4,7 @@
 const utils = require('@iobroker/adapter-core'); // Get common adapter utils
 
 // for communication
-const request = require('request');
+const axios = require('axios');
 
 const min_polling_interval = 60; // minimum polling interval in seconds
 
@@ -45,7 +45,7 @@ adapter.on('stateChange', function (id, state) {
     // a poll is triggered
     if (id && state && id === 'google-sharedlocations.' + adapter.instance + '.' + trigger_poll_state && state.val === true) {
       adapter.log.debug('Poll triggered by user.');
-      triggerSingleQuery();
+      querySharedLocations();
       adapter.setState(trigger_poll_state, false, false)
     }
   }
@@ -59,37 +59,35 @@ adapter.on('ready', function () {
 });
 
 // messages
-adapter.on('message', function (obj) {
+adapter.on('message', async function (obj) {
   let wait = false;
   let credentials;
 
-  function DBUsersToSendTo(callback) {
-    let ids = [];
-
-    // get users
-    adapter.getStates('google-sharedlocations.' + adapter.instance + '.user.*', function(err, states) {
-      if(!err) {
-        for (let cstate in states) {
-          if (cstate.split('.')[cstate.split('.').length - 1] === 'id') {
-            ids.push(cstate.split('.')[cstate.split('.').length - 2]);
-          }
+  async function DBUsersToSendTo() {
+    const ids = [];
+    try {
+      // get users
+      const states = adapter.getStatesAsync('google-sharedlocations.' + adapter.instance + '.user.*');
+      for (const cstate of states) {
+        if (cstate.split('.')[cstate.split('.').length - 1] === 'id') {
+          ids.push(cstate.split('.')[cstate.split('.').length - 2]);
         }
-
-        // get photo urls
-        let res = [];
-        for (let i = 0; i < ids.length; i++) {
-          res.push({
-            "id": ids[i],
-            "photoURL": states['google-sharedlocations.' + adapter.instance + '.user.' + ids[i] + '.photoURL'].val,
-            "name": states['google-sharedlocations.' + adapter.instance + '.user.' + ids[i] + '.name'].val
-          });
-        }
-
-        callback(res);
-      } else {
-        callback(false);
       }
-    });
+      // get photo urls
+      const res = [];
+      for (const id of ids) {
+        res.push({
+          "id": id,
+          "photoURL": states['google-sharedlocations.' + adapter.instance + '.user.' + id + '.photoURL'].val,
+          "name": states['google-sharedlocations.' + adapter.instance + '.user.' + id + '.name'].val
+        });
+      }
+
+      return res;
+    } catch (err) {
+      adapter.log.error('Error during setting states: ' + err);
+      return [];
+    }
   }
 
 
@@ -101,21 +99,17 @@ adapter.on('message', function (obj) {
           google_cookie_header = cookie;
         }
 
-        getSharedLocations((err) => {
-          if (!err) {
-            adapter.sendTo(obj.from, obj.command, true, obj.callback);
-          } else {
-            adapter.sendTo(obj.from, obj.command, false, obj.callback);
-          }
-        });
-        wait = true;
+        try {
+          const result = await getSharedLocations();
+          adapter.sendTo(obj.from, obj.command, result ? true : false, obj.callback);
+        } catch (err) {
+          adapter.sendTo(obj.from, obj.command, false, obj.callback);
+        }
         break;
       }
       case 'triggerPoll': {
-        triggerSingleQuery(function (err) {
-          adapter.sendTo(obj.from, obj.command, err, obj.callback);
-        });
-        wait = true;
+        await querySharedLocations();
+        adapter.sendTo(obj.from, obj.command, err, obj.callback);
         break;
       }
       case 'getUsers': {
@@ -124,104 +118,102 @@ adapter.on('message', function (obj) {
           google_cookie_header = cookie;
         }
 
-        querySharedLocations(function (err) {
-          if (!err) {
-            DBUsersToSendTo(function (res) {
-              adapter.sendTo(obj.from, obj.command, res, obj.callback);
-            });
-          } else {
-            this.log.error('Error getting users: ' + err.stack);
-            adapter.sendTo(obj.from.obj.command, [], obj.callback);
-          }
-        });
-        wait = true;
+        await querySharedLocations();
+        const res = await DBUsersToSendTo();
+        adapter.sendTo(obj.from, obj.command, res, obj.callback);
         break;
       }
       case 'getUsersFromDB': {
         // get users
-        DBUsersToSendTo(function (res) {
-          adapter.sendTo(obj.from, obj.command, res, obj.callback);
-        });
-        wait = true;
+        const res = DBUsersToSendTo();
+        adapter.sendTo(obj.from, obj.command, res, obj.callback);
         break;
       }
       default: {
         adapter.log.warn("Unknown command: " + obj.command);
+        if (obj.callback) {
+          adapter.sendTo(obj.from, obj.command, obj.message, obj.callback);
+        }
         break;
       }
     }
-  }
-  if (!wait && obj.callback) {
-    adapter.sendTo(obj.from, obj.command, obj.message, obj.callback);
   }
 
   return true;
 });
 
 // synchronize config
-function syncConfig() {
-  function stateInConfig(cstate) {
+async function syncConfig() {
+  //retrieve iobroker states of this adapter:
+  const states = await adapter.getStatesAsync('google-sharedlocations.' + adapter.instance + '.fence.*');
+
+  function stateInConfig(stateId) {
     let fences = adapter.config.fences;
-    for(let j=0;j<fences.length;j++) {
-      if('google-sharedlocations.' + adapter.instance + '.fence.' + fences[j].fenceid === cstate) {
+    for (let j = 0; j < fences.length; j++) {
+      if ('google-sharedlocations.' + adapter.instance + '.fence.' + fences[j].fenceid === stateId) {
         return true;
       }
     }
     return false;
   }
 
-  function stateInDB(cstate, callback) {
-    adapter.getStates('google-sharedlocations.' + adapter.instance + '.fence.*', function(err, states) {
-      callback(states.hasOwnProperty(cstate));
-    });
+  function stateInDB(stateId) {
+    return !!states[stateId];
   }
 
   // check if there are states that have to be removed
-  adapter.getStates('google-sharedlocations.' + adapter.instance + '.fence.*', function(err, states) {
-    if (err) {
-      adapter.log.error('SyncConfig: Could not retrieve states!');
-    } else {
-      for (let cstate in states) {
-        if (!stateInConfig(cstate)) adapter.delObject(cstate);
-      }
+  for (const stateId of Object.keys(states)) {
+    if (!stateInConfig(stateId)) {
+      await adapter.delObjectAsync(stateId);
     }
-  });
+  }
 
   let fences = adapter.config.fences;
   // create missing states
-  for(let i=0;i<fences.length;i++) {
-    stateInDB('google-sharedlocations.' + adapter.instance + '.fence.' + fences[i].fenceid, function(inDB) {
-      if(!inDB) {
-        // set all states to false at the beginning and create them if they do not exist
-        setStateEx('fence.' + fences[i].fenceid, {
-          common: {
-            name: fences[i].description,
-            desc: 'Fence for user ' + fences[i].userid,
-            type: 'boolean',
-            role: 'indicator',
-            def: false,
-            read: true,
-            write: false
-          }
-        }, false, true);
-      }
-    });
+  for (let i = 0; i < fences.length; i++) {
+    const inDB = await stateInDB('google-sharedlocations.' + adapter.instance + '.fence.' + fences[i].fenceid);
+    if (!inDB) {
+      // set all states to false at the beginning and create them if they do not exist
+      await setStateEx('fence.' + fences[i].fenceid, {
+        common: {
+          name: fences[i].description,
+          desc: 'Fence for user ' + fences[i].userid,
+          type: 'boolean',
+          role: 'indicator',
+          def: false,
+          read: true,
+          write: false
+        }
+      }, false, true);
+    }
   }
 }
 
 // main function
-function main() {
+async function main() {
   // The adapters config (in the instance object everything under the attribute "native") is accessible via
   // adapter.config:
   adapter.log.info('Starting google shared locations adapter');
 
+  //TODO: maybe do that, too, in order to extend cookie:
+  // https://github.com/costastf/locationsharinglib/blob/master/locationsharinglib/locationsharinglib.py#L105
+  // i.e. get account URL and store cookies from that?
+
   // sync config
-  syncConfig();
+  await syncConfig();
 
   // check polling interval
   if (Number(adapter.config.google_polling_interval) < min_polling_interval && Number(adapter.config.google_polling_interval) !== 0) {
     adapter.log.info('Configured poll interval of ' + adapter.config.google_polling_interval + 's smaller than minimum poll interval of ' + min_polling_interval + 's, will increase it to prevent 429 errors.');
     adapter.config.google_polling_interval = min_polling_interval;
+  }
+
+  if(adapter.config.google_cookie) {
+    google_cookie_header = adapter.config.google_cookie.replace('Cookie: ', '');
+    await improveCookie();
+    await querySharedLocations();
+  } else {
+    adapter.log.warn('No cookie. Please set cookie in config.');
   }
 
   if (Number(adapter.config.google_polling_interval) === 0) {
@@ -231,71 +223,40 @@ function main() {
     // first connect and query
     // connect to Google
     adapter.log.debug('Polling location every ' + adapter.config.google_polling_interval + 's.');
-    if(adapter.config.google_cookie) {
-      google_cookie_header = adapter.config.google_cookie;
-      triggerSingleQuery();
-      // enable polling
-      google_polling_interval_id = setInterval(function () {
-        poll(function (err) {
-        });
-      }, Number(adapter.config.google_polling_interval) * 1000);
-    }
+    // enable polling
+    google_polling_interval_id = setInterval(async function () {
+      try {
+        await poll()
+      } catch (err) {
+        adapter.log.warn('Error during poll: ' + err);
+      }
+    }, Number(adapter.config.google_polling_interval) * 1000);
   }
   // subscribe
   adapter.subscribeStates(trigger_poll_state);
   //adapter.subscribeStates('fence.*');
 }
 
-// issue a single query. If not connected, open a new connection
-function triggerSingleQuery(callback) {
-  querySharedLocations(function (err) {
-    if (err) {
-      adapter.log.error('An error occurred during polling the locations: ' + err.stack);
-      adapter.setState('info.connection', false, true);
-      if(callback) callback(err);
-    } else {
-      adapter.setState('info.connection', true, true);
-      if(callback) callback(false);
-    }
-  });
-}
-
 // get locations
-function querySharedLocations(callback) {
-  getSharedLocations(function (err, userobjarr) {
-    if (err) {
-      //adapter.log.error('An error occurred during getSharedLocation! ' + err.stack);
-      if (callback) callback(err)
-    } else {
-      // notify places adapter
-      notifyPlaces(userobjarr, function(err) {
-        if (err) {
-          adapter.log.error('Error during places notification. ' + err.stack);
-          if (callback) callback(err)
-        }
-      });
+async function querySharedLocations() {
+  try {
+    const userobjarr = await getSharedLocations();
+    // notify places adapter
+    await notifyPlaces(userobjarr);
 
-      // check fences
-      checkFences(userobjarr, function (err) {
-        if (err) {
-          adapter.log.error('Error during fence check. ' + err.stack);
-          if (callback) callback(err)
-        } else {
-          updateStates(userobjarr, function (err) {
-            if (err) {
-              if (callback) callback(err)
-            } else {
-              if (callback) callback(false)
-            }
-          });
-        }
-      });
-    }
-  });
+    // check fences
+    await checkFences(userobjarr);
+    await updateStates(userobjarr);
+
+    adapter.setState('info.connection', true, true);
+  } catch (err) {
+    adapter.log.error('An error occurred during polling the locations: ' + err.stack);
+    adapter.setState('info.connection', false, true);
+  }
 }
 
 // update states
-function updateStates(userobjarr, callback) {
+async function updateStates(userobjarr) {
   if(userobjarr) {
     for(let i=0;i<userobjarr.length;i++) {
       // go through users
@@ -344,7 +305,7 @@ function updateStates(userobjarr, callback) {
                 default:
                   crole = 'value';
               }
-              setStateEx(cid, {
+              await setStateEx(cid, {
                 common: {
                   name: cprop,
                   desc: '',
@@ -367,7 +328,7 @@ function updateStates(userobjarr, callback) {
                 default:
                   crole = 'text';
               }
-              setStateEx(cid, {
+              await setStateEx(cid, {
                 common: {
                   name: cprop,
                   desc: '',
@@ -379,7 +340,7 @@ function updateStates(userobjarr, callback) {
               }, userobjarr[i][cprop], true);
               break;
             case 'boolean':
-              setStateEx(cid, {
+              await setStateEx(cid, {
                 common: {
                   name: cprop,
                   desc: '',
@@ -396,18 +357,16 @@ function updateStates(userobjarr, callback) {
       }
     }
   }
-
-  if(callback) callback(false);
 }
 
 // poll locations, devices, etc.
-function poll(callback) {
+async function poll() {
   adapter.log.debug('Polling locations.');
-  triggerSingleQuery(callback);
+  await querySharedLocations();
 }
 
 // notify places adapter
-function notifyPlaces(userobjarr, callback) {
+async function notifyPlaces(userobjarr) {
   let places = adapter.config.places_adapter;
 
   if (places && places !== '') {
@@ -416,7 +375,7 @@ function notifyPlaces(userobjarr, callback) {
       let cuser = userobjarr[j];
 
       // send message to places adapter
-      adapter.sendTo(
+      await adapter.sendToAsync(
         places, {
           user: cuser.name,
           latitude: cuser.lat,
@@ -426,13 +385,10 @@ function notifyPlaces(userobjarr, callback) {
         });
     }
   }
-
-  callback(false);
 }
 
 // check fences
-function checkFences(userobjarr, callback) {
-
+async function checkFences(userobjarr) {
   adapter.log.debug('Checking fences.');
   let fences = adapter.config.fences;
 
@@ -450,45 +406,78 @@ function checkFences(userobjarr, callback) {
         let curdist = haversine(cuser.lat, cuser.long, Number(cfence.center_lat), Number(cfence.center_long));
         let cstate = curdist <= cfence.radius;
 
-        adapter.setState('fence.' + cfence.fenceid, cstate, true);
+        await adapter.setStateAsync('fence.' + cfence.fenceid, cstate, true);
         break;
       }
     }
   }
-
-  callback(false);
 }
 
 // setStateEx
-function setStateEx(id, common, val, ack, callback) {
+async function setStateEx(id, common, val, ack) {
   let a = {
     type: 'state',
     native: {}
   };
 
   let common_full = Object.assign({}, a, common);
-
-  let cfunc = function (err) {
-    adapter.setState(id, val, ack, function(err) {
-      if(err) adapter.log.error('Could not create extended state id:' + id + ', val:' + val + ' because ' + err.stack);
-    });
-  };
-
-  adapter.setObjectNotExists(id, common_full, cfunc);
-
-  if(callback) callback(false);
+  try {
+    await adapter.setObjectNotExistsAsync(id, common_full);
+    await adapter.setStateAsync(id, val, ack);
+  } catch (err) {
+    adapter.log.warn(`Could not update state ${id} because: ${err}`);
+  }
 }
 
-// query google shared locations
-function getSharedLocations(callback) {
-  //see https://github.com/costastf/locationsharinglib/blob/master/locationsharinglib/locationsharinglib.py#L148
+/**
+ * Tries to improve user cookie by logging in to user home first.
+ * @returns {Promise<void>}
+ */
+async function improveCookie() {
+  //see https://github.com/costastf/locationsharinglib/blob/master/locationsharinglib/locationsharinglib.py#L105
   let options_map = {
-    uri: "https://www.google.com/maps/rpc/locationsharing/read",
+    url: "https://myaccount.google.com/?hl=en",
     headers: {
       "Cookie": google_cookie_header
     },
-    method: "GET",
-    qs: {
+    method: "get"
+  };
+
+  try {
+    const response = await axios(options_map);
+    // connection successful
+    adapter.log.debug('Response: ' + response.status);
+
+    // connection established but auth failure
+    if (response.status !== 200) {
+      adapter.log.error('Failed getting locations: ' + response.status);
+    } else {
+      // parse and save user locations
+      adapter.log.debug('New cookie header: ' + response.headers['set-cookie'].length);
+      if (response.headers['set-cookie'].length) {
+        adapter.log.info('New header received.');
+        for (const header of response.headers['set-cookie']) {
+          google_cookie_header += header;
+        }
+      }
+    }
+  } catch (err) {
+    adapter.log.error(err);
+    adapter.log.info('Connection to google maps failure.');
+    return false;
+  }
+}
+
+// query google shared locations
+async function getSharedLocations() {
+  //see https://github.com/costastf/locationsharinglib/blob/master/locationsharinglib/locationsharinglib.py#L148
+  let options_map = {
+    url: "https://www.google.com/maps/rpc/locationsharing/read",
+    headers: {
+      "Cookie": google_cookie_header
+    },
+    method: "get",
+    params: {
       "authuser": 2,
       "hl": "en",
       "gl": "us",
@@ -497,70 +486,54 @@ function getSharedLocations(callback) {
     }
   };
 
-  request(options_map, function(err, response, body){
-    if(err || !response) {
-      // no connection
+  try {
+    const response = await axios(options_map);
+    // connection successful
+    adapter.log.debug('Response: ' + response.status);
 
-      adapter.log.error(err);
-      adapter.log.info('Connection to google maps failure.');
-      if(callback) callback(true);
+    // connection established but auth failure
+    if (response.status !== 200) {
+      adapter.log.error('Failed getting locations: ' + response.status + ' - ' + response.data);
     } else {
-      // connection successful
-      adapter.log.debug('Response: ' + response.statusMessage + ' - ' + response.statusCode);
-
-      // connection established but auth failure
-      if(response.statusCode !== 200) {
-        adapter.log.error('Failed getting locations: ' + response.statusCode + ' - ' + response.statusMessage + ' - ' + response.body);
-
-        if(callback) callback(true);
-      } else {
-        // parse and save user locations
-        try {
-          let locationdata = JSON.parse(body.split('\n').slice(1, -1).join(''));
-          parseLocationData(locationdata, function(err, userobjarr) {
-            if(err) {
-              if(callback) callback(err);
-            } else {
-              if(callback) callback(false, userobjarr);
-            }
-          });
-        } catch (e) {
-          //adapter.log.error('Could not parse location data. Probably authentication error. Please check cookie.');
-          callback(e);
-        }
+      // parse and save user locations
+      try {
+        let locationdata = JSON.parse(response.data.split('\n').slice(1, -1).join(''));
+        const userobjarr = parseLocationData(locationdata);
+        return userobjarr;
+      } catch (e) {
+        adapter.log.error('Could not parse location data. Probably authentication error. Please check cookie.');
+        return false;
       }
     }
-  });
+  } catch (err) {
+    adapter.log.error(err);
+    adapter.log.info('Connection to google maps failure.');
+    return false;
+  }
 }
 
 // parse the retrieved location data
-function parseLocationData(locationdata, callback) {
+function parseLocationData(locationdata) {
 
   // shared location data is contained in the first element
-  let perlocarr = locationdata[0];
-  let userdataobjarr = [];
+  const perlocarr = locationdata[0];
+  const userdataobjarr = [];
 
   if(perlocarr && perlocarr.length > 0) {
-    for(let i=0; i<perlocarr.length;i++) {
-      extractUserLocationData(perlocarr[i], function(err, obj) {
-        if(err) {
-          if(callback) callback(err);
-          return
-        } else {
-          userdataobjarr[i] = obj;
-        }
-      });
+    for(const perloc of perlocarr) {
+      const obj = extractUserLocationData(perloc);
+      userdataobjarr.push(obj);
     }
   } else {
     throw new Error('No location data in response. Cookie expired or no users share their location with you.');
     adapter.log.debug('No location data: ' + JSON.stringify(locationdata, null, 2));
   }
 
-  if(callback) callback(false, userdataobjarr);
+  return userdataobjarr;
 }
 
 // get user date and create states form
-function extractUserLocationData(userdata, callback) {
+function extractUserLocationData(userdata) {
   let userdataobj = {
     "id": undefined,
     "photoURL": undefined,
@@ -586,7 +559,7 @@ function extractUserLocationData(userdata, callback) {
     if(userdata[1] && userdata[1][3]) userdataobj['accuracy'] = userdata[1][3];
   }
 
-  if(callback) callback(false, userdataobj);
+  return userdataobj;
 }
 
 // latitude and longitude in degree decimal notation

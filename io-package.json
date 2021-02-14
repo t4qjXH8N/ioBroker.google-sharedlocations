@@ -1,12 +1,24 @@
 {
     "common": {
         "name":                     "google-sharedlocations",
-        "version":                  "2.0.3",
+        "version":                  "2.1.0",
         "license":                  "MIT",
         "authors": [
           "Christian Vorholt <chvorholt@gmail.com>"
         ],
         "news": {
+          "2.1.0": {
+            "en": "- major rework of async logic (Garfonso)\n- add call to account page in order to get longer lasting cookie (Garfonso)\n- replace now unsupported request-library (Garfonso)",
+            "de": "- umfassende Überarbeitung der asynchronen Logik (Garfonso)\n- Anruf zur Kontoseite hinzufügen, um ein länger anhaltendes Cookie zu erhalten (Garfonso)\n- Ersetze jetzt nicht unterstützte Anforderungsbibliothek (Garfonso)",
+            "ru": "- крупная переработка асинхронной логики (Гарфонсо)\n- добавить вызов на страницу учетной записи, чтобы получить более длительный cookie (Garfonso)\n- заменить теперь неподдерживаемую request-библиотеку (Garfonso)",
+            "pt": "- grande retrabalho da lógica assíncrona (Garfonso)\n- adicionar chamada à página da conta para obter um cookie mais duradouro (Garfonso)\n- substitua agora a biblioteca de solicitações sem suporte (Garfonso)",
+            "nl": "- grote herwerking van asynchrone logica (Garfonso)\n- voeg een oproep toe aan de accountpagina om een langdurigere cookie te krijgen (Garfonso)\n- vervang nu niet-ondersteunde aanvraagbibliotheek (Garfonso)",
+            "fr": "- refonte majeure de la logique asynchrone (Garfonso)\n- ajouter la page d'appel au compte afin d'obtenir un cookie plus durable (Garfonso)\n- remplacer maintenant la bibliothèque de requêtes non prise en charge (Garfonso)",
+            "it": "- importante rielaborazione della logica asincrona (Garfonso)\n- aggiungi la chiamata alla pagina dell'account per ottenere un cookie più duraturo (Garfonso)\n- sostituire la libreria delle richieste ora non supportata (Garfonso)",
+            "es": "- revisión importante de la lógica asincrónica (Garfonso)\n- agregar llamada a la página de la cuenta para obtener una cookie más duradera (Garfonso)\n- reemplace la biblioteca de solicitudes ahora no compatible (Garfonso)",
+            "pl": "- poważna przeróbka logiki asynchronicznej (Garfonso)\n- dodaj wywołanie do strony konta, aby uzyskać trwalszy plik cookie (Garfonso)\n- zastąp teraz nieobsługiwaną bibliotekę żądań (Garfonso)",
+            "zh-cn": "-异步逻辑的重大改进（Garfonso）\n-将呼叫添加到帐户页面以获取更长久的cookie（Garfonso）\n-现在替换不受支持的请求库（Garfonso）"
+          },
           "2.0.3": {
             "en": "- fixed 500 errors (Garfonso)",
             "de": "- 500 Fehler behoben (Garfonso)",

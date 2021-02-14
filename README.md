@@ -53,6 +53,11 @@ If you still experience problems please open an issue. Please set the adapter le
 If this project helped you to reduce developing time, you can give me a cup of coffee or a bottle of beer via PayPal(chvorholt@gmail.com) :-)  
 
 ## Changelog
+### 2.1.0 (14-Feb-2022)
+- major rework of async logic (Garfonso)
+- add call to account page in order to get longer lasting cookie (Garfonso)
+- replace now unsupported request-library (Garfonso)
+
 ### 2.0.3 (13-Jan-2021)
 - fixed 500 errors (Garfonso)
 
