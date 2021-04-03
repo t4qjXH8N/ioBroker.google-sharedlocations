@@ -1,12 +1,24 @@
 {
     "common": {
         "name":                     "google-sharedlocations",
-        "version":                  "2.1.0",
+        "version":                  "2.1.1",
         "license":                  "MIT",
         "authors": [
           "Christian Vorholt <chvorholt@gmail.com>"
         ],
         "news": {
+          "2.1.1": {
+            "en": "- call account page at least every day now. (Garfonso)",
+            "de": "- Rufe mindestens jeden Tag die Profilseite auf. (Garfonso)",
+            "ru": "- теперь звонить на страницу аккаунта хотя бы каждый день. (Гарфонсо)",
+            "pt": "- ligue para a página da conta pelo menos todos os dias agora. (Garfonso)",
+            "nl": "- bel nu minstens elke dag de accountpagina. (Garfonso)",
+            "fr": "- Appelez la page du compte au moins tous les jours maintenant. (Garfonso)",
+            "it": "- chiama la pagina dell'account almeno ogni giorno adesso. (Garfonso)",
+            "es": "- Llame a la página de la cuenta al menos todos los días ahora. (Garfonso)",
+            "pl": "- dzwoń na stronę konta przynajmniej codziennie. (Garfonso)",
+            "zh-cn": "-现在至少每天都拨打一次帐户页面。 （加方索）"
+          },
           "2.1.0": {
             "en": "- major rework of async logic (Garfonso)\n- add call to account page in order to get longer lasting cookie (Garfonso)\n- replace now unsupported request-library (Garfonso)",
             "de": "- umfassende Überarbeitung der asynchronen Logik (Garfonso)\n- Anruf zur Kontoseite hinzufügen, um ein länger anhaltendes Cookie zu erhalten (Garfonso)\n- Ersetze jetzt nicht unterstützte Anforderungsbibliothek (Garfonso)",
@@ -192,6 +204,20 @@
         "write": false
         },
       "native": {}
+      },
+      {
+        "_id": "info.augmented_cookie",
+        "type": "state",
+        "common": {
+          "name": "augmented cookie",
+          "desc": "Cookie augmented with additional stuff from profile page",
+          "type": "string",
+          "def": "",
+          "read": true,
+          "role": "state",
+          "write": false
+        },
+        "native": {}
       },
       {
         "_id": "trigger_poll",

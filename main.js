@@ -26,6 +26,9 @@ adapter.on('install', function () {
 // is called when the adapter shuts down - callback has to be called under any circumstances!
 adapter.on('unload', function (callback) {
   try {
+    if (google_polling_interval_id) {
+      clearTimeout(google_polling_interval_id);
+    }
     callback();
   } catch (e) {
     callback(e);
@@ -125,7 +128,7 @@ adapter.on('message', async function (obj) {
       }
       case 'getUsersFromDB': {
         // get users
-        const res = DBUsersToSendTo();
+        const res = await DBUsersToSendTo();
         adapter.sendTo(obj.from, obj.command, res, obj.callback);
         break;
       }
@@ -189,6 +192,32 @@ async function syncConfig() {
   }
 }
 
+async function poll(onlyCookie) {
+  try {
+    const state = await adapter.getStateAsync('info.augmented_cookie');
+    if (Date.now() - state.ts >= 24 * 60 * 60 * 1000) {
+      adapter.log.debug('Need to augment cookie.');
+      await improveCookie();
+      await improveCookie();
+      await adapter.setStateAsync('info.augmented_cookie', google_cookie_header, true);
+    }
+  } catch (e) {
+    adapter.log.warn('Error during cookie augmentation: ' + err);
+  }
+
+  if (!onlyCookie) {
+      try {
+        adapter.log.debug('Polling locations.');
+        await querySharedLocations();
+      } catch (err) {
+        adapter.log.warn('Error during poll: ' + err);
+    }
+  }
+
+  google_polling_interval_id = setTimeout(poll, onlyCookie ? 24 * 60 * 60 * 1000 //24h or pollinterval.
+      : Number(adapter.config.google_polling_interval) * 1000)
+}
+
 // main function
 async function main() {
   // The adapters config (in the instance object everything under the attribute "native") is accessible via
@@ -219,19 +248,14 @@ async function main() {
 
   if (Number(adapter.config.google_polling_interval) === 0) {
     // query locations is triggered only
-    adapter.log.info('Polling disabled.');
+    adapter.log.info('Polling disabled, enable cookie refresh only.');
+    poll(true);
   } else {
     // first connect and query
     // connect to Google
     adapter.log.debug('Polling location every ' + adapter.config.google_polling_interval + 's.');
     // enable polling
-    google_polling_interval_id = setInterval(async function () {
-      try {
-        await poll()
-      } catch (err) {
-        adapter.log.warn('Error during poll: ' + err);
-      }
-    }, Number(adapter.config.google_polling_interval) * 1000);
+    poll(false);
   }
   // subscribe
   adapter.subscribeStates(trigger_poll_state);
@@ -275,7 +299,7 @@ async function updateStates(userobjarr) {
           },
             "native": {}
           };
-        adapter.setObjectNotExists('user.' + userobjarr[i].id, obj);
+        await adapter.setObjectNotExistsAsync('user.' + userobjarr[i].id, obj);
 
         if(userobjarr[i].hasOwnProperty(cprop)) {
           // cur properties
@@ -358,12 +382,6 @@ async function updateStates(userobjarr) {
       }
     }
   }
-}
-
-// poll locations, devices, etc.
-async function poll() {
-  adapter.log.debug('Polling locations.');
-  await querySharedLocations();
 }
 
 // notify places adapter
