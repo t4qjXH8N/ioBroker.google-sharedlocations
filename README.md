@@ -53,6 +53,16 @@ If you still experience problems please open an issue. Please set the adapter le
 If this project helped you to reduce developing time, you can give me a cup of coffee or a bottle of beer via PayPal(chvorholt@gmail.com) :-)  
 
 ## Changelog
+<!-- 
+	Placeholder for next versions (this needs to be indented):
+	### __WORK IN PROGRESS__
+	npm install @alcalzone/release-script
+-->
+### __WORK IN PROGRESS__
+- fix adapter stays green even without updates (Garfonso)
+- improve cookie update (Garfonso)
+- fix crash on get users that prevents saving options (Garfonso)
+
 ### 2.1.1 (03-Apr-2021)
 - call account page at least every day now. (Garfonso)
 
