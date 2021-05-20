@@ -70,12 +70,14 @@ adapter.on('message', async function (obj) {
     const ids = [];
     try {
       // get users
-      const states = adapter.getStatesAsync('google-sharedlocations.' + adapter.instance + '.user.*');
-      for (const cstate of states) {
-        if (cstate.split('.')[cstate.split('.').length - 1] === 'id') {
-          ids.push(cstate.split('.')[cstate.split('.').length - 2]);
+      const states = await adapter.getStatesAsync('google-sharedlocations.' + adapter.instance + '.user.*');
+      for (const stateId of Object.keys(states)) {
+        if (stateId.endsWith('.id')) {
+          const parts = stateId.split('.');
+          ids.push(parts[parts.length - 2]);
         }
       }
+
       // get photo urls
       const res = [];
       for (const id of ids) {
