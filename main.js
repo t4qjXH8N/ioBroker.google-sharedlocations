@@ -264,14 +264,18 @@ async function main() {
 async function querySharedLocations() {
   try {
     const userobjarr = await getSharedLocations();
-    // notify places adapter
-    await notifyPlaces(userobjarr);
+    if (userobjarr) {
+      // notify places adapter
+      await notifyPlaces(userobjarr);
 
-    // check fences
-    await checkFences(userobjarr);
-    await updateStates(userobjarr);
+      // check fences
+      await checkFences(userobjarr);
+      await updateStates(userobjarr);
 
-    adapter.setState('info.connection', true, true);
+      adapter.setState('info.connection', true, true);
+    } else {
+      adapter.setState('info.connection', false, true);
+    }
   } catch (err) {
     adapter.log.error('An error occurred during polling the locations: ' + err.stack);
     adapter.setState('info.connection', false, true);
