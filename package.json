@@ -19,24 +19,25 @@
     "url": "https://github.com/t4qjXH8N/ioBroker.google-sharedlocations.git"
   },
   "dependencies": {
-    "@iobroker/adapter-core": "^2.4.0",
-    "cheerio": "^1.0.0-rc.5",
+    "@iobroker/adapter-core": "^2.5.0",
     "axios": "^0.21.1"
   },
   "scripts": {
     "test": "npm run test:package && npm run test:unit",
     "test:package": "mocha test/package --exit",
     "test:unit": "mocha test/unit --exit",
-    "test:integration": "mocha test/integration --exit"
+    "test:integration": "mocha test/integration --exit",
+    "release": "release-script"
   },
   "devDependencies": {
+    "@alcalzone/release-script": "^1.10.0",
+    "@iobroker/testing": "^2.4.4",
     "@types/gulp": "^4.0.8",
-    "@types/mocha": "^8.2.0",
-    "@types/node": "^14.14.20",
+    "@types/mocha": "^8.2.2",
+    "@types/node": "^14.17.0",
+    "chai": "^4.3.4",
     "gulp": "^4.0.2",
-    "mocha": "^8.2.1",
-    "chai": "^4.2.0",
-    "@iobroker/testing": "^2.4.2"
+    "mocha": "^8.4.0"
   },
   "bugs": {
     "url": "https://github.com/t4qjXH8N/ioBroker.google-sharedlocations/issues"
