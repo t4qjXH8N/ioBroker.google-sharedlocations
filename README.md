@@ -58,7 +58,7 @@ If this project helped you to reduce developing time, you can give me a cup of c
 	### __WORK IN PROGRESS__
 	npm install @alcalzone/release-script
 -->
-### __WORK IN PROGRESS__
+### 2.1.2 (2021-05-21)
 - fix adapter stays green even without updates (Garfonso)
 - improve cookie update (Garfonso)
 - fix crash on get users that prevents saving options (Garfonso)
