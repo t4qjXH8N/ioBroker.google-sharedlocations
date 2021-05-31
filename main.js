@@ -197,7 +197,10 @@ async function syncConfig() {
 async function poll(onlyCookie) {
   try {
     const state = await adapter.getStateAsync('info.augmented_cookie');
-    if (Date.now() - state.ts >= 24 * 60 * 60 * 1000) {
+    if (state && state.val) {
+      google_cookie_header = state.val; //read cookie header from state.
+    }
+    if (onlyCookie || Date.now() - state.ts >= 24 * 60 * 60 * 1000) {
       adapter.log.debug('Need to augment cookie.');
       await improveCookie();
       await improveCookie();
@@ -452,6 +455,31 @@ async function setStateEx(id, common, val, ack) {
   }
 }
 
+//improve header from server response:
+function augmentCookie(current, headers) {
+  if (headers['set-cookie'] && headers['set-cookie'].length) {
+    adapter.log.debug('New header received.');
+    const cookies = google_cookie_header.split('; ').map(c => c.split('='));
+
+    //split old cookie and new cookie. Update single values.
+    for (const header of headers['set-cookie']) {
+      const incomingCookies = header.split('; ');
+      for (const cookie of incomingCookies) {
+        const [name, value] = cookie.split('=');
+        const cIndex = cookies.findIndex(c => c[0] === name);
+        if (cIndex < 0) {
+          cookies.push([name, value]); //add
+        } else {
+          cookies[cIndex][1] = value; //update
+        }
+      }
+    }
+
+    google_cookie_header = cookies.map(cv => cv.join("=")).join("; ");
+  }
+}
+
+
 /**
  * Tries to improve user cookie by logging in to user home first.
  * @returns {Promise<void>}
@@ -468,21 +496,11 @@ async function improveCookie() {
 
   try {
     const response = await axios(options_map);
-    // connection successful
-    adapter.log.debug('Response: ' + response.status);
 
-    // connection established but auth failure
     if (response.status !== 200) {
       adapter.log.error('Failed getting locations: ' + response.status);
     } else {
-      // parse and save user locations
-      adapter.log.debug('New cookie header: ' + response.headers['set-cookie'].length);
-      if (response.headers['set-cookie'].length) {
-        adapter.log.info('New header received.');
-        for (const header of response.headers['set-cookie']) {
-          google_cookie_header += header;
-        }
-      }
+      augmentCookie(google_cookie_header, response.headers);
     }
   } catch (err) {
     adapter.log.error(err);
@@ -518,9 +536,11 @@ async function getSharedLocations() {
     if (response.status !== 200) {
       adapter.log.error('Failed getting locations: ' + response.status + ' - ' + response.data);
     } else {
-      // parse and save user locations
+      //save new cookie infos:
+      augmentCookie(google_cookie_header, response.headers);
       try {
-        let locationdata = JSON.parse(response.data.split('\n').slice(1, -1).join(''));
+        // parse and save user locations
+        const locationdata = JSON.parse(response.data.split('\n').slice(1, -1).join(''));
         const userobjarr = parseLocationData(locationdata);
         return userobjarr;
       } catch (e) {
