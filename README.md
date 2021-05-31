@@ -58,6 +58,9 @@ If this project helped you to reduce developing time, you can give me a cup of c
 	### __WORK IN PROGRESS__
 	npm install @alcalzone/release-script
 -->
+### __WORK IN PROGRESS__
+- update cookie info also on position updates (Garfonso)
+
 ### 2.1.2 (2021-05-21)
 - fix adapter stays green even without updates (Garfonso)
 - improve cookie update (Garfonso)
