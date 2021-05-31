@@ -27,7 +27,8 @@
     "test:package": "mocha test/package --exit",
     "test:unit": "mocha test/unit --exit",
     "test:integration": "mocha test/integration --exit",
-    "release": "release-script"
+    "release": "release-script",
+    "devserver:deploy": "npm pack | npm install --prefix .dev-server/default"
   },
   "devDependencies": {
     "@alcalzone/release-script": "^1.10.0",
