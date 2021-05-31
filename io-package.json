@@ -1,12 +1,24 @@
 {
     "common": {
         "name": "google-sharedlocations",
-        "version": "2.1.2",
+        "version": "2.1.3",
         "license": "MIT",
         "authors": [
             "Christian Vorholt <chvorholt@gmail.com>"
         ],
         "news": {
+            "2.1.3": {
+                "en": "update cookie info also on position updates (Garfonso)",
+                "de": "Cookie-Informationen auch zu Positionsaktualisierungen aktualisieren (Garfonso)",
+                "ru": "обновлять информацию cookie также при обновлении позиции (Гарфонсо)",
+                "pt": "atualizar informações de cookies também em atualizações de posição (Garfonso)",
+                "nl": "update cookie-info ook over positie-updates (Garfonso)",
+                "fr": "mettre à jour les informations des cookies également sur les mises à jour de position (Garfonso)",
+                "it": "aggiornare le informazioni sui cookie anche sugli aggiornamenti di posizione (Garfonso)",
+                "es": "actualizar la información de las cookies también en las actualizaciones de posición (Garfonso)",
+                "pl": "aktualizuj informacje o plikach cookie również przy aktualizacjach pozycji (Garfonso)",
+                "zh-cn": "还要更新有关职位更新的Cookie信息（Garfonso）"
+            },
             "2.1.2": {
                 "en": "fix adapter stays green even without updates (Garfonso)\nimprove cookie update (Garfonso)\nfix crash on get users that prevents saving options (Garfonso)",
                 "de": "Fix Adapter bleibt auch ohne Updates grün (Garfonso)\nCookie-Update verbessern (Garfonso)\nBehebung eines Absturzes beim Abrufen von Benutzern, der das Speichern von Optionen verhindert (Garfonso)",
