@@ -51,9 +51,11 @@
         }
       }
 
+      var oldCookie = "";
       // the function loadSettings has to exist ...
       function load(settings, onChange) {
         if (!settings) return;
+        oldCookie = settings.google_cookie;
 
         let fences = settings.fences || [];
 
@@ -189,6 +191,11 @@
             obj[$this.attr('id')] = $this.val();
           }
         });
+
+        if (obj.google_cookie !== oldCookie) {
+            console.debug('Cookie updated -> delete old augmented cookie.');
+            socket.emit('setState', 'google-sharedlocations.' + instance + '.info.augmented_cookie', '');
+        }
 
         // Get edited table
         obj.fences = table2values('values');
