@@ -176,6 +176,7 @@
         "mode": "daemon",
         "icon": "google-sharedlocations.png",
         "enabled": false,
+        "tier": 2,
         "stopBeforeUpdate": true,
         "extIcon": "https://raw.githubusercontent.com/t4qjXH8N/ioBroker.google-sharedlocations/master/admin/google-sharedlocations.png",
         "keywords": [
