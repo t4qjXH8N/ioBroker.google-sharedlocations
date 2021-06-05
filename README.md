@@ -19,11 +19,22 @@ that a state is toogled if the user enters or leaves a geofence.
 The adapter can receive and process a bunch of messages, please have a look at main.js for details. 
 
 ## Usage
+Because the adapter won't retreive any information about the user logged in, it is advised to create a new user dedicated for ioBroker. 
+
+### General setup
+1. Create a new Google account for iobroker. I will call it "iobroker-Google-Account" later in the document.
+2. Log in with different Google accounts on all smartphones that should be tracked and start location sharing in Google Maps App.
+3. Open a "private browsing" window in your Web browser and log into google.com/maps with your iobroker-Google-Account. 
+You should now see a bunch of people with their locations on the map.
+4. Copy the Cookie as described [below](#login).  
+5. Close the window, do **not** log out of the session!
+
+### Login
 Currently login via the adapter is not possible. In future versions the adapter might create a proxy server and you'll have to
 login via the browser once, similar to the alexa2 adapter. But currently you'll have to enter the cookie in the configuration page
 manually in order to login. For this, do the following:
-1. Log out of your google account
-2. Log in to google.com/maps (.com is important!) with the account used for ioBroker
+1. Open a private browsing window (if not done already)
+2. Log in to google.com/maps (.com is important!) with your ioBroker-Google-Account (if not done already)
 3. Open Developer Tools of your browser (ctrl+shift+I)
 4. Navigate to network analysis
 5. select any successful (Status = 200) GET (method) Request from google.com (Host column) (if the window is empty, hit F5 in the browser)
@@ -31,7 +42,7 @@ manually in order to login. For this, do the following:
 ![Screenshot](admin/google-cookie.JPG)
 
 ## Troubleshooting
-### instance indicator is green t no location data is received or instance indicator is yellow and the log says "please login manually" 
+### instance indicator is green but no location data is received or instance indicator is yellow and the log says "please login manually" 
 In this case check the google account of the user that is used by the google-sharedlocations adapter. Log in with a 
 browser and check if google blocked some logins. Click on a blocked login and confirm to google that this was you.
  Additionally check that two factor authentification is turned off.
@@ -42,6 +53,33 @@ If you still experience problems please open an issue. Please set the adapter le
 If this project helped you to reduce developing time, you can give me a cup of coffee or a bottle of beer via PayPal(chvorholt@gmail.com) :-)  
 
 ## Changelog
+<!-- 
+	Placeholder for next versions (this needs to be indented):
+	### __WORK IN PROGRESS__
+	npm install @alcalzone/release-script
+-->
+### 2.1.3 (2021-05-31)
+- update cookie info also on position updates (Garfonso)
+
+### 2.1.2 (2021-05-21)
+- fix adapter stays green even without updates (Garfonso)
+- improve cookie update (Garfonso)
+- fix crash on get users that prevents saving options (Garfonso)
+
+### 2.1.1 (03-Apr-2021)
+- call account page at least every day now. (Garfonso)
+
+### 2.1.0 (14-Feb-2021)
+- major rework of async logic (Garfonso)
+- add call to account page in order to get longer lasting cookie (Garfonso)
+- replace now unsupported request-library (Garfonso)
+
+### 2.0.3 (13-Jan-2021)
+- fixed 500 errors (Garfonso)
+
+### 2.0.2 (30-Jun-2020)
+- fixed warnings from wrong object fields - fences (Garfonso)
+
 ### 2.0.1 (03-Jun-2020)
 - enforced min_polling_interval (Garfonso)
 - improved error logging (Garfonso) 

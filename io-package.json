@@ -1,314 +1,283 @@
 {
     "common": {
-        "name":                     "google-sharedlocations",
-        "version":                  "2.0.1",
-        "license":                  "MIT",
+        "name": "google-sharedlocations",
+        "version": "2.1.3",
+        "license": "MIT",
         "authors": [
-          "Christian Vorholt <chvorholt@gmail.com>"
+            "Christian Vorholt <chvorholt@gmail.com>"
         ],
         "news": {
-          "2.0.1": {
-            "en": "- enforced min_polling_interval (Garfonso)\n- improved error logging (Garfonso) ",
-            "de": "- erzwungenes min_polling_interval (Garfonso)\n- verbesserte Fehlerprotokollierung (Garfonso)",
-            "ru": "- принудительный min_polling_interval (Гарфонсо)\n- улучшено ведение журнала ошибок (Гарфонсо)",
-            "pt": "- min_polling_interval imposto (Garfonso)\n- registro de erros aprimorado (Garfonso)",
-            "nl": "- afgedwongen min_polling_interval (Garfonso)\n- verbeterde foutregistratie (Garfonso)",
-            "fr": "- min_polling_interval forcé (Garfonso)\n- enregistrement des erreurs amélioré (Garfonso)",
-            "it": "- forzato min_polling_interval (Garfonso)\n- migliorata registrazione degli errori (Garfonso)",
-            "es": "- forzado min_polling_interval (Garfonso)\n- registro de errores mejorado (Garfonso)",
-            "pl": "- wymuszone min_polling_interval (Garfonso)\n- ulepszone rejestrowanie błędów (Garfonso)",
-            "zh-cn": "-实施min_polling_interval（加芬索）\n-改进了错误记录（Garfonso）"
-          },
-          "2.0.0": {
-            "en": "fixed warnings from wrong object fields (Garfonso) \nremoved authentication and allowed user to copy in cookie (Garfonso)",
-            "de": "Warnungen von falschen Objektfeldern behoben (Garfonso)\nAuthentifizierung entfernt und Benutzer darf Cookie kopieren (Garfonso)",
-            "ru": "исправлены предупреждения от неправильных полей объекта (Гарфонсо)\nудалил аутентификацию и разрешил пользователю копировать в cookie (Garfonso)",
-            "pt": "avisos corrigidos de campos de objetos incorretos (Garfonso)\nremoção da autenticação e permissão do usuário copiar no cookie (Garfonso)",
-            "nl": "vaste waarschuwingen van verkeerde objectvelden (Garfonso)\nauthenticatie verwijderd en gebruiker toegestaan om te kopiëren in cookie (Garfonso)",
-            "fr": "avertissements fixes de champs d'objet incorrects (Garfonso)\nsupprimé l'authentification et autorisé l'utilisateur à copier dans le cookie (Garfonso)",
-            "it": "corretti avvisi da campi oggetto errati (Garfonso)\nha rimosso l'autenticazione e ha permesso all'utente di copiare i cookie (Garfonso)",
-            "es": "advertencias fijas de campos de objetos incorrectos (Garfonso)\nse eliminó la autenticación y se permitió al usuario copiar en la cookie (Garfonso)",
-            "pl": "naprawiono ostrzeżenia z niewłaściwych pól obiektowych (Garfonso)\nusunięto uwierzytelnianie i zezwolono użytkownikowi na kopiowanie plików cookie (Garfonso)",
-            "zh-cn": "修复了来自错误对象字段的警告（Garfonso）\n删除了身份验证，并允许用户复制Cookie（Garfonso）"
-          },
-          "1.5.4": {
-            "en": "surplus usergroups are no longer created",
-            "de": "überschüssige Benutzergruppen werden nicht mehr erstellt",
-            "ru": "лишние группы пользователей больше не создаются",
-            "pt": "grupos de usuários excedentes não são mais criados",
-            "nl": "overtollige gebruikersgroepen worden niet langer aangemaakt",
-            "fr": "les groupes d'utilisateurs en surplus ne sont plus créés",
-            "it": "gli utenti in eccedenza non vengono più creati",
-            "es": "los grupos de usuarios excedentes ya no se crean",
-            "pl": "nadmiarowe grupy użytkowników nie są już tworzone",
-            "zh-cn": "不再创建剩余用户组"
-          },
-          "1.5.3": {
-            "en": "updated npm dependencies and integrated adapter core",
-            "de": "Aktualisierte NPM-Abhängigkeiten und integrierter Adapterkern",
-            "ru": "обновлены зависимости npm и встроенное ядро ​​адаптера",
-            "pt": "dependências atualizadas do npm e núcleo do adaptador integrado",
-            "nl": "bijgewerkte npm-afhankelijkheden en geïntegreerde adapterkern",
-            "fr": "dépendances npm mises à jour et noyau d'adaptateur intégré",
-            "it": "dipendenze aggiornate di npm e core adattatore integrato",
-            "es": "Dependencias npm actualizadas y núcleo adaptador integrado.",
-            "pl": "zaktualizowane zależności npm i zintegrowany rdzeń adaptera",
-            "zh-cn": "更新的npm依赖项和集成的适配器核心"
-          },
-          "1.5.2": {
-            "en": "Fence is now updated correctly.",
-            "de": "Zaun wird jetzt korrekt aktualisiert.",
-            "ru": "Забор теперь обновляется правильно.",
-            "pt": "Cerca agora é atualizada corretamente.",
-            "nl": "Fence is nu correct bijgewerkt.",
-            "fr": "La clôture est maintenant mise à jour correctement.",
-            "it": "Il recinto è ora aggiornato correttamente.",
-            "es": "La cerca ahora se ha actualizado correctamente.",
-            "pl": "Ogrodzenie jest teraz poprawnie aktualizowane."
-          },
-          "1.5.1": {
-            "en": "Changed location of trigger poll state. States are now members of named groups.",
-            "de": "Geänderte Position des Trigger-Poll-Status. Zustände sind jetzt Mitglieder von benannten Gruppen.",
-            "ru": "Изменено местоположение состояния опроса триггеров. Государства теперь являются членами названных групп.",
-            "pt": "Localização alterada do estado de pesquisa do acionador. Os estados são agora membros de grupos nomeados.",
-            "nl": "Gewijzigde locatie van trigger poll-status. Staten zijn nu lid van benoemde groepen.",
-            "fr": "Emplacement modifié de l'état d'interrogation du déclencheur. Les États sont désormais membres de groupes nommés.",
-            "it": "Posizione modificata dello stato di polling del trigger. Gli stati sono ora membri di gruppi con nome.",
-            "es": "Se modificó la ubicación del estado de sondeo de activación. Los estados ahora son miembros de grupos nombrados.",
-            "pl": "Zmieniono lokalizację stanu sondowania spustu. Stany są teraz członkami nazwanych grup."
-          },
-          "1.5.0": {
-            "en": "Added GPS accuracy. Adapter should be more robust against datagram changes.",
-            "de": "GPS-Genauigkeit hinzugefügt Der Adapter sollte robuster gegen Datagrammänderungen sein.",
-            "ru": "Добавлена ​​точность GPS. Адаптер должен быть более устойчивым к изменениям дейтаграмм.",
-            "pt": "Adicionado precisão do GPS. Adaptador deve ser mais robusto contra alterações de datagrama.",
-            "nl": "GPS-nauwkeurigheid toegevoegd. Adapter moet robuuster zijn tegen datagramwijzigingen.",
-            "fr": "Ajout de la précision GPS. L'adaptateur doit être plus robuste contre les changements de datagramme.",
-            "it": "Aggiunta la precisione del GPS. L'adattatore dovrebbe essere più robusto contro le modifiche del datagramma.",
-            "es": "Se agregó precisión GPS. El adaptador debe ser más robusto contra los cambios en los datagramas.",
-            "pl": "Dodano dokładność GPS. Adapter powinien być bardziej odporny na zmiany datagramów."
-          },
-          "1.4.1": {
-            "en": "Missing Places-Adapter support fixed. Fixed translation issues with polling-time.",
-            "de": "Fehlende Orte - Adapterunterstützung behoben. Probleme bei der Übersetzung mit Polling-Zeit behoben.",
-            "ru": "Исправлена ​​поддержка пропущенных мест-адаптеров. Исправлены проблемы перевода с периодом опроса.",
-            "pt": "Suporte ausente para lugares-adaptadores corrigido. Correção de problemas de tradução com o tempo de pesquisa.",
-            "nl": "Ontbrekende plaatsen-Adapter-ondersteuning opgelost. Vaste vertaalproblemen met polling-tijd.",
-            "fr": "Prise en charge des adaptateurs manquants Correction de problèmes de traduction avec le temps d'interrogation.",
-            "it": "Posti mancanti: il supporto dell'adattatore è stato risolto. Risolti i problemi di traduzione con il tempo di polling.",
-            "es": "Falta el soporte de adaptadores de lugares fijo. Se corrigieron los problemas de traducción con el tiempo de sondeo.",
-            "pl": "Naprawiono brakujące wsparcie dla adaptera lokalizacji. Naprawiono problemy z tłumaczeniem z czasem głosowania."
-          },
-          "1.4.0":  {
-            "en": "Fences id can be customized now. Fences states are properly added and removed.",
-            "de": "Fences ID kann jetzt angepasst werden. Fences-Zustände werden ordnungsgemäß hinzugefügt und entfernt.",
-            "ru": "Идентификатор Fences теперь можно настроить. Состояние забора правильно добавляется и удаляется.",
-            "pt": "ID de cercas pode ser personalizado agora. Os estados de cercas são devidamente adicionados e removidos.",
-            "nl": "Omheiningsidentificatie kan nu worden aangepast. Omheiningen worden correct toegevoegd en verwijderd.",
-            "fr": "L'identification des clôtures peut être personnalisée maintenant. Les états des clôtures sont correctement ajoutés et supprimés.",
-            "it": "L'ID di recinti può essere personalizzato ora. Gli stati dei recinti sono stati correttamente aggiunti e rimossi.",
-            "es": "La identificación de Fences se puede personalizar ahora. Los estados de cercas se agregan y eliminan correctamente.",
-            "pl": "Fences id można teraz dostosować. Stany ogrodzeń są odpowiednio dodawane i usuwane."
-          },
-          "1.3.0": {
-            "en": "locations poll can be triggered by a state or by sending a message to the adapter",
-            "de": "Die Standortabfrage kann durch einen Status ausgelöst werden oder indem eine Nachricht an den Adapter gesendet wird",
-            "ru": "опрос местоположений может быть вызван состоянием или путем отправки сообщения на адаптер",
-            "pt": "polls de localização podem ser acionados por um estado ou enviando uma mensagem para o adaptador",
-            "nl": "locatie poll kan worden geactiveerd door een staat of door een bericht naar de adapter te sturen",
-            "fr": "les emplacements peuvent être déclenchés par un état ou en envoyant un message à l'adaptateur",
-            "it": "il sondaggio delle località può essere attivato da uno stato o inviando un messaggio all'adattatore",
-            "es": "la encuesta de ubicaciones puede ser activada por un estado o enviando un mensaje al adaptador",
-            "pl": "Sonda lokalizacji może zostać wywołana przez stan lub wysyłając wiadomość do adaptera"
-          },
-          "1.2.0" : {
-            "en": "state added showing the battery level and timestamp",
-            "de": "Status hinzugefügt, der den Batteriestand und den Zeitstempel anzeigt",
-            "ru": "добавлено состояние, показывающее уровень заряда батареи и временную метку",
-            "pt": "estado adicionado mostrando o nível da bateria e o timestamp",
-            "nl": "status toegevoegd die het batterijniveau en tijdstempel toont",
-            "fr": "état ajouté indiquant le niveau de batterie et l'horodatage",
-            "it": "stato aggiunto che mostra il livello della batteria e il timestamp",
-            "es": "estado agregado que muestra el nivel de batería y la marca de tiempo",
-            "pl": "dodano stan pokazujący poziom naładowania baterii i datownik"
-          },
-          "1.1.4" : {
-            "en": "fixed roles",
-            "de": "feste Rollen",
-            "ru": "фиксированные роли",
-            "pt": "papéis fixos",
-            "nl": "vaste rollen",
-            "fr": "rôles fixes",
-            "it": "ruoli fissi",
-            "es": "roles fijos",
-            "pl": "naprawione role"
-          },
-          "1.1.3" : {
-            "en": "fix installation problem",
-            "de": "Installationsproblem beheben",
-            "ru": "устранить проблему установки",
-            "pt": "corrigir problema de instalação",
-            "nl": "fix installatie probleem",
-            "fr": "résoudre le problème d'installation",
-            "it": "risolvere il problema di installazione",
-            "es": "arreglar problema de instalación",
-            "pl": "napraw problem z instalacją"
-          },
-          "1.1.2": {
-            "en": "Preparations for publishing the adapter.",
-            "de": "Vorbereitungen für die Veröffentlichung des Adapters.",
-            "ru": "Подготовка к публикации адаптера.",
-            "pt": "Preparações para publicar o adaptador.",
-            "nl": "Voorbereidingen voor het publiceren van de adapter.",
-            "fr": "Préparations pour la publication de l'adaptateur.",
-            "it": "Preparativi per la pubblicazione dell'adattatore.",
-            "es": "Preparativos para publicar el adaptador.",
-            "pl": "Przygotowania do opublikowania adaptera."
-          },
-          "1.1.1": {
-            "en": "Users can be simply selected in the admin config, i.e. userid need not to be entered manually.",
-            "de": "Benutzer können einfach in der Admin-Konfiguration ausgewählt werden, d.h. Benutzer-ID muss nicht manuell eingegeben werden.",
-            "ru": "Пользователи могут быть просто выбраны в конфигурации администратора, т. Е. Пользователю не нужно вводить вручную.",
-            "pt": "Os usuários podem ser simplesmente selecionados na configuração de administração, ou seja, o ID do usuário não precisa ser inserido manualmente.",
-            "nl": "Gebruikers kunnen eenvoudig worden geselecteerd in de admin config, d.w.z. userid hoeft niet handmatig te worden ingevoerd.",
-            "fr": "Les utilisateurs peuvent être simplement sélectionnés dans la configuration admin, c.-à-d. Que l'ID utilisateur n'a pas besoin d'être saisi manuellement.",
-            "it": "Gli utenti possono essere semplicemente selezionati nella configurazione dell'amministratore, cioè l'ID utente non deve essere inserito manualmente.",
-            "es": "Los usuarios pueden simplemente seleccionarse en la configuración de administrador, es decir, el ID de usuario no necesita ser ingresado manualmente.",
-            "pl": "Użytkownicy mogą być po prostu wybrani w konfiguracji administratora, tj. Identyfikator użytkownika nie musi być wprowadzany ręcznie."
-          },
-          "1.1.0": {
-            "en": "Store address of the user in a state.",
-            "de": "Geschäftsadresse des Benutzers in einem Zustand speichern.",
-            "ru": "Храните адрес пользователя в состоянии.",
-            "pt": "Armazene o endereço do usuário em um estado.",
-            "nl": "Bewaar het adres van de gebruiker in een staat.",
-            "fr": "Adresse de stockage de l'utilisateur dans un état.",
-            "it": "Memorizza l'indirizzo dell'utente in uno stato.",
-            "es": "Almacenar la dirección del usuario en un estado.",
-            "pl": "Przechowuj adres użytkownika w stanie."
-          },
-          "1.0.1": {
-            "en": "Code cleanup. Moved authentification to a separate module.",
-            "de": "Codebereinigung Die Authentifizierung wurde in ein separates Modul verschoben.",
-            "ru": "Очистка кода. Перемещенная проверка подлинности на отдельный модуль.",
-            "pt": "Limpeza de código. Movido a autenticação para um módulo separado.",
-            "nl": "Code opschonen. Verificatie naar een afzonderlijke module verplaatst.",
-            "fr": "Nettoyage du code Déplacement de l'authentification vers un module distinct.",
-            "it": "Pulizia del codice. Spostamento dell'autenticazione in un modulo separato.",
-            "es": "Limpieza del código Se movió la autenticación a un módulo separado.",
-            "pl": "Oczyszczanie kodu. Przeniesiono uwierzytelnianie do osobnego modułu."
-          },
-          "1.0.0": {
-            "en": "Added support for Admin3.",
-            "de": "Unterstützung für Admin3 hinzugefügt.",
-            "ru": "Добавлена ​​поддержка Admin3.",
-            "pt": "Adicionado suporte para Admin3.",
-            "nl": "Ondersteuning toegevoegd voor Admin3.",
-            "fr": "Ajout du support pour Admin3.",
-            "it": "Aggiunto supporto per Admin3.",
-            "es": "Se agregó soporte para Admin3.",
-            "pl": "Dodano obsługę Admin3."
-          }
+            "2.1.3": {
+                "en": "update cookie info also on position updates (Garfonso)",
+                "de": "Cookie-Informationen auch zu Positionsaktualisierungen aktualisieren (Garfonso)",
+                "ru": "обновлять информацию cookie также при обновлении позиции (Гарфонсо)",
+                "pt": "atualizar informações de cookies também em atualizações de posição (Garfonso)",
+                "nl": "update cookie-info ook over positie-updates (Garfonso)",
+                "fr": "mettre à jour les informations des cookies également sur les mises à jour de position (Garfonso)",
+                "it": "aggiornare le informazioni sui cookie anche sugli aggiornamenti di posizione (Garfonso)",
+                "es": "actualizar la información de las cookies también en las actualizaciones de posición (Garfonso)",
+                "pl": "aktualizuj informacje o plikach cookie również przy aktualizacjach pozycji (Garfonso)",
+                "zh-cn": "还要更新有关职位更新的Cookie信息（Garfonso）"
+            },
+            "2.1.2": {
+                "en": "fix adapter stays green even without updates (Garfonso)\nimprove cookie update (Garfonso)\nfix crash on get users that prevents saving options (Garfonso)",
+                "de": "Fix Adapter bleibt auch ohne Updates grün (Garfonso)\nCookie-Update verbessern (Garfonso)\nBehebung eines Absturzes beim Abrufen von Benutzern, der das Speichern von Optionen verhindert (Garfonso)",
+                "ru": "адаптер fix остается зеленым даже без обновлений (Garfonso)\nулучшить обновление файлов cookie (Garfonso)\nисправление сбоя при получении пользователей, препятствующего сохранению параметров (Гарфонсо)",
+                "pt": "adaptador de correção permanece verde mesmo sem atualizações (Garfonso)\nmelhorar a atualização do cookie (Garfonso)\nconsertar falha em obter usuários que impede opções de salvar (Garfonso)",
+                "nl": "fix adapter blijft groen, zelfs zonder updates (Garfonso)\ncookie-update verbeteren (Garfonso)\ncrash repareren bij het ophalen van gebruikers die het opslaan van opties verhindert (Garfonso)",
+                "fr": "L'adaptateur fixe reste vert même sans mises à jour (Garfonso)\naméliorer la mise à jour des cookies (Garfonso)\ncorrection d'un crash sur l'obtention d'utilisateurs qui empêche l'enregistrement des options (Garfonso)",
+                "it": "l'adattatore fisso rimane verde anche senza aggiornamenti (Garfonso)\nmigliorare l'aggiornamento dei cookie (Garfonso)\ncorreggere il crash su get users che impedisce il salvataggio delle opzioni (Garfonso)",
+                "es": "El adaptador de reparación permanece verde incluso sin actualizaciones (Garfonso)\nmejorar la actualización de cookies (Garfonso)\ncorregir un bloqueo en la obtención de usuarios que evita las opciones de guardado (Garfonso)",
+                "pl": "naprawiony adapter pozostaje zielony nawet bez aktualizacji (Garfonso)\nulepszyć aktualizację plików cookie (Garfonso)\nnapraw awarię na pobieraniu użytkowników, która uniemożliwia zapisywanie opcji (Garfonso)",
+                "zh-cn": "修复适配器即使没有更新也保持绿色（Garfonso）\n改善Cookie更新（Garfonso）\n修复了获取用户崩溃的问题，阻止了用户保存选项（Garfonso）"
+            },
+            "2.1.1": {
+                "en": "- call account page at least every day now. (Garfonso)",
+                "de": "- Rufe mindestens jeden Tag die Profilseite auf. (Garfonso)",
+                "ru": "- теперь звонить на страницу аккаунта хотя бы каждый день. (Гарфонсо)",
+                "pt": "- ligue para a página da conta pelo menos todos os dias agora. (Garfonso)",
+                "nl": "- bel nu minstens elke dag de accountpagina. (Garfonso)",
+                "fr": "- Appelez la page du compte au moins tous les jours maintenant. (Garfonso)",
+                "it": "- chiama la pagina dell'account almeno ogni giorno adesso. (Garfonso)",
+                "es": "- Llame a la página de la cuenta al menos todos los días ahora. (Garfonso)",
+                "pl": "- dzwoń na stronę konta przynajmniej codziennie. (Garfonso)",
+                "zh-cn": "-现在至少每天都拨打一次帐户页面。 （加方索）"
+            },
+            "2.1.0": {
+                "en": "- major rework of async logic (Garfonso)\n- add call to account page in order to get longer lasting cookie (Garfonso)\n- replace now unsupported request-library (Garfonso)",
+                "de": "- umfassende Überarbeitung der asynchronen Logik (Garfonso)\n- Anruf zur Kontoseite hinzufügen, um ein länger anhaltendes Cookie zu erhalten (Garfonso)\n- Ersetze jetzt nicht unterstützte Anforderungsbibliothek (Garfonso)",
+                "ru": "- крупная переработка асинхронной логики (Гарфонсо)\n- добавить вызов на страницу учетной записи, чтобы получить более длительный cookie (Garfonso)\n- заменить теперь неподдерживаемую request-библиотеку (Garfonso)",
+                "pt": "- grande retrabalho da lógica assíncrona (Garfonso)\n- adicionar chamada à página da conta para obter um cookie mais duradouro (Garfonso)\n- substitua agora a biblioteca de solicitações sem suporte (Garfonso)",
+                "nl": "- grote herwerking van asynchrone logica (Garfonso)\n- voeg een oproep toe aan de accountpagina om een langdurigere cookie te krijgen (Garfonso)\n- vervang nu niet-ondersteunde aanvraagbibliotheek (Garfonso)",
+                "fr": "- refonte majeure de la logique asynchrone (Garfonso)\n- ajouter la page d'appel au compte afin d'obtenir un cookie plus durable (Garfonso)\n- remplacer maintenant la bibliothèque de requêtes non prise en charge (Garfonso)",
+                "it": "- importante rielaborazione della logica asincrona (Garfonso)\n- aggiungi la chiamata alla pagina dell'account per ottenere un cookie più duraturo (Garfonso)\n- sostituire la libreria delle richieste ora non supportata (Garfonso)",
+                "es": "- revisión importante de la lógica asincrónica (Garfonso)\n- agregar llamada a la página de la cuenta para obtener una cookie más duradera (Garfonso)\n- reemplace la biblioteca de solicitudes ahora no compatible (Garfonso)",
+                "pl": "- poważna przeróbka logiki asynchronicznej (Garfonso)\n- dodaj wywołanie do strony konta, aby uzyskać trwalszy plik cookie (Garfonso)\n- zastąp teraz nieobsługiwaną bibliotekę żądań (Garfonso)",
+                "zh-cn": "-异步逻辑的重大改进（Garfonso）\n-将呼叫添加到帐户页面以获取更长久的cookie（Garfonso）\n-现在替换不受支持的请求库（Garfonso）"
+            },
+            "2.0.3": {
+                "en": "- fixed 500 errors (Garfonso)",
+                "de": "- 500 Fehler behoben (Garfonso)",
+                "ru": "- исправлено 500 ошибок (Гарфонсо)",
+                "pt": "- corrigiu 500 erros (Garfonso)",
+                "nl": "- 500 fouten opgelost (Garfonso)",
+                "fr": "- correction de 500 erreurs (Garfonso)",
+                "it": "- risolti 500 errori (Garfonso)",
+                "es": "- 500 errores corregidos (Garfonso)",
+                "pl": "- naprawiono błędy 500 (Garfonso)",
+                "zh-cn": "-修正了500个错误（Garfonso）"
+            },
+            "2.0.2": {
+                "en": "- fixed warnings from wrong object fields - fences (Garfonso)",
+                "de": "- Warnungen von falschen Objektfeldern behoben - Zäune (Garfonso)",
+                "ru": "- исправлены предупреждения от неправильных полей объекта - заборы (Garfonso)",
+                "pt": "- avisos corrigidos de campos de objetos errados - cercas (Garfonso)",
+                "nl": "- vaste waarschuwingen van verkeerde objectvelden - hekken (Garfonso)",
+                "fr": "- Correction des avertissements des mauvais champs d'objets - clôtures (Garfonso)",
+                "it": "- risolti avvisi da campi oggetto errati - recinzioni (Garfonso)",
+                "es": "- advertencias corregidas de campos de objetos incorrectos - vallas (Garfonso)",
+                "pl": "- naprawiono ostrzeżenia z niewłaściwych pól obiektów - ogrodzenia (Garfonso)",
+                "zh-cn": "-修复了来自错误对象字段的警告-围栏（Garfonso）"
+            },
+            "2.0.1": {
+                "en": "- enforced min_polling_interval (Garfonso)\n- improved error logging (Garfonso) ",
+                "de": "- erzwungenes min_polling_interval (Garfonso)\n- verbesserte Fehlerprotokollierung (Garfonso)",
+                "ru": "- принудительный min_polling_interval (Гарфонсо)\n- улучшено ведение журнала ошибок (Гарфонсо)",
+                "pt": "- min_polling_interval imposto (Garfonso)\n- registro de erros aprimorado (Garfonso)",
+                "nl": "- afgedwongen min_polling_interval (Garfonso)\n- verbeterde foutregistratie (Garfonso)",
+                "fr": "- min_polling_interval forcé (Garfonso)\n- enregistrement des erreurs amélioré (Garfonso)",
+                "it": "- forzato min_polling_interval (Garfonso)\n- migliorata registrazione degli errori (Garfonso)",
+                "es": "- forzado min_polling_interval (Garfonso)\n- registro de errores mejorado (Garfonso)",
+                "pl": "- wymuszone min_polling_interval (Garfonso)\n- ulepszone rejestrowanie błędów (Garfonso)",
+                "zh-cn": "-实施min_polling_interval（加芬索）\n-改进了错误记录（Garfonso）"
+            },
+            "2.0.0": {
+                "en": "fixed warnings from wrong object fields (Garfonso) \nremoved authentication and allowed user to copy in cookie (Garfonso)",
+                "de": "Warnungen von falschen Objektfeldern behoben (Garfonso)\nAuthentifizierung entfernt und Benutzer darf Cookie kopieren (Garfonso)",
+                "ru": "исправлены предупреждения от неправильных полей объекта (Гарфонсо)\nудалил аутентификацию и разрешил пользователю копировать в cookie (Garfonso)",
+                "pt": "avisos corrigidos de campos de objetos incorretos (Garfonso)\nremoção da autenticação e permissão do usuário copiar no cookie (Garfonso)",
+                "nl": "vaste waarschuwingen van verkeerde objectvelden (Garfonso)\nauthenticatie verwijderd en gebruiker toegestaan om te kopiëren in cookie (Garfonso)",
+                "fr": "avertissements fixes de champs d'objet incorrects (Garfonso)\nsupprimé l'authentification et autorisé l'utilisateur à copier dans le cookie (Garfonso)",
+                "it": "corretti avvisi da campi oggetto errati (Garfonso)\nha rimosso l'autenticazione e ha permesso all'utente di copiare i cookie (Garfonso)",
+                "es": "advertencias fijas de campos de objetos incorrectos (Garfonso)\nse eliminó la autenticación y se permitió al usuario copiar en la cookie (Garfonso)",
+                "pl": "naprawiono ostrzeżenia z niewłaściwych pól obiektowych (Garfonso)\nusunięto uwierzytelnianie i zezwolono użytkownikowi na kopiowanie plików cookie (Garfonso)",
+                "zh-cn": "修复了来自错误对象字段的警告（Garfonso）\n删除了身份验证，并允许用户复制Cookie（Garfonso）"
+            },
+            "1.5.4": {
+                "en": "surplus usergroups are no longer created",
+                "de": "überschüssige Benutzergruppen werden nicht mehr erstellt",
+                "ru": "лишние группы пользователей больше не создаются",
+                "pt": "grupos de usuários excedentes não são mais criados",
+                "nl": "overtollige gebruikersgroepen worden niet langer aangemaakt",
+                "fr": "les groupes d'utilisateurs en surplus ne sont plus créés",
+                "it": "gli utenti in eccedenza non vengono più creati",
+                "es": "los grupos de usuarios excedentes ya no se crean",
+                "pl": "nadmiarowe grupy użytkowników nie są już tworzone",
+                "zh-cn": "不再创建剩余用户组"
+            },
+            "1.5.3": {
+                "en": "updated npm dependencies and integrated adapter core",
+                "de": "Aktualisierte NPM-Abhängigkeiten und integrierter Adapterkern",
+                "ru": "обновлены зависимости npm и встроенное ядро ​​адаптера",
+                "pt": "dependências atualizadas do npm e núcleo do adaptador integrado",
+                "nl": "bijgewerkte npm-afhankelijkheden en geïntegreerde adapterkern",
+                "fr": "dépendances npm mises à jour et noyau d'adaptateur intégré",
+                "it": "dipendenze aggiornate di npm e core adattatore integrato",
+                "es": "Dependencias npm actualizadas y núcleo adaptador integrado.",
+                "pl": "zaktualizowane zależności npm i zintegrowany rdzeń adaptera",
+                "zh-cn": "更新的npm依赖项和集成的适配器核心"
+            },
+            "1.5.2": {
+                "en": "Fence is now updated correctly.",
+                "de": "Zaun wird jetzt korrekt aktualisiert.",
+                "ru": "Забор теперь обновляется правильно.",
+                "pt": "Cerca agora é atualizada corretamente.",
+                "nl": "Fence is nu correct bijgewerkt.",
+                "fr": "La clôture est maintenant mise à jour correctement.",
+                "it": "Il recinto è ora aggiornato correttamente.",
+                "es": "La cerca ahora se ha actualizado correctamente.",
+                "pl": "Ogrodzenie jest teraz poprawnie aktualizowane."
+            },
+            "1.5.1": {
+                "en": "Changed location of trigger poll state. States are now members of named groups.",
+                "de": "Geänderte Position des Trigger-Poll-Status. Zustände sind jetzt Mitglieder von benannten Gruppen.",
+                "ru": "Изменено местоположение состояния опроса триггеров. Государства теперь являются членами названных групп.",
+                "pt": "Localização alterada do estado de pesquisa do acionador. Os estados são agora membros de grupos nomeados.",
+                "nl": "Gewijzigde locatie van trigger poll-status. Staten zijn nu lid van benoemde groepen.",
+                "fr": "Emplacement modifié de l'état d'interrogation du déclencheur. Les États sont désormais membres de groupes nommés.",
+                "it": "Posizione modificata dello stato di polling del trigger. Gli stati sono ora membri di gruppi con nome.",
+                "es": "Se modificó la ubicación del estado de sondeo de activación. Los estados ahora son miembros de grupos nombrados.",
+                "pl": "Zmieniono lokalizację stanu sondowania spustu. Stany są teraz członkami nazwanych grup."
+            },
+            "1.5.0": {
+                "en": "Added GPS accuracy. Adapter should be more robust against datagram changes.",
+                "de": "GPS-Genauigkeit hinzugefügt Der Adapter sollte robuster gegen Datagrammänderungen sein.",
+                "ru": "Добавлена ​​точность GPS. Адаптер должен быть более устойчивым к изменениям дейтаграмм.",
+                "pt": "Adicionado precisão do GPS. Adaptador deve ser mais robusto contra alterações de datagrama.",
+                "nl": "GPS-nauwkeurigheid toegevoegd. Adapter moet robuuster zijn tegen datagramwijzigingen.",
+                "fr": "Ajout de la précision GPS. L'adaptateur doit être plus robuste contre les changements de datagramme.",
+                "it": "Aggiunta la precisione del GPS. L'adattatore dovrebbe essere più robusto contro le modifiche del datagramma.",
+                "es": "Se agregó precisión GPS. El adaptador debe ser más robusto contra los cambios en los datagramas.",
+                "pl": "Dodano dokładność GPS. Adapter powinien być bardziej odporny na zmiany datagramów."
+            }
         },
         "title": "Google shared locations",
         "titleLang": {
-          "en": "An ioBroker adapter for retrieving locations from Google shared locations",
-          "de": "Ein ioBroker-Adapter zum Abrufen von freigegebenen Google-Standorten",
-          "ru": "Адаптер ioBroker для поиска местоположений из общих мест Google",
-          "pt": "Um adaptador ioBroker para recuperar locais de locais compartilhados do Google",
-          "nl": "Een ioBroker-adapter voor het ophalen van locaties van gedeelde Google-locaties",
-          "fr": "Un adaptateur ioBroker pour récupérer des emplacements à partir d'emplacements partagés Google",
-          "it": "Un adattatore ioBroker per il recupero di posizioni da posizioni condivise di Google",
-          "es": "Un adaptador ioBroker para recuperar ubicaciones de ubicaciones compartidas de Google",
-          "pl": "Adapter ioBroker do pobierania lokalizacji z udostępnianych lokalizacji Google"
+            "en": "An ioBroker adapter for retrieving locations from Google shared locations",
+            "de": "Ein ioBroker-Adapter zum Abrufen von freigegebenen Google-Standorten",
+            "ru": "Адаптер ioBroker для поиска местоположений из общих мест Google",
+            "pt": "Um adaptador ioBroker para recuperar locais de locais compartilhados do Google",
+            "nl": "Een ioBroker-adapter voor het ophalen van locaties van gedeelde Google-locaties",
+            "fr": "Un adaptateur ioBroker pour récupérer des emplacements à partir d'emplacements partagés Google",
+            "it": "Un adattatore ioBroker per il recupero di posizioni da posizioni condivise di Google",
+            "es": "Un adaptador ioBroker para recuperar ubicaciones de ubicaciones compartidas de Google",
+            "pl": "Adapter ioBroker do pobierania lokalizacji z udostępnianych lokalizacji Google"
         },
         "desc": {
-          "en": "Locations of family members or friends can be retrieved from Google shared locations if they share their location.",
-          "de": "Standorte von Familienmitgliedern oder Freunden können von freigegebenen Google-Standorten abgerufen werden, wenn sie ihren Standort teilen.",
-          "ru": "Положения членов семьи или друзей могут быть получены из общих мест Google, если они делят свое местоположение.",
-          "pt": "Locais de membros da família ou amigos podem ser recuperados de locais compartilhados do Google se eles compartilharem sua localização.",
-          "nl": "Locaties van familieleden of vrienden kunnen worden opgehaald op gedeelde locaties van Google als ze hun locatie delen.",
-          "fr": "Les emplacements des membres de la famille ou des amis peuvent être récupérés à partir des emplacements partagés de Google s'ils partagent leur emplacement.",
-          "it": "Le posizioni di familiari o amici possono essere recuperate dalle posizioni condivise di Google se condividono la loro posizione.",
-          "es": "Las ubicaciones de los miembros de la familia o amigos pueden recuperarse de las ubicaciones compartidas de Google si comparten su ubicación.",
-          "pl": "Lokalizacje członków rodziny lub znajomych można pobierać z udostępnianych lokalizacji Google, jeśli udostępniają swoją lokalizację."
+            "en": "Locations of family members or friends can be retrieved from Google shared locations if they share their location.",
+            "de": "Standorte von Familienmitgliedern oder Freunden können von freigegebenen Google-Standorten abgerufen werden, wenn sie ihren Standort teilen.",
+            "ru": "Положения членов семьи или друзей могут быть получены из общих мест Google, если они делят свое местоположение.",
+            "pt": "Locais de membros da família ou amigos podem ser recuperados de locais compartilhados do Google se eles compartilharem sua localização.",
+            "nl": "Locaties van familieleden of vrienden kunnen worden opgehaald op gedeelde locaties van Google als ze hun locatie delen.",
+            "fr": "Les emplacements des membres de la famille ou des amis peuvent être récupérés à partir des emplacements partagés de Google s'ils partagent leur emplacement.",
+            "it": "Le posizioni di familiari o amici possono essere recuperate dalle posizioni condivise di Google se condividono la loro posizione.",
+            "es": "Las ubicaciones de los miembros de la familia o amigos pueden recuperarse de las ubicaciones compartidas de Google si comparten su ubicación.",
+            "pl": "Lokalizacje członków rodziny lub znajomych można pobierać z udostępnianych lokalizacji Google, jeśli udostępniają swoją lokalizację."
         },
-        "platform":                 "Javascript/Node.js",
-        "mode":                     "daemon",
-        "icon":                     "google-sharedlocations.png",
-        "enabled":                  false,
-        "stopBeforeUpdate":         true,
-        "extIcon":                  "https://raw.githubusercontent.com/t4qjXH8N/ioBroker.google-sharedlocations/master/admin/google-sharedlocations.png",
-        "keywords":                 ["google", "geofence", "sharedlocations"],
-        "readme":                   "https://github.com/t4qjXH8N/ioBroker.google-sharedlocations/blob/master/README.md",
-        "loglevel":                 "info",
-        "type":                     "geoposition",
-        "materialize":              true,
-        "messagebox":               true,
-        "restartAdapters":          []
+        "platform": "Javascript/Node.js",
+        "mode": "daemon",
+        "icon": "google-sharedlocations.png",
+        "enabled": false,
+        "tier": 2,
+        "stopBeforeUpdate": true,
+        "extIcon": "https://raw.githubusercontent.com/t4qjXH8N/ioBroker.google-sharedlocations/master/admin/google-sharedlocations.png",
+        "keywords": [
+            "google",
+            "geofence",
+            "sharedlocations"
+        ],
+        "readme": "https://github.com/t4qjXH8N/ioBroker.google-sharedlocations/blob/master/README.md",
+        "loglevel": "info",
+        "type": "geoposition",
+        "materialize": true,
+        "messagebox": true,
+        "restartAdapters": []
     },
     "native": {
-      "google_cookie": "",
-      "google_polling_interval": "600",
-      "places_adapter": "",
-      "fences": []
+        "google_cookie": "",
+        "google_polling_interval": "600",
+        "places_adapter": "",
+        "fences": []
     },
-    "objects": [
-    ],
+    "objects": [],
     "instanceObjects": [
-    {
-      "_id": "info",
-      "type": "folder",
-      "common": {
-        "name": "Information"
-      },
-      "native": {}
-    },
-    {
-      "_id": "info.connection",
-      "type": "state",
-      "common": {
-        "name": "connected",
-        "desc": "Connected to Google",
-        "type": "boolean",
-        "def": false,
-        "read": true,
-        "role": "indicator.connected",
-        "write": false
+        {
+            "_id": "info",
+            "type": "folder",
+            "common": {
+                "name": "Information"
+            },
+            "native": {}
         },
-      "native": {}
-      },
-      {
-        "_id": "trigger_poll",
-        "type": "state",
-        "common": {
-          "name": "poll",
-          "desc": "Setting to true issues a poll.",
-          "type": "boolean",
-          "def": false,
-          "read": true,
-          "write": true,
-          "role": "button"
+        {
+            "_id": "info.connection",
+            "type": "state",
+            "common": {
+                "name": "connected",
+                "desc": "Connected to Google",
+                "type": "boolean",
+                "def": false,
+                "read": true,
+                "role": "indicator.connected",
+                "write": false
+            },
+            "native": {}
         },
-        "native": {}
-      },
-      {
-        "_id": "fence",
-        "type": "folder",
-        "common": {
-          "name": "Geofences",
-          "desc": "States for fences defined in the config."
+        {
+            "_id": "info.augmented_cookie",
+            "type": "state",
+            "common": {
+                "name": "augmented cookie",
+                "desc": "Cookie augmented with additional stuff from profile page",
+                "type": "string",
+                "def": "",
+                "read": true,
+                "role": "state",
+                "write": false
+            },
+            "native": {}
         },
-        "native": {}
-      },
-      {
-        "_id": "user",
-        "type": "folder",
-        "common": {
-          "name": "Users",
-          "desc": "Retrieved information on users."
+        {
+            "_id": "trigger_poll",
+            "type": "state",
+            "common": {
+                "name": "poll",
+                "desc": "Setting to true issues a poll.",
+                "type": "boolean",
+                "def": false,
+                "read": true,
+                "write": true,
+                "role": "button"
+            },
+            "native": {}
         },
-        "native": {}
-      }
-  ]
+        {
+            "_id": "fence",
+            "type": "folder",
+            "common": {
+                "name": "Geofences",
+                "desc": "States for fences defined in the config."
+            },
+            "native": {}
+        },
+        {
+            "_id": "user",
+            "type": "folder",
+            "common": {
+                "name": "Users",
+                "desc": "Retrieved information on users."
+            },
+            "native": {}
+        }
+    ]
 }

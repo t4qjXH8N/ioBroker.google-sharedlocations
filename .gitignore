@@ -1,3 +1,4 @@
 /admin/i18n
 /.idea
 /node_modules
+/.dev-server
